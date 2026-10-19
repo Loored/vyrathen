@@ -1,0 +1,77 @@
+[
+  {
+    "habilidad_pasiva": "Ataque certero",
+    "efecto_declarado": "Los 4 primeros rounds Golpear +200%",
+    "origen": "historical_document"
+  },
+  {
+    "habilidad_pasiva": "Liderazgo",
+    "efecto_declarado": "Nunca falla chequeos de moral",
+    "origen": "historical_document"
+  },
+  {
+    "habilidad_pasiva": "Guardaespaldas",
+    "efecto_declarado": "Será más a menudo objetivo de enemigos, atrayendo ataques",
+    "origen": "historical_document"
+  },
+  {
+    "habilidad_pasiva": "Concentracion",
+    "efecto_declarado": "Preparar +35% y +1 round de duración",
+    "origen": "historical_document"
+  },
+  {
+    "habilidad_pasiva": "Mente total",
+    "efecto_declarado": "Mental +25%",
+    "origen": "historical_document"
+  },
+  {
+    "habilidad_pasiva": "Golpe mortal",
+    "efecto_declarado": "Critico +25%",
+    "origen": "historical_document"
+  },
+  {
+    "habilidad_pasiva": "Muro",
+    "efecto_declarado": "Bloquear +25%",
+    "origen": "historical_document"
+  },
+  {
+    "habilidad_pasiva": "Tecnica marcial",
+    "efecto_declarado": "Esquivar +25%",
+    "origen": "historical_document"
+  },
+  {
+    "habilidad_pasiva": "Genio",
+    "efecto_declarado": "Inteligencia +40% y MP +20%",
+    "origen": "historical_document"
+  },
+  {
+    "habilidad_pasiva": "Aceleracion",
+    "efecto_declarado": "Gana +10% Velocidad en Round 1 en adelante y +20% en el round 6 en adelante",
+    "origen": "historical_document"
+  },
+  {
+    "habilidad_pasiva": "Rompehuesos",
+    "efecto_declarado": "+60% provocar lesiones",
+    "origen": "historical_document"
+  },
+  {
+    "habilidad_pasiva": "Vigor",
+    "efecto_declarado": "-80% de recibir lesiones",
+    "origen": "historical_document"
+  },
+  {
+    "habilidad_pasiva": "Berserk",
+    "efecto_declarado": "+15% daño desde Round 1 en adelante, -25% daño en round 8 en adelante",
+    "origen": "historical_document"
+  },
+  {
+    "habilidad_pasiva": "Atleta",
+    "efecto_declarado": "Hay un 75% de que no le suba cansancio en cualquier combate",
+    "origen": "historical_document"
+  },
+  {
+    "habilidad_pasiva": "Gamberro",
+    "efecto_declarado": "Destroza x2 los items defensivos de Labs y x4 las inversiones de Funsites",
+    "origen": "historical_document"
+  }
+]

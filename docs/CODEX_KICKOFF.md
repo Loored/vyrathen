@@ -1,0 +1,7 @@
+# Encargo inicial para Codex: v0.2
+
+Abre Codex en la raíz del proyecto. `AGENTS.md` contiene las reglas persistentes y enlaza los documentos detallados. Da esta instrucción en el chat:
+
+> Trabaja en **Vyrathen v0.2**. Primero inspecciona el repo y lee `AGENTS.md`, `docs/PRODUCT_VISION.md`, `docs/HISTORICAL_RULES.md`, `docs/UI_UX_GUIDELINES.md`, `docs/ARCHITECTURE_AND_QUALITY.md` y `docs/ROADMAP.md`. Ejecuta `npm install` si es necesario, `npm test`, `npm run typecheck` y `npm run build`; informa cualquier fallo real. Después implementa incrementalmente un **vertical slice de combate espacial**: tablero discreto configurable, posiciones sin colisión, movimiento y distancias, alcance, Push, eventos estructurados, una selección limitada y comprobable de poderes/pasivas, y un visor moderno para revisar diez rondas con replay por semilla. Mantén la UI actual y la misión de Pekín funcionando. No inventes fórmulas como históricas; documenta reglas nuevas `remake_assumption`. Añade tests y verifica accesibilidad/responsive cuando puedas. Presenta un plan breve y **ejecuta**, sin detenerte a pedir aprobación salvo decisión irreversible o bloqueo real. Entrega los cambios de código, resultados reales de validación, limitaciones y próxima prioridad.
+
+**Nota:** Si Codex trabaja desde otro chat sin acceso a este filesystem, adjunta el ZIP completo y pídele extraerlo. Si ya existe un clon, usa el paquete de contexto ligero sobre el clon y conserva las modificaciones del usuario.

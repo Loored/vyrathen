@@ -1,0 +1,12 @@
+{
+  "$comment": "Ejemplo ilustrativo de un registro de procedencia; no es un JSON Schema validante.",
+  "ruleId": "combat.tie.defender_wins",
+  "ruleOrigin": "historical_document",
+  "sourceRef": ".private/research/wayback/Soulheroes_Wayback.zip::Soulheroes_Wayback/originales/20100302142634/mmorpg.soulheroes.com/biblioteca.php.html#combate",
+  "capturedAt": "2010-03-02T14:26:34",
+  "sha256": "9e5e82f3d29f72c167fa401f31686fe6693fb9434b285561abb267f756b84ded",
+  "claim": "En empate por K.O. vence el defensor",
+  "confidence": "documented",
+  "implementationStatus": "implemented",
+  "limitations": "No sustituye el codigo original del servidor"
+}

@@ -1,0 +1,5 @@
+Vyrathen v0.1 — verificación del motor, 2026-10-19
+Comando: npm test
+Node.js: v22.16.0
+Resultado: 8/8 pruebas aprobadas, 0 fallidas (runner nativo con --experimental-strip-types).
+Pendiente: npm install, typecheck y build con dependencias oficiales disponibles; el entorno de empaquetado carece de módulos npm instalados.

@@ -1,0 +1,218 @@
+[
+  {
+    "id": "leer-la-mente",
+    "nombre": "Leer la mente",
+    "tipo": "Psico",
+    "alcance": "3",
+    "categoria": "acción durante combate",
+    "descripcion": "Debilita las capacidades ofensivas y evasivas de varios rivales. Se resuelve contra Defensa Mental; requiere alcance 3.",
+    "origen": "historical_document"
+  },
+  {
+    "id": "oido-agudo",
+    "nombre": "Oido agudo",
+    "tipo": "Psico",
+    "alcance": "N/A",
+    "categoria": "pre-combate",
+    "descripcion": "Preparación previa que potencia capacidades mentales y defensivas. Los atacantes cercanos reciben una penalización. Su consumo nominal es de 3 MP por nivel.",
+    "origen": "historical_document"
+  },
+  {
+    "id": "talento",
+    "nombre": "Talento",
+    "tipo": "Psico",
+    "alcance": "N/A",
+    "categoria": "pre-combate",
+    "descripcion": "Mejora aleatoriamente una estadística o capacidad de compañeros antes del combate. Una misma mejora no debería acumularse sobre sí misma.",
+    "origen": "historical_document"
+  },
+  {
+    "id": "dar-ordenes",
+    "nombre": "Dar ordenes",
+    "tipo": "Psico",
+    "alcance": "2",
+    "categoria": "acción durante combate",
+    "descripcion": "Puede alterar temporalmente la conducta del enemigo, impidiendo su acción o cambiando su objetivo. La resistencia depende de Defensa Mental.",
+    "origen": "historical_document"
+  },
+  {
+    "id": "pesadilla",
+    "nombre": "Pesadilla",
+    "tipo": "Psico",
+    "alcance": "2",
+    "categoria": "acción durante combate",
+    "descripcion": "Puede desencadenar una prueba de moral en varios objetivos. No debería repetirse su aplicación sobre un mismo héroe en ese encuentro.",
+    "origen": "historical_document"
+  },
+  {
+    "id": "electricidad",
+    "nombre": "Electricidad",
+    "tipo": "Energía",
+    "alcance": "1",
+    "categoria": "acción durante combate",
+    "descripcion": "Ataque directo de corta distancia; daño nominal aproximado: 15 + 22 × nivel. Se enfrenta a la esquiva.",
+    "origen": "historical_document"
+  },
+  {
+    "id": "desatomizar",
+    "nombre": "Desatomizar",
+    "tipo": "Energía",
+    "alcance": "0",
+    "categoria": "acción durante combate",
+    "descripcion": "Ataque directo a distancia cero; daño nominal aproximado: 5 + 26 × nivel. Se enfrenta a Defensa Mental.",
+    "origen": "historical_document"
+  },
+  {
+    "id": "frio",
+    "nombre": "Frio",
+    "tipo": "Energía",
+    "alcance": "3",
+    "categoria": "acción durante combate",
+    "descripcion": "Ataque de rango amplio; daño nominal: 25 + 17 × nivel. Posibilidad de inmovilización tras acertar.",
+    "origen": "historical_document"
+  },
+  {
+    "id": "fuego",
+    "nombre": "Fuego",
+    "tipo": "Energía",
+    "alcance": "3",
+    "categoria": "acción durante combate",
+    "descripcion": "Ataque directo; daño nominal: 20 + 18 × nivel. Puede añadir un estado de daño continuado.",
+    "origen": "historical_document"
+  },
+  {
+    "id": "superfuerza",
+    "nombre": "Superfuerza",
+    "tipo": "Energía",
+    "alcance": "N/A",
+    "categoria": "pasiva/sin acción descrita",
+    "descripcion": "Potencia los impactos críticos de ataques normales; su eficacia depende del control del poder y del nivel.",
+    "origen": "historical_document"
+  },
+  {
+    "id": "radiactividad",
+    "nombre": "Radiactividad",
+    "tipo": "Energía",
+    "alcance": "1",
+    "categoria": "acción durante combate",
+    "descripcion": "Ataque que puede alcanzar a varios objetivos; daño nominal: 6 + 8 × nivel. Se enfrenta a Defensa Mental.",
+    "origen": "historical_document"
+  },
+  {
+    "id": "veneno",
+    "nombre": "Veneno",
+    "tipo": "Energía",
+    "alcance": "N/A",
+    "categoria": "pasiva/sin acción descrita",
+    "descripcion": "Ciertos impactos normales pueden aplicar un efecto de daño periódico cuyo alcance temporal depende del nivel.",
+    "origen": "historical_document"
+  },
+  {
+    "id": "escudo-defensivo",
+    "nombre": "Escudo defensivo",
+    "tipo": "Defensa",
+    "alcance": "2",
+    "categoria": "acción durante combate",
+    "descripcion": "Mejora la resistencia del equipo ante ataques cercanos y refuerza la defensa mental. Puede afectar a varios aliados.",
+    "origen": "historical_document"
+  },
+  {
+    "id": "invisibilidad",
+    "nombre": "Invisibilidad",
+    "tipo": "Defensa",
+    "alcance": "N/A",
+    "categoria": "pre-combate",
+    "descripcion": "Preparación que mejora evasión y ataque, con penalización mental. Reduce las probabilidades de resultar seleccionado como objetivo.",
+    "origen": "historical_document"
+  },
+  {
+    "id": "anular-poderes",
+    "nombre": "Anular Poderes",
+    "tipo": "Defensa",
+    "alcance": "2",
+    "categoria": "acción durante combate",
+    "descripcion": "Intenta bloquear el uso de capacidades de varios enemigos para el resto del enfrentamiento.",
+    "origen": "historical_document"
+  },
+  {
+    "id": "regeneracion",
+    "nombre": "Regeneracion",
+    "tipo": "Defensa",
+    "alcance": "N/A",
+    "categoria": "pasiva/sin acción descrita",
+    "descripcion": "Recupera HP de forma periódica; recuperación nominal 10 + 8 × nivel. Consume 3 MP por nivel y uso. También se asocia con resistencia a lesiones.",
+    "origen": "historical_document"
+  },
+  {
+    "id": "curacion",
+    "nombre": "Curacion",
+    "tipo": "Defensa",
+    "alcance": "2",
+    "categoria": "acción durante combate",
+    "descripcion": "Recuperación de HP sobre compañeros debilitados; magnitud nominal aproximada 30 + 11 × nivel.",
+    "origen": "historical_document"
+  },
+  {
+    "id": "gravedad",
+    "nombre": "Gravedad",
+    "tipo": "Defensa",
+    "alcance": "3",
+    "categoria": "acción durante combate",
+    "descripcion": "Disminuye la velocidad y la preparación de los enemigos; en algunos casos añade daño por caída.",
+    "origen": "historical_document"
+  },
+  {
+    "id": "volar",
+    "nombre": "Volar",
+    "tipo": "Control",
+    "alcance": "N/A",
+    "categoria": "pre-combate",
+    "descripcion": "Preparación que mejora evasión y velocidad, con ventaja especial en el primer golpe.",
+    "origen": "historical_document"
+  },
+  {
+    "id": "influir-maquinas",
+    "nombre": "Influir maquinas",
+    "tipo": "Control",
+    "alcance": "N/A",
+    "categoria": "pasiva/sin acción descrita",
+    "descripcion": "Modifica algunas recompensas económicas. No consume MP; sus efectos repetidos no se acumulan entre varios usuarios.",
+    "origen": "historical_document"
+  },
+  {
+    "id": "pintar-el-futuro",
+    "nombre": "Pintar el futuro",
+    "tipo": "Control",
+    "alcance": "N/A",
+    "categoria": "pre-combate",
+    "descripcion": "Antes del combate, incrementa aleatoriamente ciertas estadísticas aliadas. Impide repetir el mismo incremento sobre un héroe.",
+    "origen": "historical_document"
+  },
+  {
+    "id": "teletransportar",
+    "nombre": "Teletransportar",
+    "tipo": "Control",
+    "alcance": "2",
+    "categoria": "acción durante combate",
+    "descripcion": "Recoloca héroes en el campo de batalla, con probabilidad de aturdimiento temporal de adversarios.",
+    "origen": "historical_inference"
+  },
+  {
+    "id": "parar-el-tiempo",
+    "nombre": "Parar el tiempo",
+    "tipo": "Control",
+    "alcance": "0",
+    "categoria": "acción durante combate",
+    "descripcion": "Permite actuaciones adicionales durante rondas limitadas a cambio de penalizaciones al concluir el efecto.",
+    "origen": "historical_document"
+  },
+  {
+    "id": "telequinesis",
+    "nombre": "Telequinesis",
+    "tipo": "Control",
+    "alcance": "3",
+    "categoria": "acción durante combate",
+    "descripcion": "Ataque directo a distancia 3; daño nominal aproximado: 10 + 19 × nivel. Se enfrenta al bloqueo.",
+    "origen": "historical_document"
+  }
+]

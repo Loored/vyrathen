@@ -1,0 +1,17 @@
+node_modules/
+dist/
+.vite/
+.DS_Store
+*.log
+.env
+.env.*
+!.env.example
+# Contexto privado de investigación y archivos potencialmente de terceros
+.private/
+research/
+*_Wayback*.zip
+*Wayback*.zip
+*.zip
+# Herramientas locales
+.cache/
+coverage/
