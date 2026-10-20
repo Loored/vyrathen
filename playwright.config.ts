@@ -10,6 +10,6 @@ export default defineConfig({
     trace: 'retain-on-failure', screenshot: 'only-on-failure', video: 'on',
     viewport: { width: 1366, height: 768 }, colorScheme: 'dark', reducedMotion: 'reduce',
   },
-  projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],
+  projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'], viewport: { width: 1366, height: 768 } } }],
   webServer: { command: 'npm run dev -- --host 127.0.0.1 --port 4173', url: 'http://127.0.0.1:4173', reuseExistingServer: false, timeout: 30_000 },
 });
