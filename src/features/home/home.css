@@ -1,0 +1,43 @@
+.vyr-home { --vyr-panel-radius: 2px; --vyr-panel-bg: var(--vyr-panel); }
+.vyr-home-heading { display: flex; justify-content: space-between; align-items: center; gap: 24px; margin-bottom: 24px; }
+.vyr-home-heading h1 { font: 700 clamp(36px,3.9vw,68px)/1.05 var(--vyr-font-display); letter-spacing: -.065em; margin: 10px 0 0; max-width: 980px; overflow-wrap: anywhere; }
+.vyr-home-heading>p { font-size: 13px; line-height: 1.7; color: var(--vyr-muted); margin: 0; flex-shrink: 0; }.vyr-home-heading>p strong { color: var(--vyr-text); }
+.vyr-home .game-section-kicker { font-size: 10px; line-height: 1.5; letter-spacing: .15em; }
+.vyr-home-operations { display: grid; grid-template-columns: minmax(0,1fr) 340px; gap: 20px; }
+.vyr-home-section-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 20px; }
+.vyr-home h2 { font: 600 24px/1.15 var(--vyr-font-display); letter-spacing: -.04em; margin: 6px 0 0; }.vyr-home h2 small { font: 11px var(--vyr-font-ui); color: var(--vyr-muted); margin-left: 8px; white-space: nowrap; }
+.vyr-home-link { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 8px 4px; border: 0; background: transparent; color: var(--vyr-text); font-size: 12px; font-weight: 700; white-space: nowrap; }.vyr-home-link:hover { color: var(--vyr-focus); }
+.vyr-home-squad { position: relative; background: linear-gradient(125deg,#182032,var(--vyr-panel) 65%); }
+.vyr-home-formation { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: 12px; }
+.vyr-home-formation li { min-width: 0; }
+.vyr-home-sigil { height: 164px; position: relative; display: grid; place-items: center; isolation: isolate; color: var(--squad-accent); background: linear-gradient(140deg,color-mix(in srgb,var(--squad-accent),transparent 86%),transparent 70%); border-bottom: 2px solid var(--squad-accent); overflow: hidden; }
+.vyr-home-sigil::before { content: ''; position: absolute; inset: 15px -15px; border: 1px solid color-mix(in srgb,var(--squad-accent),transparent 65%); transform: skewY(-24deg); z-index: -1; }
+.vyr-home-sigil::after { content: ''; position: absolute; width: 84px; height: 84px; border: 1px solid color-mix(in srgb,var(--squad-accent),transparent 70%); transform: rotate(45deg); z-index: -1; }
+.vyr-home-unit { position: absolute; left: -4px; top: -4px; font: 700 80px/1 var(--vyr-font-display); letter-spacing: -.08em; color: color-mix(in srgb,var(--squad-accent),transparent 89%); }
+.vyr-home-symbol { font: 64px/1 system-ui,sans-serif; text-shadow: 0 0 35px color-mix(in srgb,var(--squad-accent),transparent 75%); }
+.vyr-home-level { position: absolute; right: 7px; bottom: 8px; color: var(--vyr-text); font-size: 10px; font-weight: 700; }
+.vyr-home-hero-name { padding: 12px 0 8px; }.vyr-home-hero-name h3 { font: 700 22px/1.1 var(--vyr-font-display); margin: 0 0 6px; letter-spacing: -.04em; }.vyr-home-hero-name>span { color: var(--squad-accent); font-size: 12px; }
+.vyr-home-formation li>p { border-top: 1px solid var(--vyr-border); padding-top: 9px; font-size: 12px; margin: 0; overflow-wrap: anywhere; line-height: 1.4; }.vyr-home-formation li>p small { display: block; color: var(--vyr-muted); font-size: 9px; letter-spacing: .08em; margin-top: 5px; }
+.vyr-home-caption { margin: 16px 0 0; font-size: 11px; line-height: 1.5; color: var(--vyr-muted); }
+.vyr-home-mission { border-top: 2px solid var(--vyr-focus); display: flex; flex-direction: column; }
+.vyr-home-mission .vyr-home-section-head { margin-bottom: 16px; color: var(--vyr-focus); }.vyr-home-city { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--vyr-muted); }
+.vyr-home-mission h2 { margin: 10px 0 20px; font-size: 27px; }
+.vyr-home-progress-label { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; color: var(--vyr-muted); font-size: 12px; }.vyr-home-progress-label b { color: var(--vyr-text); }
+.vyr-home-mission progress { display: block; width: 100%; height: 5px; border: 0; background: var(--vyr-border); margin-top: 10px; accent-color: var(--vyr-focus); }.vyr-home-mission progress::-webkit-progress-bar { background: var(--vyr-border); }.vyr-home-mission progress::-webkit-progress-value { background: var(--vyr-focus); }
+.vyr-home-reward { margin: 20px 0 16px; }.vyr-home-reward>span { display: block; font-size: 10px; letter-spacing: .1em; color: var(--vyr-muted); }.vyr-home-reward strong { display: block; margin-top: 5px; font: 700 28px/1.1 var(--vyr-font-display); color: var(--vyr-focus); letter-spacing: -.04em; }
+.vyr-home-cost { font-size: 12px; line-height: 1.5; color: var(--vyr-muted); margin: auto 0 10px; }.vyr-home-cost strong { color: var(--vyr-text); }.vyr-home-no-turns { font-size: 12px; color: var(--vyr-type-energia); margin: 10px 0 0; }
+.vyr-home-simulator { grid-column: 1/-1; display: flex; align-items: center; gap: 24px; padding: 20px 24px; background: linear-gradient(110deg,#1d293c,var(--vyr-panel)); border: 1px solid var(--vyr-border); border-left: 4px solid var(--vyr-text); }
+.vyr-home-sim-mark { font: 700 46px/1 var(--vyr-font-display); letter-spacing: -.06em; transform: skewX(-8deg); white-space: nowrap; }.vyr-home-sim-mark span { font-size: 28px; color: var(--vyr-muted); margin: 0 6px; }
+.vyr-home-simulator h2 { font-size: 23px; margin: 4px 0 6px; }.vyr-home-simulator p { margin: 0; color: var(--vyr-muted); font-size: 12px; }.vyr-home-simulator .game-action { margin-left: auto; white-space: nowrap; }
+.vyr-home-reference { display: flex; justify-content: space-between; align-items: baseline; gap: 24px; margin-top: 16px; font-size: 12px; color: var(--vyr-muted); }.vyr-home-reference details { flex: 1; }.vyr-home-reference summary { padding: 12px 0; min-height: 44px; cursor: pointer; }.vyr-home-reference p { line-height: 1.7; max-width: 780px; }
+@media (min-width: 1600px) { .vyr-home-sigil { height: 260px; }.vyr-home-symbol { font-size: 84px; }.vyr-home-unit { font-size: 110px; }.vyr-home-operations { grid-template-columns: minmax(0,1fr) 400px; }.vyr-home-mission h2 { font-size: 34px; } }
+@media (max-width: 1200px) { .vyr-home-operations { grid-template-columns: minmax(0,1fr) 300px; gap: 16px; }.vyr-home .game-panel { padding: 18px; }.vyr-home-heading>p { display: none; }.vyr-home-formation { gap: 8px; }.vyr-home-sigil { height: 145px; }.vyr-home-hero-name h3 { font-size: 19px; }.vyr-home-simulator { gap: 16px; }.vyr-home-sim-mark { display: none; } }
+@media (max-width: 1050px) { .vyr-home-operations { grid-template-columns: minmax(0,1fr); }.vyr-home-mission { display: grid; grid-template-columns: 1fr 1fr; column-gap: 24px; }.vyr-home-mission .vyr-home-section-head,.vyr-home-mission h2,.vyr-home-mission>progress,.vyr-home-progress-label,.vyr-home-mission>.vyr-home-caption,.vyr-home-city { grid-column: 1/-1; }.vyr-home-mission .game-action { grid-column: 2; grid-row: 6 / 8; align-self: center; }.vyr-home-mission .vyr-home-cost { grid-column: 1; }.vyr-home-section-head h2 { font-size: 22px; } }
+@media (max-width: 600px) {
+  .vyr-home-heading h1 { font-size: 38px; }.vyr-home-heading { margin-bottom: 20px; }
+  .vyr-home-formation { grid-template-columns: 1fr; gap: 12px; }.vyr-home-formation li { display: grid; grid-template-columns: 68px minmax(0,1fr); column-gap: 16px; border-bottom: 1px solid var(--vyr-border); padding-bottom: 12px; }
+  .vyr-home-sigil { grid-row: 1 / 3; height: 92px; }.vyr-home-symbol { font-size: 38px; }.vyr-home-unit { font-size: 42px; }.vyr-home-level { font-size: 9px; right: 4px; bottom: 4px; }
+  .vyr-home-hero-name { padding: 0 0 8px; }.vyr-home-hero-name h3 { font-size: 23px; }.vyr-home-formation li>p { border: 0; padding: 0; }.vyr-home-formation li>p small { display: inline; margin-left: 6px; }
+  .vyr-home-section-head { flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }.vyr-home h2 small { display: block; margin: 6px 0 0; }
+  .vyr-home-mission { display: flex; }.vyr-home-mission .game-action { align-self: stretch; }.vyr-home-simulator { flex-direction: column; align-items: flex-start; padding: 20px 18px; }.vyr-home-simulator .game-action { margin: 0; width: 100%; white-space: normal; }.vyr-home-simulator p { line-height: 1.6; }.vyr-home-reference { flex-direction: column; gap: 0; }
+}

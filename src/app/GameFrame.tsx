@@ -58,9 +58,9 @@ export function GameFrame({ section, save, notice, onNavigate, onReset, onDismis
       </div>
       <span className="vyr-frame-kicker">OPERACIONES / 01</span>
       <nav aria-label="Navegación principal">
-        {navigation.map(({ id, label, short, icon: Icon }, index) => <button key={id} type="button" className="vyr-frame-nav" aria-label={label}
+        {navigation.map(({ id, label, icon: Icon }) => <button key={id} type="button" className="vyr-frame-nav"
           aria-current={section === id ? 'page' : undefined} onClick={() => navigate(id)}>
-          <Icon size={19} aria-hidden="true"/><span>{label}</span><small aria-hidden="true">0{index + 1}</small><span className="sr-only">{short === label ? '' : ` · ${short}`}</span>
+          <Icon size={19} aria-hidden="true"/><span>{label}</span>
         </button>)}
       </nav>
       <a className="vyr-frame-lab" href="/character-lab"><Sparkles size={18} aria-hidden="true"/><span>Character Lab<small>Estudio visual</small></span><ArrowUpRight size={15} aria-hidden="true"/></a>
