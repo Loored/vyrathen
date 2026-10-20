@@ -12,7 +12,11 @@ import { countTypePoints, NOMINAL_POWER_DAMAGE } from './engine/rules.ts';
 import { simulateCombat } from './engine/simulator.ts';
 import { advanceStarterQuest, claimStarterQuest } from './engine/quest.ts';
 import type { CombatResult, Hero, HeroType, SaveData } from './engine/types.ts';
+import { HeroProfile } from './features/heroes/HeroProfile.tsx';
+import { toHeroProfile } from './features/heroes/heroProfile.ts';
+import { GameTabs } from './ui/GameTabs.tsx';
 import './styles.css';
+import './ui/game-ui.css';
 
 type Section = 'inicio' | 'heroes' | 'combate' | 'archivo';
 type ArchiveTab = 'poderes' | 'pasivas' | 'estructuras';
@@ -52,7 +56,7 @@ function Avatar({hero,large=false}:{hero:Hero,large?:boolean}) {
     <div className="avatar-halo"/><TypeIcon type={hero.type} size={large?42:28}/>
   </div>;
 }
-function HeroCard({hero,expanded=false}:{hero:Hero,expanded?:boolean}) {
+function HeroCard({hero,expanded=false,onOpen,restoreFocus=false}:{hero:Hero,expanded?:boolean,onOpen?:()=>void;restoreFocus?:boolean}) {
   return <article className={`hero-card ${expanded?'expanded':''}`}>
     <div className="hero-card-top"><Avatar hero={hero} large={expanded}/><div className="hero-card-level">LV <strong>{String(hero.level).padStart(2,'0')}</strong></div></div>
     <div className="hero-card-details"><h3>{hero.name}</h3><TypePill type={hero.type}/></div>
@@ -61,6 +65,7 @@ function HeroCard({hero,expanded=false}:{hero:Hero,expanded?:boolean}) {
       <div className="hero-stat-line"><span>Vitalidad · HP</span><b>{hero.maxHp}</b></div><StatBar value={hero.maxHp} max={500} color="var(--mint)"/>
       <div className="hero-stat-line"><span>Energía · MP</span><b>{hero.maxMp}</b></div><StatBar value={hero.maxMp} max={200} color="var(--violet)"/>
       <div className="mini-stats">{[['Golpear',hero.hit],['Bloquear',hero.block],['Esquivar',hero.dodge],['Mental',hero.mental],['Velocidad',hero.speed]].map(([k,v])=><div key={k}><span>{k}</span><b>{v}</b></div>)}</div>
+      {onOpen&&<button id={`hero-open-${hero.id}`} autoFocus={restoreFocus} type="button" className="text-button hero-card-open" aria-label={`Consultar ficha de ${hero.name}`} onClick={onOpen}>Consultar ficha <ArrowRight size={14}/></button>}
     </div>}
   </article>;
 }
@@ -81,6 +86,14 @@ export default function App(){
   const [search,setSearch]=useState('');
   const [viewRound,setViewRound]=useState(1);
   const [notice,setNotice]=useState('');
+  const [selectedHeroId,setSelectedHeroId]=useState<string | null>(null);
+  const [restoreHeroFocusId,setRestoreHeroFocusId]=useState<string | null>(null);
+  useEffect(()=>{
+    if (selectedHeroId!==null || restoreHeroFocusId===null) return;
+    const origin=document.getElementById(`hero-open-${restoreHeroFocusId}`);
+    if (origin?.tagName === 'BUTTON') origin.focus();
+    setRestoreHeroFocusId(null);
+  },[selectedHeroId,restoreHeroFocusId]);
   useEffect(()=>{try{localStorage.setItem(STORE_KEY,JSON.stringify(save));}catch{/* sin permiso de almacenamiento */}},[save]);
   const visiblePowers=useMemo(()=>PODERES.filter(p=>(typeFilter==='Todos'||p.tipo===typeFilter)
     && `${p.nombre} ${p.descripcion}`.toLocaleLowerCase().includes(search.toLocaleLowerCase())),[typeFilter,search]);
@@ -116,7 +129,7 @@ export default function App(){
       <main className="content">
         {notice&&<div className="toast" role="status"><Info size={17}/><span>{notice}</span><button aria-label="Cerrar aviso" onClick={()=>setNotice('')}><X size={16}/></button></div>}
         {section==='inicio'&&<>
-          <div className="welcome-head"><div><Eyebrow>ESTACIÓN DE MANDO / AURORA</Eyebrow><h1>Tu laboratorio.<br/><span>Tu próxima leyenda.</span></h1><p>Explora un universo de laboratorios, héroes extraordinarios y conflictos tácticos.</p></div><button className="primary-button hero-cta" onClick={()=>go('combate')}><Play size={17} fill="currentColor"/> Iniciar combate <ArrowUpRight size={16}/></button></div>
+          <div className="welcome-head"><div><Eyebrow>ESTACIÓN DE MANDO / AURORA</Eyebrow><h1>Tu laboratorio.<br/><span>Tu próxima leyenda.</span></h1><p>Explora un universo de laboratorios, héroes extraordinarios y conflictos tácticos.</p></div><button className="primary-button game-action hero-cta" onClick={()=>go('combate')}><Play size={17} fill="currentColor"/> Iniciar combate <ArrowUpRight size={16}/></button></div>
           <div className="metric-grid">
             <Metric icon={<FlaskConical/>} label="LABORATORIO" value="Nivel 01" sub="Base experimental" tone="mint"/>
             <Metric icon={<Wallet/>} label="FONDOS" value={money(save.funds)} sub="Economía de demostración" tone="blue"/>
@@ -141,11 +154,11 @@ export default function App(){
             <div className="taxonomy-notice"><CircleHelp size={15}/><span>Defensa vence a Psico, Psico a Energía, Energía a Control y Control a Defensa. La conversión de puntos a bonus aún es desconocida.</span></div>
           </div><div className="panel source-panel"><div className="source-icon"><Database size={24}/></div><div><Eyebrow>ARCHIVO HISTÓRICO</Eyebrow><h2>Un legado recuperado</h2><p>24 poderes documentados, 15 habilidades pasivas y reglas extraídas de la biblioteca original de 2010.</p><button className="text-button" onClick={()=>go('archivo')}>Explorar las reglas <ArrowRight size={16}/></button></div></div></section>
         </>}
-        {section==='heroes'&&<>
+        {section==='heroes'&& (selectedHeroId ? <HeroProfile profile={toHeroProfile(PLAYER_TEAM.find(hero=>hero.id===selectedHeroId) ?? PLAYER_TEAM[0])} onBack={()=>{setRestoreHeroFocusId(selectedHeroId);setSelectedHeroId(null);}} onCombat={()=>go('combate')}/> : <>
           <PageHead eyebrow="PERSONAJES / ESTADÍSTICAS" title="Tu escuadrón" desc="Cinco héroes de ejemplo para probar el sistema de tipos, poderes y combate." right={<span className="outline-tag"><Dna size={16}/> COMPOSICIÓN DEMO</span>}/>
-          <div className="hero-grid-full">{PLAYER_TEAM.map(hero=><HeroCard hero={hero} key={hero.id} expanded/>)}</div>
+          <div className="hero-grid-full">{PLAYER_TEAM.map(hero=><HeroCard hero={hero} key={hero.id} expanded restoreFocus={restoreHeroFocusId===hero.id} onOpen={()=>{setRestoreHeroFocusId(null);setSelectedHeroId(hero.id);}}/>)}</div>
           <div className="panel type-explainer"><div className="panel-head"><div><Eyebrow>IDENTIDAD DE COMBATE</Eyebrow><h2>Cuatro tipos, un sistema de ventajas</h2></div><button onClick={()=>go('combate')} className="text-button">Probar escuadrón <ArrowRight size={16}/></button></div><p>Cada pareja entre los cinco héroes de ambos equipos concede un punto cuando uno tiene ventaja sobre el otro. Esta parte sí puede calcularse exactamente como en el manual.</p><div className="type-card-grid">{TYPES.map(type=><div className={`type-card ${typeClass(type)}`} key={type}><TypeIcon type={type} size={26}/><b>{type}</b><small>Ventaja frente a {({Defensa:'Psico',Psico:'Energía','Energía':'Control',Control:'Defensa'} as Record<HeroType,string>)[type]}</small></div>)}</div></div>
-        </>}
+        </>)}
         {section==='combate'&&<>
           <PageHead eyebrow="SIMULADOR / 5 CONTRA 5" title="Cámara de combate" desc="Diez rondas, ventaja de tipos y resultado por K.O. Usa una semilla para obtener reportes reproducibles." right={<span className="outline-tag"><ShieldCheck size={16}/> MOTOR EXPERIMENTAL</span>}/>
           <div className="battle-grid"><div className="panel match-setup"><div className="panel-head"><div><Eyebrow>CONFIGURAR ENCUENTRO</Eyebrow><h2>Prepara tu equipo</h2></div><span className="match-crest"><Swords size={22}/></span></div>
@@ -153,7 +166,7 @@ export default function App(){
             <div className="combat-label seed-caption">SEMILLA DEL SIMULADOR <span>Reproduce la misma batalla</span></div><input aria-label="Semilla del simulador" className="seed-input" type="number" min="1" max="2147483647" value={save.seed} onChange={e=>setSave(s=>({...s,seed:Math.min(2147483647,Math.max(1,Math.trunc(Number(e.target.value)||1)))}))}/>
             <div className="matchup"><div className="matchup-side"><span className="matchup-team-name">AURORA</span><strong>5</strong><span>Atacante</span></div><div className="matchup-versus">VS</div><div className="matchup-side"><span className="matchup-team-name">{save.selectedEnemy==='patrulla'?'PATRULLA':'GUARDIANES'}</span><strong>5</strong><span>Defensor</span></div></div>
             <div className="type-score"><div><span>Puntos de ventaja</span><b>{score.attacker} : {score.defender}</b></div><small>Conteo histórico exacto · bonus sin aplicar (fórmula desconocida)</small></div>
-            <button className="primary-button block simulate-button" onClick={runBattle}><Play size={18} fill="currentColor"/> {lastBattle?'Repetir simulación':'Iniciar simulación'} <ArrowUpRight size={16}/></button>
+            <button className="primary-button game-action block simulate-button" onClick={runBattle}><Play size={18} fill="currentColor"/> {lastBattle?'Repetir simulación':'Iniciar simulación'} <ArrowUpRight size={16}/></button>
             <div className="simulation-warning"><Info size={16}/> Probabilidad de actuar, precisión, daño final, defensa y selección de objetivo: simulados, no recuperados del servidor original.</div>
           </div><div className="panel battle-report"><div className="panel-head"><div><Eyebrow>REGISTRO TÁCTICO</Eyebrow><h2>{lastBattle?'Resultado del enfrentamiento':'Esperando combate'}</h2></div><Activity size={19} className="muted-icon"/></div>
             {lastBattle?<BattleReport battle={lastBattle} viewRound={viewRound} setViewRound={setViewRound}/>:<div className="empty-battle"><div className="battle-orbit"><Swords size={42}/></div><h3>Todo listo para la primera ronda</h3><p>Configura tu rival e inicia una simulación. Aquí aparecerán los K.O., las acciones y las diez rondas.</p><span>REPORTE SIN GENERAR</span></div>}
@@ -162,13 +175,15 @@ export default function App(){
         {section==='archivo'&&<>
           <PageHead eyebrow="CÓDICE / SISTEMAS" title="Archivo de reglas" desc="Consulta las capacidades disponibles y conoce qué reglas del prototipo siguen en revisión." right={<span className="outline-tag"><BookOpen size={16}/> REGLAS EN DESARROLLO</span>}/>
           <div className="evidence-banner"><Database size={23}/><div><strong>Códice de habilidades · versión alfa</strong><span>Catálogo provisional de 24 poderes y 15 pasivas de referencia. Los nombres, efectos y balance se revisarán para la identidad propia de Vyrathen.</span></div><span className="verified"><Check size={13}/> REFERENCIA</span></div>
-          <div className="archive-tabs"><button className={archiveTab==='poderes'?'selected':''} onClick={()=>setArchiveTab('poderes')}><Zap size={17}/> Poderes <span>24 + 3</span></button><button className={archiveTab==='pasivas'?'selected':''} onClick={()=>setArchiveTab('pasivas')}><Brain size={17}/> Pasivas <span>15</span></button><button className={archiveTab==='estructuras'?'selected':''} onClick={()=>setArchiveTab('estructuras')}><Boxes size={17}/> Estructuras <span>16</span></button></div>
+          <GameTabs label="Secciones del archivo" panelId="archive-panel" active={archiveTab} onChange={id=>setArchiveTab(id as ArchiveTab)} tabs={[{id:'poderes',label:'Poderes · 24 + 3'},{id:'pasivas',label:'Pasivas · 15'},{id:'estructuras',label:'Estructuras · 16'}]}/>
+          <section id="archive-panel" role="tabpanel" aria-labelledby={`archive-panel-tab-${archiveTab}`} tabIndex={0}>
           {archiveTab==='poderes'&&<><div className="archive-tools"><label className="search-box"><span className="sr-only">Buscar poder</span><BookOpen size={17}/><input placeholder="Buscar nombre o descripción..." value={search} onChange={e=>setSearch(e.target.value)}/></label><div className="filter-types"><button className={typeFilter==='Todos'?'active':''} onClick={()=>setTypeFilter('Todos')}>Todos</button>{TYPES.map(t=><button key={t} className={typeFilter===t?'active':''} onClick={()=>setTypeFilter(t)}>{t}</button>)}</div></div>
             <div className="powers-list">{visiblePowers.map(p=><article className="power-entry" key={p.id}><div className={`power-type-icon ${typeClass(p.tipo as HeroType)}`}><TypeIcon type={p.tipo as HeroType} size={20}/></div><div><div className="power-entry-name"><h3>{p.nombre}</h3><TypePill type={p.tipo as HeroType}/></div><p>{p.descripcion}</p><div className="power-metadata"><span>ALCANCE {p.alcance}</span><span>{p.categoria}</span>{NOMINAL_POWER_DAMAGE[p.nombre]&&<span>Daño nominal · fórmula conocida</span>}</div></div><span className="source-flag">REFERENCIA</span></article>)}{visiblePowers.length===0&&<div className="nothing-found">No hay poderes con ese filtro.</div>}</div>
             <div className="unknown-powers"><div><History size={17}/><b>Conceptos pendientes de diseño</b></div><p>Hay capacidades reservadas para futuras versiones. No se mostrarán como jugables hasta tener reglas y pruebas.</p></div>
           </>}
-          {archiveTab==='pasivas'&&<div className="powers-list passive-list">{PASIVAS.map((p,i)=><article className="power-entry" key={i}><div className="power-type-icon neutral"><Sparkles size={19}/></div><div><h3>{p.habilidad_pasiva}</h3><p>{p.efecto_declarado}</p><div className="power-metadata"><span>HABILIDAD PASIVA</span><span>2010</span></div></div><span className="source-flag">REFERENCIA</span></article>)}</div>}
+          {archiveTab==='pasivas'&&<div className="powers-list passive-list">{PASIVAS.map((p,i)=><article className="power-entry" key={i}><div className="power-type-icon neutral"><Sparkles size={19}/></div><div><h2>{p.habilidad_pasiva}</h2><p>{p.efecto_declarado}</p><div className="power-metadata"><span>HABILIDAD PASIVA</span><span>2010</span></div></div><span className="source-flag">REFERENCIA</span></article>)}</div>}
           {archiveTab==='estructuras'&&<div className="panel structure-content"><h2>Arquitectura del laboratorio</h2><p>El árbol de construcción de Vyrathen se está diseñando con recursos gráficos originales. Por ahora, las estructuras son una referencia de progresión y todavía no son construibles.</p><div className="panel-footnote"><Boxes size={18}/> Próximamente: edificios, requisitos y rutas de especialización propios.</div><div className="panel-footnote"><Info size={15}/> El coste de construcción de cada edificio no está documentado: aún no se permite construir para evitar inventar precios.</div></div>}
+          </section>
           <div className="provenance-panel"><div><Layers size={19}/><strong>Origen de las reglas</strong></div><ul><li><span className="source-dot verified-dot"/><b>Documentación de referencia:</b> tipos, diez rondas, K.O. y reglas nominales auditables.</li><li><span className="source-dot observed-dot"/><b>Observación externa:</b> evidencia de sistemas en juegos clásicos, no implementación propia.</li><li><span className="source-dot assumption-dot"/><b>Decisión nueva:</b> estadísticas demo, IA, precisión, iniciativa, coste por paso y mitigación.</li></ul></div>
         </>}
         <footer className="main-footer"><span>VYRATHEN / ALPHA EXPERIMENTAL</span><span>Un universo independiente · Mecánicas en evolución</span></footer>

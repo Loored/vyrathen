@@ -1,5 +1,6 @@
 import { motion } from 'motion/react';
 import { useRef } from 'react';
+import { nextTabIndex } from '../../../ui/GameTabs.tsx';
 import { tabs, type CharacterTab } from '../data/characters';
 interface Props { active: CharacterTab; onChange: (v: CharacterTab) => void; reduced: boolean }
 
@@ -19,12 +20,8 @@ export function CharacterTabs({ active, onChange, reduced }: Props) {
         aria-controls="character-panel"
         onClick={() => onChange(id)}
         onKeyDown={event => {
-          let next: number;
-          if (event.key === 'ArrowRight') next = (position + 1) % tabs.length;
-          else if (event.key === 'ArrowLeft') next = (position + tabs.length - 1) % tabs.length;
-          else if (event.key === 'Home') next = 0;
-          else if (event.key === 'End') next = tabs.length - 1;
-          else return;
+          const next = nextTabIndex(event.key, position, tabs.length);
+          if (next === null) return;
           event.preventDefault();
           event.stopPropagation();
           onChange(tabs[next].id);

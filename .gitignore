@@ -15,3 +15,4 @@ research/
 # Herramientas locales
 .cache/
 coverage/
+output/playwright/
