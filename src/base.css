@@ -1,0 +1,2 @@
+/* Shared document reset only. Each full-page route owns its visual styles. */
+body { margin: 0; min-width: 320px; background: #090e18; color: #e8ecf5; }
