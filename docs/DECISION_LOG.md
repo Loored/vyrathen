@@ -18,3 +18,7 @@ Para nuevas decisiones sustantivas: fecha, problema, opciones, decisión, impact
 ## 2026-10-20 — Aislamiento del laboratorio visual
 
 ADR-010: cargar ambas pantallas completas (`App` y `CharacterLabRoute`) de forma diferida con CSS propio. La importación estática de `App` cargaba estilos globales de la alfa incluso dentro del laboratorio. Se conserva un reset documental mínimo compartido; navegar entre destinos usa enlaces documentales y conserva `vyrathen-v01`. No cambia el motor ni canoniza fixtures. Alternativa descartada: duplicar overrides para cada colisión CSS. Reconsiderar una navegación SPA compartida sólo cuando haya un sistema UI con estilos aislados y regresiones de recorrido en navegador. La dirección artística aprobada sigue en `docs/design/DECISIONS_V05.md`; el roadmap UI nuevo es una propuesta, no una aprobación de mecánicas o arte adicional.
+
+## 2026-10-20 — Game UI System v1 y ficha de consulta
+
+ADR-011: tokens y primitivas pequeñas se comparten desde `src/ui/`, con CSS apto para ambas rutas y navegación de pestañas reutilizada. La ficha consume un adaptador puro de `Hero`; HP/MP son máximos de configuración y el catálogo sólo describe poderes, sin inferir ejecución. SELECT, shards y retrato permanecen específicos del Lab. La composición provisional sin arte no canoniza personajes ni equipamiento; requiere revisión visual del propietario antes de escalarla.

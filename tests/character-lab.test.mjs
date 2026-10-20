@@ -138,6 +138,11 @@ test('original navigation, quest, seeded battle and save survive a visit to the 
   assert.equal(localStorage.getItem('vyrathen-v01'), before);
   await click(button('Mis héroes'));
   assert.equal(container.querySelectorAll('.hero-card').length, 5);
+  await click(button('Consultar ficha'));
+  assert.ok(container.textContent.includes('Estadísticas de configuración'));
+  assert.ok(container.textContent.includes('HP máximo'));
+  await click(button('Volver a Mis héroes'));
+  assert.equal(container.querySelectorAll('.hero-card').length, 5);
   await click(button('Archivo de reglas'));
   assert.equal(container.querySelectorAll('.power-entry').length, 24);
   await click(button('Simulador de combate'));

@@ -1,0 +1,24 @@
+/* Shared Game UI System v1: route-safe tokens and small reusable primitives. */
+:root, #vyr-character-lab {
+  --vyr-bg: #090e18; --vyr-panel: #111927; --vyr-surface: #182234;
+  --vyr-border: #29364b; --vyr-text: #e8ecf5; --vyr-muted: #8997ad;
+  --vyr-focus: #6ff0ce; --vyr-space-1: 4px; --vyr-space-2: 8px;
+  --vyr-space-3: 12px; --vyr-space-4: 16px; --vyr-space-6: 24px;
+  --vyr-ease: cubic-bezier(.22,.85,.3,1); --vyr-fast: 160ms; --vyr-standard: 260ms;
+  --vyr-type-psico: #b5a0ff; --vyr-type-energia: #f4aa74;
+  --vyr-type-defensa: #79b6fa; --vyr-type-control: #6ff0ce;
+}
+/* Compatibility aliases let the existing alpha frame consume the shared source. */
+:root { --bg:var(--vyr-bg); --panel:var(--vyr-panel); --surface:var(--vyr-surface); --border:var(--vyr-border); --text:var(--vyr-text); --muted:var(--vyr-muted); --mint:var(--vyr-focus); --violet:var(--vyr-type-psico); --blue:var(--vyr-type-defensa); --orange:var(--vyr-type-energia); }
+.game-action { border: 1px solid #a0ffe6; background: linear-gradient(135deg,#92f7de,#52c6ac); color:#0b262c; border-radius:9px; padding:12px 16px; font-size:12px; font-weight:800; transition:transform var(--vyr-fast) var(--vyr-ease),filter var(--vyr-fast); }
+.game-action:hover:not(:disabled) { transform:translateY(-1px); filter:brightness(1.08); }
+.game-action--secondary { border-color:var(--vyr-border); background:#142332; color:var(--vyr-text); }
+.game-panel { background:linear-gradient(160deg,#131e2c,#101826); border:1px solid var(--vyr-border); border-radius:14px; padding:var(--vyr-space-6); min-width:0; }
+.game-section-kicker { color:var(--vyr-focus); font-size:10px; font-weight:800; letter-spacing:.18em; }
+.game-tabs { display:flex; gap:var(--vyr-space-2); border-bottom:1px solid var(--vyr-border); }
+.game-tabs button { border:0; border-bottom:2px solid transparent; background:transparent; color:var(--vyr-muted); padding:12px 16px; font-size:12px; font-weight:800; }
+.game-tabs button[aria-selected=true] { border-bottom-color:var(--vyr-focus); color:var(--vyr-focus); }
+.game-stat-list { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px 18px; }
+.game-stat { display:flex; justify-content:space-between; gap:8px; padding:9px 0; border-bottom:1px solid color-mix(in srgb,var(--vyr-border),transparent 25%); color:var(--vyr-muted); font-size:12px; }
+.game-stat strong { color:var(--vyr-text); font-variant-numeric:tabular-nums; }
+@media (max-width: 520px) { .game-panel { padding:16px; } .game-stat-list { grid-template-columns:1fr; } .game-tabs { overflow:auto; } .game-tabs button { white-space:nowrap; } }
