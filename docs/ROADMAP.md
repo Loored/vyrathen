@@ -1,5 +1,7 @@
 # Roadmap por incrementos verificables
 
+**Propuesta de secuencia UI posterior a Character Lab (2026-10-20):** ver [Game UI System y siguientes vertical slices](design/GAME_UI_ROADMAP.md). La dirección visual v0.5 y los hitos UI v1.0 tienen numeración independiente del alcance mecánico listado aquí. Priorizar ficha real de consulta y contrato de replay antes de ampliar sistemas o renderer.
+
 **Estado inicial 2026-10-19:** v0.1 entregada como prototipo local; se ejecutaron 8/8 pruebas de `npm test` en el entorno de preparación del paquete. La compilación de producción no se certificó aquí porque las dependencias npm no estaban instaladas; Codex debe comprobarla.
 
 ## v0.2 — Combate espacial y explicable (prioridad inmediata)

@@ -14,3 +14,7 @@
 | ADR-009 | Dirección visual RPG sci-fi, no dashboard de IA/SaaS | Aceptada como objetivo; estilo final pendiente | Ver `docs/VISUAL_DIRECTION.md` |
 
 Para nuevas decisiones sustantivas: fecha, problema, opciones, decisión, impacto, fuente/feedback y condición de revisión. No añadir ADR por cada bugfix.
+
+## 2026-10-20 — Aislamiento del laboratorio visual
+
+ADR-010: cargar ambas pantallas completas (`App` y `CharacterLabRoute`) de forma diferida con CSS propio. La importación estática de `App` cargaba estilos globales de la alfa incluso dentro del laboratorio. Se conserva un reset documental mínimo compartido; navegar entre destinos usa enlaces documentales y conserva `vyrathen-v01`. No cambia el motor ni canoniza fixtures. Alternativa descartada: duplicar overrides para cada colisión CSS. Reconsiderar una navegación SPA compartida sólo cuando haya un sistema UI con estilos aislados y regresiones de recorrido en navegador. La dirección artística aprobada sigue en `docs/design/DECISIONS_V05.md`; el roadmap UI nuevo es una propuesta, no una aprobación de mecánicas o arte adicional.
