@@ -1,0 +1,63 @@
+name: UI review evidence
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ui-review-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify-and-capture:
+    name: Linux Chromium review
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+    env:
+      CI: true
+      PLAYWRIGHT_BROWSERS_PATH: 0
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci
+      - name: Install locked Chromium and Linux dependencies
+        run: npx playwright install --with-deps chromium
+      - name: Record candidate evidence metadata
+        run: |
+          mkdir -p output/playwright
+          cat > output/playwright/ci-metadata.json <<EOF
+          {
+            "commit": "${GITHUB_SHA}",
+            "browser": "chromium",
+            "environment": "ubuntu-22.04",
+            "resolutions": ["1366x768", "1440x900", "1920x1080", "320x720"],
+            "status": "candidate_pending_owner_approval",
+            "visual_baselines": "not_created_or_updated"
+          }
+          EOF
+      - name: Unit and DOM tests
+        run: npm test
+      - name: TypeScript
+        run: npm run typecheck
+      - name: Production build
+        run: npm run build
+      - name: Review production preview in Chromium
+        run: npm run test:ui:ci
+      - name: Upload UI evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ui-evidence-${{ github.sha }}-chromium-ubuntu-22.04
+          path: output/playwright/
+          if-no-files-found: warn
+          retention-days: 7

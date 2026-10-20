@@ -10,7 +10,8 @@
     "test": "node --experimental-strip-types --test tests/*.test.ts tests/*.test.mjs",
     "typecheck": "tsc --noEmit",
     "test:ui": "playwright test",
-    "review:ui": "playwright test --project=chromium"
+    "review:ui": "playwright test --project=chromium",
+    "test:ui:ci": "playwright test --config=playwright.ci.config.ts --project=chromium"
   },
   "dependencies": {
     "lucide-react": "^0.468.0",
