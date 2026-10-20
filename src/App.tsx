@@ -104,6 +104,7 @@ export default function App(){
       <div className="brand"><div className="brand-emblem"><Hexagon size={29} strokeWidth={1.7}/><span>✦</span></div><div className="brand-text"><strong>VYRA<span>THEN</span></strong><small>ALPHA / 0.1</small></div><button className="mobile-close icon-button" aria-label="Cerrar menú" onClick={()=>setMobileMenu(false)}><X size={20}/></button></div>
       <div className="sidebar-body"><div className="nav-label">NAVEGACIÓN</div><nav aria-label="Navegación principal">
         {navigation.map(item=>{const Icon=item.icon;return <button key={item.id} className={`nav-item ${section===item.id?'active':''}`} onClick={()=>go(item.id)}><Icon size={18}/><span>{item.label}</span>{section===item.id&&<span className="nav-active-dot"/>}</button>;})}
+        <a className="nav-item" href="/character-lab" style={{textDecoration:'none'}}><Sparkles size={18}/><span>Character Lab · estudio visual</span></a>
       </nav><div className="nav-label nav-label-spaced">TU MUNDO</div>
       <div className="world-card"><span className="world-orbit"><span/></span><div><strong>Laboratorio local</strong><small>Partida de demostración</small></div><span className="online-dot"/></div>
       <div className="side-explainer"><span className="small-tag"><ShieldCheck size={13}/> BASADO EN ARCHIVOS</span><p>Reglas documentadas en 2010 + simulación transparente cuando falta código original.</p><button onClick={()=>go('archivo')}>Ver procedencia <ArrowRight size={14}/></button></div></div>

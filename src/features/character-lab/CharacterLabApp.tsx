@@ -52,6 +52,7 @@ export function CharacterLabApp() {
     const onKey = (event: KeyboardEvent) => {
       if (event.altKey || event.metaKey || event.ctrlKey) return;
       if (['INPUT', 'TEXTAREA', 'SELECT'].includes((event.target as HTMLElement)?.tagName)) return;
+      if ((event.target as HTMLElement)?.isContentEditable) return;
       if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') {
         if (document.activeElement?.getAttribute('role') === 'tab') return;
         event.preventDefault();
@@ -60,8 +61,8 @@ export function CharacterLabApp() {
       if (event.key === '1') chooseTab('stats');
       if (event.key === '2') chooseTab('skills');
       if (event.key === '3') chooseTab('equipment');
-      if (event.key.toLowerCase() === 'm') setAmbient(v => !v);
-      if (event.key.toLowerCase() === 'r') setOverrideReduced(v => !(v ?? systemPrefersReduced));
+      if (!event.repeat && event.key.toLowerCase() === 'm') setAmbient(v => !v);
+      if (!event.repeat && event.key.toLowerCase() === 'r') setOverrideReduced(v => !(v ?? systemPrefersReduced));
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
@@ -84,7 +85,8 @@ export function CharacterLabApp() {
             <div className="brand-meta"><b>PERSONNEL ARCHIVE</b><span>MOTION STUDY // 0.5</span><span>NEON × EXPRESSION</span></div>
           </div>
           <div className="topbar-right">
-            <button className="mode" type="button" onClick={() => selectCharacter(selected + 1)}>▶ REPLAY</button>
+            <a className="mode" href="/">VOLVER AL JUEGO</a>
+            <button className="mode" type="button" disabled={changing} onClick={() => selectCharacter(selected + 1)}>▶ REPLAY</button>
             <button className="mode" type="button" aria-pressed={ambient} data-active={ambient} onClick={() => setAmbient(v => !v)}>AMBIENT {ambient ? 'ON' : 'OFF'}</button>
             <button className="mode" type="button" aria-pressed={reduced} data-active={reduced} onClick={() => setOverrideReduced(v => !(v ?? systemPrefersReduced))}>REDUCED {reduced ? 'ON' : 'OFF'}</button>
             <div className="demo-note">INTERACTIVE STUDY<br />NOT GAMEPLAY</div>
@@ -93,7 +95,7 @@ export function CharacterLabApp() {
         <div className={`game-screen ${changing ? 'is-switching' : ''}`}>
           <CharacterRail characters={characters} selected={selected} requested={requested} busy={changing} reduced={reduced} onSelect={selectCharacter} />
           <CharacterStage character={character} ambient={ambient} reduced={reduced} />
-          <div id="character-panel" className="info-slot" role="tabpanel" aria-label="Detalle del personaje seleccionado">
+          <div id="character-panel" className="info-slot" role="tabpanel" aria-labelledby={`character-tab-${tab}`} tabIndex={0}>
             <CharacterDetails character={character} tab={tab} reduced={reduced} />
           </div>
           <CharacterTabs active={tab} onChange={chooseTab} reduced={reduced} />
