@@ -21,7 +21,7 @@
 }
 /* Compatibility aliases let the existing alpha frame consume the shared source. */
 :root { --bg:var(--vyr-bg); --panel:var(--vyr-panel); --surface:var(--vyr-surface); --border:var(--vyr-border); --text:var(--vyr-text); --muted:var(--vyr-muted); --mint:var(--vyr-focus); --violet:var(--vyr-type-psico); --blue:var(--vyr-type-defensa); --orange:var(--vyr-type-energia); }
-.game-action { border: 1px solid #a0ffe6; background: linear-gradient(135deg,#92f7de,#52c6ac); color:#0b262c; border-radius:9px; padding:12px 16px; font-size:12px; font-weight:800; transition:transform var(--vyr-fast) var(--vyr-ease),filter var(--vyr-fast); }
+.game-action { display:inline-flex; align-items:center; justify-content:center; gap:10px; min-height:44px; border:1px solid var(--vyr-action-bg,#a0ffe6); background:var(--vyr-action-bg,linear-gradient(135deg,#92f7de,#52c6ac)); color:var(--vyr-action-text,#0b262c); border-radius:var(--vyr-action-radius,9px); padding:12px 16px; font-size:14px; font-weight:800; transition:transform var(--vyr-fast) var(--vyr-ease),filter var(--vyr-fast); }
 .game-action:hover:not(:disabled) { transform:translateY(-1px); filter:brightness(1.08); }
 .game-action--secondary { border-color:var(--vyr-control-border); background:var(--vyr-control-bg); color:var(--vyr-control-text); }
 .game-panel { background:linear-gradient(160deg,#131e2c,#101826); border:1px solid var(--vyr-border); border-radius:14px; padding:var(--vyr-space-6); min-width:0; }
