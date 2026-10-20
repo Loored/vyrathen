@@ -22,6 +22,7 @@ jobs:
     env:
       CI: true
       PLAYWRIGHT_BROWSERS_PATH: 0
+      EVIDENCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -37,7 +38,7 @@ jobs:
           mkdir -p output/playwright
           cat > output/playwright/ci-metadata.json <<EOF
           {
-            "commit": "${GITHUB_SHA}",
+            "commit": "${EVIDENCE_SHA}",
             "browser": "chromium",
             "environment": "ubuntu-22.04",
             "resolutions": ["1366x768", "1440x900", "1920x1080", "320x720"],
@@ -57,7 +58,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: ui-evidence-${{ github.sha }}-chromium-ubuntu-22.04
+          name: ui-evidence-${{ github.event.pull_request.head.sha || github.sha }}-chromium-ubuntu-22.04
           path: output/playwright/
           if-no-files-found: warn
           retention-days: 7
