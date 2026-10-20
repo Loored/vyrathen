@@ -24,7 +24,7 @@ window.matchMedia = () => ({
   removeEventListener: (_, fn) => mediaListeners.delete(fn),
 });
 window.scrollTo = () => {};
-const vite = await createServer({ server: { middlewareMode: true }, appType: 'custom' });
+const vite = await createServer({ server: { middlewareMode: true, hmr: false }, appType: 'custom' });
 const { default: Lab } = await vite.ssrLoadModule('/src/features/character-lab/CharacterLabRoute.tsx');
 const { default: App } = await vite.ssrLoadModule('/src/App.tsx');
 const { INITIAL_SAVE } = await vite.ssrLoadModule('/src/data/demo.ts');
