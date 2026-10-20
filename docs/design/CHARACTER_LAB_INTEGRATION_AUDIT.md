@@ -6,7 +6,7 @@ Fecha: 2026-10-20. Base remota: `main` en `b204fc1df3349b351180b74ddbb741653429c
 
 - PR #1: documentación y cinco skills, fusionado. PR #2: Character Lab, fusionado. Esta entrega propone correcciones posteriores en una rama nueva; no vuelve a integrar ni fusiona esos PRs.
 - El directorio disponible al comenzar estaba vacío de código del proyecto. Se obtuvo una copia por el conector GitHub. Sus 63 blobs, incluidos los tres WebP, coinciden con los SHA del árbol remoto `430ed95d6d2bc8a8e914cd3c9f95845d1eaefac0`.
-- **No se inspeccionó la carpeta del Mac del propietario.** No es posible enumerar sus archivos sin seguimiento ni certificar que el remoto incluye cualquier cambio local posterior. Para cerrar esa comparación se necesita `git status --short --untracked-files=all`, `git diff --stat`, `git rev-parse HEAD` y los archivos locales diferentes (o un ZIP de trabajo sin `.git`, `node_modules`, `dist`, `.env` ni investigación privada).
+- **Comparación local confirmada por las salidas del propietario (2026-10-20):** `git status --short --untracked-files=all` y `git diff --stat` no mostraron cambios; `git rev-parse HEAD` devolvió `b204fc1df3349b351180b74ddbb741653429cb52`, el mismo commit base auditado. No se identifican archivos pendientes de seguimiento ni modificaciones que adjuntar. Esta confirmación procede de las salidas compartidas, sin acceso directo al Mac; los archivos ignorados por Git quedan fuera de esta comprobación.
 - En el remoto están seguidos `src/features/character-lab/` (10 archivos), `public/character-lab/art/{selene,kuroe,orion}.webp`, `src/main.tsx`, `package.json` y `package-lock.json`.
 - La dependencia de producción `motion` ya estaba incorporada por #2. Resoluciones comprobadas en el lock: React/React DOM 19.3.1, Motion 12.43.0, Vite 6.4.4 y TypeScript 5.9.3. Esta consolidación añade únicamente `jsdom` 26.1.0 como dependencia de desarrollo para pruebas DOM, con su lockfile; no actualiza las dependencias de producción.
 
@@ -46,7 +46,7 @@ En las pruebas DOM se verifican: cambio de personaje sin escribir el save; pesta
 
 ## Puerta de revisión antes de fusionar
 
-1. Comparar con la carpeta local del propietario y añadir cualquier archivo faltante.
+1. **Completado por evidencia del propietario:** árbol de trabajo limpio y HEAD idéntico al commit base auditado. Para revisar las correcciones, descargar y abrir la rama `fix/character-lab-consolidation`; todavía no están en `main`.
 2. Abrir `/` y `/character-lab` directamente y por enlaces, recargar `/character-lab/` y volver con historial; comprobar que el hosting da fallback SPA a rutas profundas.
 3. Revisar 1366×768, 1440×900, 1920×1080 y 320 px: seis estadísticas completas sin scroll de panel en desktop; sin scroll horizontal global. Comprobar también zoom 200% y altura reducida.
 4. Validar retratos, nombre fill/glitch, una sola pieza SELECT vertical viajando derecha→izquierda, tabs y ambiente; no aprobar cambios artísticos implícitos por retirar CSS ajeno.
