@@ -17,10 +17,10 @@ export function GameFrame({ section, save, notice, onNavigate, onReset, onDismis
   onReset: () => void; onDismissNotice: () => void; children: ReactNode;
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
-  const menu = useRef<HTMLElement>(null);
+  const menu = useRef<HTMLDivElement>(null);
   const trigger = useRef<HTMLButtonElement>(null);
   const main = useRef<HTMLElement>(null);
-  function closeMenu() { setMenuOpen(false); trigger.current?.focus(); }
+  function closeMenu() { setMenuOpen(false); requestAnimationFrame(() => trigger.current?.focus()); }
   function navigate(next: Section) {
     onNavigate(next);
     if (menuOpen) { setMenuOpen(false); requestAnimationFrame(() => main.current?.focus()); }
@@ -39,7 +39,7 @@ export function GameFrame({ section, save, notice, onNavigate, onReset, onDismis
       if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
     }
     const desktop = window.matchMedia('(min-width: 901px)');
-    const resize = () => { if (desktop.matches) { setMenuOpen(false); main.current?.focus(); } };
+    const resize = () => { if (desktop.matches) { setMenuOpen(false); requestAnimationFrame(() => main.current?.focus()); } };
     document.addEventListener('keydown', keydown);
     desktop.addEventListener('change', resize);
     return () => {
@@ -51,9 +51,9 @@ export function GameFrame({ section, save, notice, onNavigate, onReset, onDismis
 
   return <div className="vyr-frame">
     <a className="vyr-frame-skip" href="#game-content">Saltar al contenido</a>
-    <aside ref={menu} id="game-navigation" className="vyr-frame-rail" data-open={menuOpen}
-      role={menuOpen ? 'dialog' : undefined} aria-modal={menuOpen || undefined} aria-label="Navegación del juego">
-      <div className="vyr-frame-brand"><span aria-hidden="true" className="vyr-frame-mark">V/</span><strong>VYRATHEN</strong><small>SCI-FI STRATEGY RPG</small>
+    <div ref={menu} id="game-navigation" className="vyr-frame-rail" data-open={menuOpen}
+      role={menuOpen ? 'dialog' : 'complementary'} aria-modal={menuOpen || undefined} aria-label="Navegación del juego">
+      <div className="vyr-frame-brand"><span aria-hidden="true" className="vyr-frame-mark">//</span><strong>VYRATHEN</strong><small>SCI-FI STRATEGY RPG</small>
         <button className="vyr-frame-close" aria-label="Cerrar menú" onClick={closeMenu}><X size={20}/></button>
       </div>
       <span className="vyr-frame-kicker">OPERACIONES / 01</span>
@@ -66,7 +66,7 @@ export function GameFrame({ section, save, notice, onNavigate, onReset, onDismis
       <a className="vyr-frame-lab" href="/character-lab"><Sparkles size={18} aria-hidden="true"/><span>Character Lab<small>Estudio visual</small></span><ArrowUpRight size={15} aria-hidden="true"/></a>
       <div className="vyr-frame-local"><span>PARTIDA LOCAL</span><p>Tu laboratorio.<br/>Tu próxima leyenda.</p><small>Alfa 0.1 · Demo independiente</small></div>
       <button className="vyr-frame-reset" onClick={onReset}><RotateCcw size={15} aria-hidden="true"/>Reiniciar demo</button>
-    </aside>
+    </div>
     {menuOpen && <div className="vyr-frame-scrim" aria-hidden="true" onClick={closeMenu}/>}
     <div className="vyr-frame-body" inert={menuOpen}>
       <header className="vyr-frame-hud">

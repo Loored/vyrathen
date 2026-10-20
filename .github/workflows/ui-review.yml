@@ -25,6 +25,8 @@ jobs:
       EVIDENCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -33,6 +35,29 @@ jobs:
         run: npm ci
       - name: Install locked Chromium and Linux dependencies
         run: npx playwright install --with-deps chromium
+      - name: Checkout PR base for comparable before evidence
+        if: github.event_name == 'pull_request'
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+          path: .cache/ui-base
+      - name: Capture base with the same fixture, browser and measured viewports
+        if: github.event_name == 'pull_request'
+        env:
+          EVIDENCE_PHASE: before
+          EVIDENCE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          cp tests/e2e/frame-evidence.spec.ts .cache/ui-base/tests/e2e/frame-evidence.spec.ts
+          cd .cache/ui-base
+          npm ci
+          npx playwright install chromium
+          npm run build
+          npm run test:ui:ci -- frame-evidence.spec.ts
+      - name: Preserve base candidate captures in the review artifact
+        if: github.event_name == 'pull_request'
+        run: |
+          mkdir -p output/playwright
+          cp -R .cache/ui-base/output/playwright/frame-before output/playwright/
       - name: Record candidate evidence metadata
         run: |
           mkdir -p output/playwright
@@ -54,6 +79,9 @@ jobs:
         run: npm run build
       - name: Review production preview in Chromium
         run: npm run test:ui:ci
+      - name: Assemble candidate comparison gallery
+        if: always()
+        run: node scripts/ui-evidence-index.mjs
       - name: Upload UI evidence
         if: always()
         uses: actions/upload-artifact@v4

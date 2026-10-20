@@ -15,14 +15,13 @@
 .vyr-frame button:active:not(:disabled) { transform: translateY(1px); }
 .vyr-frame-rail { position: sticky; top: 0; height: 100dvh; padding: 24px 16px 16px; display: flex; flex-direction: column; gap: 24px; border-right: 1px solid var(--vyr-border); background: #0c101c; z-index: 20; overflow-y: auto; }
 .vyr-frame-brand { position: relative; display: grid; gap: 8px; padding: 0 8px 24px; border-bottom: 1px solid var(--vyr-border); }
-.vyr-frame-mark { font: 900 44px/.8 var(--vyr-font-display); letter-spacing: -.14em; transform: skewX(-12deg); }
-.vyr-frame-brand strong { font: 700 23px/1 var(--vyr-font-display); letter-spacing: -.07em; }
+.vyr-frame-mark { font: 400 44px/.8 var(--vyr-font-display); letter-spacing: -.14em; color: var(--vyr-focus); }
+.vyr-frame-brand strong { font: 700 18px/1 Georgia, 'Times New Roman', serif; letter-spacing: .16em; }
 .vyr-frame-brand small { font-size: 9px; letter-spacing: .16em; color: var(--vyr-muted); }
 .vyr-frame-kicker { font-size: 10px; letter-spacing: .14em; color: var(--vyr-muted); padding-left: 8px; }
 .vyr-frame-rail nav { display: grid; gap: 8px; }
 .vyr-frame-nav { position: relative; width: 100%; display: flex; gap: 10px; align-items: center; padding: 14px 8px; min-height: 52px; border: 0; border-left: 3px solid transparent; background: transparent; color: var(--vyr-muted); text-align: left; font-size: 13px; font-weight: 700; }
 .vyr-frame-nav svg { flex-shrink: 0; }
-.vyr-frame-nav small { margin-left: auto; font: 10px monospace; }
 .vyr-frame-nav:hover { color: var(--vyr-text); background: var(--vyr-surface); }
 .vyr-frame-nav[aria-current] { color: #0b1020; background: var(--vyr-text); border-left-color: var(--vyr-focus); }
 .vyr-frame-nav[aria-current]::after { content: ''; position: absolute; bottom: 0; right: 0; border-left: 8px solid transparent; border-bottom: 8px solid #0c101c; }

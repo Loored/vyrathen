@@ -45,8 +45,8 @@ function TypePill({type}:{type:HeroType}){
   return <span className={`type-pill ${typeClass(type)}`}><TypeIcon type={type} size={13}/>{type}</span>;
 }
 function Eyebrow({children}:{children:ReactNode}) { return <span className="eyebrow">{children}</span>; }
-function StatBar({value,max,color}:{value:number,max:number,color?:string}) {
-  return <div className="stat-track" role="progressbar" aria-valuenow={value} aria-valuemin={0} aria-valuemax={max}>
+function StatBar({value,max,color,label}:{value:number,max:number,color?:string,label:string}) {
+  return <div className="stat-track" role="progressbar" aria-label={label} aria-valuenow={value} aria-valuemin={0} aria-valuemax={max}>
     <div style={{width:`${Math.max(0,Math.min(100,(value/max)*100))}%`,background:color}}/>
   </div>;
 }
@@ -58,11 +58,11 @@ function Avatar({hero,large=false}:{hero:Hero,large?:boolean}) {
 function HeroCard({hero,expanded=false,onOpen,restoreFocus=false}:{hero:Hero,expanded?:boolean,onOpen?:()=>void;restoreFocus?:boolean}) {
   return <article className={`hero-card ${expanded?'expanded':''}`}>
     <div className="hero-card-top"><Avatar hero={hero} large={expanded}/><div className="hero-card-level">LV <strong>{String(hero.level).padStart(2,'0')}</strong></div></div>
-    <div className="hero-card-details"><h3>{hero.name}</h3><TypePill type={hero.type}/></div>
+    <div className="hero-card-details"><h2>{hero.name}</h2><TypePill type={hero.type}/></div>
     <div className="hero-card-power"><Sparkles size={13}/><span>{hero.power}</span><span className="power-lvl">NV {hero.powerLevel}</span></div>
     {expanded && <div className="hero-expanded-stats">
-      <div className="hero-stat-line"><span>Vitalidad · HP</span><b>{hero.maxHp}</b></div><StatBar value={hero.maxHp} max={500} color="var(--mint)"/>
-      <div className="hero-stat-line"><span>Energía · MP</span><b>{hero.maxMp}</b></div><StatBar value={hero.maxMp} max={200} color="var(--violet)"/>
+      <div className="hero-stat-line"><span>Vitalidad · HP</span><b>{hero.maxHp}</b></div><StatBar label={`HP máximo de ${hero.name}`} value={hero.maxHp} max={500} color="var(--mint)"/>
+      <div className="hero-stat-line"><span>Energía · MP</span><b>{hero.maxMp}</b></div><StatBar label={`MP máximo de ${hero.name}`} value={hero.maxMp} max={200} color="var(--violet)"/>
       <div className="mini-stats">{[['Golpear',hero.hit],['Bloquear',hero.block],['Esquivar',hero.dodge],['Mental',hero.mental],['Velocidad',hero.speed]].map(([k,v])=><div key={k}><span>{k}</span><b>{v}</b></div>)}</div>
       {onOpen&&<button id={`hero-open-${hero.id}`} autoFocus={restoreFocus} type="button" className="text-button hero-card-open" aria-label={`Consultar ficha de ${hero.name}`} onClick={onOpen}>Consultar ficha <ArrowRight size={14}/></button>}
     </div>}
@@ -139,7 +139,7 @@ export default function App(){
           <GameTabs label="Secciones del archivo" panelId="archive-panel" active={archiveTab} onChange={id=>setArchiveTab(id as ArchiveTab)} tabs={[{id:'poderes',label:'Poderes · 24 + 3'},{id:'pasivas',label:'Pasivas · 15'},{id:'estructuras',label:'Estructuras · 16'}]}/>
           <section id="archive-panel" role="tabpanel" aria-labelledby={`archive-panel-tab-${archiveTab}`} tabIndex={0}>
           {archiveTab==='poderes'&&<><div className="archive-tools"><label className="search-box"><span className="sr-only">Buscar poder</span><BookOpen size={17}/><input placeholder="Buscar nombre o descripción..." value={search} onChange={e=>setSearch(e.target.value)}/></label><div className="filter-types"><button className={typeFilter==='Todos'?'active':''} onClick={()=>setTypeFilter('Todos')}>Todos</button>{TYPES.map(t=><button key={t} className={typeFilter===t?'active':''} onClick={()=>setTypeFilter(t)}>{t}</button>)}</div></div>
-            <div className="powers-list">{visiblePowers.map(p=><article className="power-entry" key={p.id}><div className={`power-type-icon ${typeClass(p.tipo as HeroType)}`}><TypeIcon type={p.tipo as HeroType} size={20}/></div><div><div className="power-entry-name"><h3>{p.nombre}</h3><TypePill type={p.tipo as HeroType}/></div><p>{p.descripcion}</p><div className="power-metadata"><span>ALCANCE {p.alcance}</span><span>{p.categoria}</span>{NOMINAL_POWER_DAMAGE[p.nombre]&&<span>Daño nominal · fórmula conocida</span>}</div></div><span className="source-flag">REFERENCIA</span></article>)}{visiblePowers.length===0&&<div className="nothing-found">No hay poderes con ese filtro.</div>}</div>
+            <div className="powers-list">{visiblePowers.map(p=><article className="power-entry" key={p.id}><div className={`power-type-icon ${typeClass(p.tipo as HeroType)}`}><TypeIcon type={p.tipo as HeroType} size={20}/></div><div><div className="power-entry-name"><h2>{p.nombre}</h2><TypePill type={p.tipo as HeroType}/></div><p>{p.descripcion}</p><div className="power-metadata"><span>ALCANCE {p.alcance}</span><span>{p.categoria}</span>{NOMINAL_POWER_DAMAGE[p.nombre]&&<span>Daño nominal · fórmula conocida</span>}</div></div><span className="source-flag">REFERENCIA</span></article>)}{visiblePowers.length===0&&<div className="nothing-found">No hay poderes con ese filtro.</div>}</div>
             <div className="unknown-powers"><div><History size={17}/><b>Conceptos pendientes de diseño</b></div><p>Hay capacidades reservadas para futuras versiones. No se mostrarán como jugables hasta tener reglas y pruebas.</p></div>
           </>}
           {archiveTab==='pasivas'&&<div className="powers-list passive-list">{PASIVAS.map((p,i)=><article className="power-entry" key={i}><div className="power-type-icon neutral"><Sparkles size={19}/></div><div><h2>{p.habilidad_pasiva}</h2><p>{p.efecto_declarado}</p><div className="power-metadata"><span>HABILIDAD PASIVA</span><span>2010</span></div></div><span className="source-flag">REFERENCIA</span></article>)}</div>}
