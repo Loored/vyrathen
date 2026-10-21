@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import {
-  Activity, ArrowRight, ArrowUpRight, BookOpen, Boxes, Brain,
-  Check, ChevronDown, Compass, Database, Dna,
+  Activity, ArrowUpRight, BookOpen, Boxes, Brain,
+  Check, ChevronDown, Compass, Database,
   History, Info, Layers, Play,
   Shield, ShieldCheck, Skull, Sparkles, Swords, Target, Zap,
 } from 'lucide-react';
@@ -11,7 +11,8 @@ import PASIVAS from './data/pasivas.json';
 import { countTypePoints, NOMINAL_POWER_DAMAGE } from './engine/rules.ts';
 import { simulateCombat } from './engine/simulator.ts';
 import { advanceStarterQuest, claimStarterQuest } from './engine/quest.ts';
-import type { CombatResult, Hero, HeroType, SaveData } from './engine/types.ts';
+import type { CombatResult, HeroType, SaveData } from './engine/types.ts';
+import { HeroRoster } from './features/heroes/HeroRoster';
 import { HeroProfile } from './features/heroes/HeroProfile.tsx';
 import { toHeroProfile } from './features/heroes/heroProfile.ts';
 import { GameTabs } from './ui/GameTabs.tsx';
@@ -45,31 +46,6 @@ function TypePill({type}:{type:HeroType}){
   return <span className={`type-pill ${typeClass(type)}`}><TypeIcon type={type} size={13}/>{type}</span>;
 }
 function Eyebrow({children}:{children:ReactNode}) { return <span className="eyebrow">{children}</span>; }
-function StatBar({value,max,color,label}:{value:number,max:number,color?:string,label:string}) {
-  return <div className="stat-track" role="progressbar" aria-label={label} aria-valuenow={value} aria-valuemin={0} aria-valuemax={max}>
-    <div style={{width:`${Math.max(0,Math.min(100,(value/max)*100))}%`,background:color}}/>
-  </div>;
-}
-function Avatar({hero,large=false}:{hero:Hero,large?:boolean}) {
-  return <div className={`hero-avatar ${typeClass(hero.type)} ${large?'large':''}`} aria-hidden>
-    <div className="avatar-halo"/><TypeIcon type={hero.type} size={large?42:28}/>
-  </div>;
-}
-function HeroCard({hero,expanded=false,onOpen,restoreFocus=false}:{hero:Hero,expanded?:boolean,onOpen?:()=>void;restoreFocus?:boolean}) {
-  return <article className={`hero-card ${expanded?'expanded':''}`}>
-    <div className="hero-card-top"><Avatar hero={hero} large={expanded}/><div className="hero-card-level">LV <strong>{String(hero.level).padStart(2,'0')}</strong></div></div>
-    <div className="hero-card-details"><h2>{hero.name}</h2><TypePill type={hero.type}/></div>
-    <div className="hero-card-power"><Sparkles size={13}/><span>{hero.power}</span><span className="power-lvl">NV {hero.powerLevel}</span></div>
-    {expanded && <div className="hero-expanded-stats">
-      <div className="hero-stat-line"><span>Vitalidad · HP</span><b>{hero.maxHp}</b></div><StatBar label={`HP máximo de ${hero.name}`} value={hero.maxHp} max={500} color="var(--mint)"/>
-      <div className="hero-stat-line"><span>Energía · MP</span><b>{hero.maxMp}</b></div><StatBar label={`MP máximo de ${hero.name}`} value={hero.maxMp} max={200} color="var(--violet)"/>
-      <div className="mini-stats">{[['Golpear',hero.hit],['Bloquear',hero.block],['Esquivar',hero.dodge],['Mental',hero.mental],['Velocidad',hero.speed]].map(([k,v])=><div key={k}><span>{k}</span><b>{v}</b></div>)}</div>
-      {onOpen&&<button id={`hero-open-${hero.id}`} autoFocus={restoreFocus} type="button" className="text-button hero-card-open" aria-label={`Consultar ficha de ${hero.name}`} onClick={onOpen}>Consultar ficha <ArrowRight size={14}/></button>}
-    </div>}
-  </article>;
-}
-
-
 export default function App(){
   const [section,setSection]=useState<Section>('inicio');
   const [save,setSave]=useState<SaveData>(loadSave);
@@ -78,6 +54,7 @@ export default function App(){
   const [search,setSearch]=useState('');
   const [viewRound,setViewRound]=useState(1);
   const [notice,setNotice]=useState('');
+  const [rosterHeroId,setRosterHeroId]=useState(PLAYER_TEAM[0].id);
   const [selectedHeroId,setSelectedHeroId]=useState<string | null>(null);
   const [restoreHeroFocusId,setRestoreHeroFocusId]=useState<string | null>(null);
   useEffect(()=>{
@@ -115,11 +92,7 @@ export default function App(){
 
   return <GameFrame section={section} save={save} notice={notice} onNavigate={go} onReset={reset} onDismissNotice={()=>setNotice('')}>
         {section==='inicio'&&<Home save={save} heroes={PLAYER_TEAM} onHeroes={()=>go('heroes')} onCombat={()=>go('combate')} onArchive={()=>go('archivo')} onAdvance={progressQuest} onClaim={claimQuest}/>}
-        {section==='heroes'&& (selectedHeroId ? <HeroProfile profile={toHeroProfile(PLAYER_TEAM.find(hero=>hero.id===selectedHeroId) ?? PLAYER_TEAM[0])} onBack={()=>{setRestoreHeroFocusId(selectedHeroId);setSelectedHeroId(null);}} onCombat={()=>go('combate')}/> : <>
-          <PageHead eyebrow="PERSONAJES / ESTADÍSTICAS" title="Tu escuadrón" desc="Cinco héroes de ejemplo para probar el sistema de tipos, poderes y combate." right={<span className="outline-tag"><Dna size={16}/> COMPOSICIÓN DEMO</span>}/>
-          <div className="hero-grid-full">{PLAYER_TEAM.map(hero=><HeroCard hero={hero} key={hero.id} expanded restoreFocus={restoreHeroFocusId===hero.id} onOpen={()=>{setRestoreHeroFocusId(null);setSelectedHeroId(hero.id);}}/>)}</div>
-          <div className="panel type-explainer"><div className="panel-head"><div><Eyebrow>IDENTIDAD DE COMBATE</Eyebrow><h2>Cuatro tipos, un sistema de ventajas</h2></div><button onClick={()=>go('combate')} className="text-button">Probar escuadrón <ArrowRight size={16}/></button></div><p>Cada pareja entre los cinco héroes de ambos equipos concede un punto cuando uno tiene ventaja sobre el otro. Esta parte sí puede calcularse exactamente como en el manual.</p><div className="type-card-grid">{TYPES.map(type=><div className={`type-card ${typeClass(type)}`} key={type}><TypeIcon type={type} size={26}/><b>{type}</b><small>Ventaja frente a {({Defensa:'Psico',Psico:'Energía','Energía':'Control',Control:'Defensa'} as Record<HeroType,string>)[type]}</small></div>)}</div></div>
-        </>)}
+        {section==='heroes'&& (selectedHeroId ? <HeroProfile profile={toHeroProfile(PLAYER_TEAM.find(hero=>hero.id===selectedHeroId) ?? PLAYER_TEAM[0])} onBack={()=>{setRestoreHeroFocusId(selectedHeroId);setSelectedHeroId(null);}} onCombat={()=>go('combate')}/> : <HeroRoster profiles={PLAYER_TEAM.map(toHeroProfile)} selectedId={rosterHeroId} onSelect={setRosterHeroId} onOpen={id=>{setRestoreHeroFocusId(null);setRosterHeroId(id);setSelectedHeroId(id);}} onCombat={()=>go('combate')}/> )}
         {section==='combate'&&<>
           <PageHead eyebrow="SIMULADOR / 5 CONTRA 5" title="Cámara de combate" desc="Diez rondas, ventaja de tipos y resultado por K.O. Usa una semilla para obtener reportes reproducibles." right={<span className="outline-tag"><ShieldCheck size={16}/> MOTOR EXPERIMENTAL</span>}/>
           <div className="battle-grid"><div className="panel match-setup"><div className="panel-head"><div><Eyebrow>CONFIGURAR ENCUENTRO</Eyebrow><h2>Prepara tu equipo</h2></div><span className="match-crest"><Swords size={22}/></span></div>

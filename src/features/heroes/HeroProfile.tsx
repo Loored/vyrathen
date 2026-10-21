@@ -1,15 +1,22 @@
-import { ArrowLeft, Info, Sparkles } from 'lucide-react';
-import type { CSSProperties } from 'react';
-import type { HeroProfileViewModel } from './heroProfile.ts';
+import { ArrowLeft, ArrowUpRight, Info } from 'lucide-react';
+import { useEffect, useRef, type CSSProperties } from 'react';
+import type { HeroProfileViewModel } from './heroProfile';
+import { HeroSigil, HeroVitals } from './HeroPresentation';
+import './characters.css';
 
 export function HeroProfile({ profile, onBack, onCombat }: { profile: HeroProfileViewModel; onBack: () => void; onCombat: () => void }) {
   const power = profile.power.status;
-  return <section className="hero-profile" style={{ '--hero-accent': profile.presentation.accent } as CSSProperties} aria-labelledby="hero-profile-name">
-    <button className="text-button" type="button" onClick={onBack}><ArrowLeft size={16}/> Volver a Mis héroes</button>
-    <div className="hero-profile-grid">
-      <div className="game-panel hero-profile-stage"><div className="hero-profile-symbol" aria-hidden>{profile.presentation.symbol}</div><span className="game-section-kicker">PRESENTACIÓN PROVISIONAL · SIN ILUSTRACIÓN ASIGNADA</span><h1 id="hero-profile-name">{profile.name}</h1><p>{profile.type} · Nivel {profile.level}</p><div className="hero-profile-resource"><span>HP máximo <b>{profile.maxHp}</b></span><span>MP máximo <b>{profile.maxMp}</b></span></div></div>
-      <div className="game-panel"><span className="game-section-kicker">PERFIL DE COMBATE</span><h2>Estadísticas de configuración</h2><p className="hero-profile-note">Estos valores pertenecen al héroe demo. No son HP/MP finales de un combate guardado.</p><div className="game-stat-list">{profile.stats.map(stat => <div className="game-stat" key={stat.label}><span>{stat.label}</span><strong>{stat.value}</strong></div>)}</div></div>
-      <div className="game-panel hero-profile-power"><span className="game-section-kicker">PODER · NIVEL {profile.power.level}</span><h2><Sparkles size={18}/> {profile.power.name}</h2><p>{power.description}</p>{power.kind === 'documented' ? <div className="hero-profile-facts"><span>Coste MP documentado <b>{power.mpCost}</b></span>{power.nominalDamage !== undefined && <span>Magnitud nominal <b>{power.nominalDamage}</b></span>}</div> : <div className="hero-profile-facts"><span>Coste MP <b>No catalogado</b></span></div>}<div className="hero-profile-status"><Info size={16}/><span>{power.implementation}</span></div><button type="button" className="game-action game-action--secondary" onClick={onCombat}>Abrir simulador</button></div>
+  const heading = useRef<HTMLHeadingElement>(null);
+  useEffect(() => { heading.current?.focus({ preventScroll: true }); window.scrollTo?.({ top: 0, behavior: 'instant' }); }, [profile.id]);
+  return <section className="vyr-characters hero-profile" style={{ '--hero-accent': profile.presentation.accent } as CSSProperties} aria-labelledby="hero-profile-name">
+    <div className="vyr-profile-toolbar"><button className="game-action game-action--secondary" type="button" onClick={onBack}><ArrowLeft size={16}/> Volver a Mis héroes</button><span className="game-section-kicker">PERSONAJES / FICHA DE CONSULTA</span></div>
+    <div className="vyr-profile-layout">
+      <div className="vyr-profile-identity"><div className="vyr-profile-class"><span>{profile.type}</span><span>NIVEL <b>{String(profile.level).padStart(2, '0')}</b></span></div><h1 id="hero-profile-name" ref={heading} tabIndex={-1}>{profile.name}</h1><HeroSigil profile={profile}/><HeroVitals profile={profile}/><p className="vyr-profile-art-note">Presentación simbólica provisional.<br/>Sin ilustración asignada.</p></div>
+      <div className="vyr-profile-dossier">
+        <section className="vyr-profile-stats" aria-labelledby="hero-stats-title"><span className="game-section-kicker">01 / PERFIL DE COMBATE</span><h2 id="hero-stats-title">Estadísticas de configuración</h2><dl>{profile.stats.map((stat, index) => <div key={stat.label}><dt><span aria-hidden="true">0{index + 1}</span>{stat.label}</dt><dd>{stat.value}</dd></div>)}</dl><p>Valores del héroe demo. HP y MP indican máximos de configuración, no valores actuales de un combate guardado.</p></section>
+        <section className="vyr-profile-power" aria-labelledby="hero-power-title"><div className="vyr-profile-power-heading"><div><span className="game-section-kicker">02 / PODER · NIVEL {profile.power.level}</span><h2 id="hero-power-title">{profile.power.name}</h2></div><span className="vyr-profile-power-mark" aria-hidden="true">↗</span></div><p>{power.description}</p><dl className="vyr-profile-facts"><div><dt>Coste MP documentado</dt><dd>{power.kind === 'documented' ? power.mpCost : 'No catalogado'}</dd></div>{power.kind === 'documented' && power.nominalDamage !== undefined && <div><dt>Magnitud nominal</dt><dd>{power.nominalDamage}</dd></div>}</dl><div className="vyr-profile-status"><Info size={16}/><span>{power.implementation}</span></div></section>
+      </div>
     </div>
+    <footer className="vyr-profile-footer"><p>Consulta de configuración · Sin cambios en tu partida.</p><button type="button" className="game-action" onClick={onCombat}>Abrir simulador <ArrowUpRight size={17}/></button></footer>
   </section>;
 }
