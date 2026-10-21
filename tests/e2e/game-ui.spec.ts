@@ -1,8 +1,10 @@
 import { mkdirSync, writeFileSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
 import { expect, test, type Page } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
 const evidenceDir = 'output/playwright/screenshots';
+const commit = process.env.EVIDENCE_SHA || execFileSync('git', ['rev-parse', 'HEAD']).toString().trim();
 const captures: Array<{ name: string; viewport: { width: number; height: number } | null; rendered: { innerWidth: number; innerHeight: number; clientWidth: number; scrollWidth: number } }> = [];
 
 async function waitForMeaningfulContent(page: Page, locator: ReturnType<Page['locator']>) {
@@ -35,10 +37,12 @@ async function capture(page: Page, name: string, viewportOnly = false) {
   expect(rendered.innerWidth).toBe(viewport?.width);
   expect(rendered.innerHeight).toBe(viewport?.height);
   mkdirSync(evidenceDir, { recursive: true });
-  await page.screenshot({ path: `${evidenceDir}/${name}${viewportOnly ? '-viewport' : ''}.png`, fullPage: !viewportOnly, animations: 'disabled' });
-  captures.push({ name: `${name}${viewportOnly ? '-viewport' : ''}`, viewport, rendered });
+  const filename = `v01-after-${process.platform}-chromium-${rendered.innerWidth}x${rendered.innerHeight}-${name}${viewportOnly ? '-viewport' : '-full'}`;
+  await page.screenshot({ path: `${evidenceDir}/${filename}.png`, fullPage: !viewportOnly, animations: 'disabled' });
+  captures.push({ name: filename, viewport, rendered });
   writeFileSync('output/playwright/review-metadata.json', JSON.stringify({
     status: 'candidate_pending_owner_approval',
+    commit,
     captures,
     generatedFrom: 'measured_browser_viewport',
   }, null, 2));
@@ -47,7 +51,7 @@ async function capture(page: Page, name: string, viewportOnly = false) {
 test.describe('Game UI review evidence', () => {
   test('inicio, misión, combate, archivo y persistencia', async ({ page }) => {
     await page.goto('/');
-    await waitForMeaningfulContent(page, page.getByRole('heading', { name: 'Tu laboratorio. Tu próxima leyenda.' }));
+    await waitForMeaningfulContent(page, page.getByRole('heading', { name: 'Laboratorio Aurora' }));
     await capture(page, '1366-inicio');
     await page.getByRole('button', { name: /Avanzar un paso/ }).click();
     await expect(page.getByText('Progreso de misión')).toBeVisible();
@@ -70,7 +74,7 @@ test.describe('Game UI review evidence', () => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await page.goto('/');
-    await waitForMeaningfulContent(page, page.getByRole('heading', { name: 'Tu laboratorio. Tu próxima leyenda.' }));
+    await waitForMeaningfulContent(page, page.getByRole('heading', { name: 'Laboratorio Aurora' }));
     await page.getByRole('button', { name: 'Mis héroes' }).click();
     await expect(page.getByText('Vesper').first()).toBeVisible();
     await capture(page, '1440-heroes');
@@ -115,7 +119,7 @@ test.describe('Game UI review evidence', () => {
     await page.setViewportSize({ width: 320, height: 720 });
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await page.goto('/');
-    await waitForMeaningfulContent(page, page.getByRole('heading', { name: 'Tu laboratorio. Tu próxima leyenda.' }));
+    await waitForMeaningfulContent(page, page.getByRole('heading', { name: 'Laboratorio Aurora' }));
     await capture(page, '320-inicio');
     await page.getByRole('button', { name: 'Abrir menú' }).click();
     await page.getByRole('button', { name: 'Mis héroes' }).click();

@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import {
   Activity, ArrowRight, ArrowUpRight, BookOpen, Boxes, Brain,
-  Check, ChevronDown, CircleHelp, Clock3, Compass, Database, Dna, FlaskConical,
-  Hexagon, History, House, Info, Layers, Menu, Play, RotateCcw,
-  Shield, ShieldCheck, Skull, Sparkles, Swords, Target, Wallet, X, Zap,
+  Check, ChevronDown, Compass, Database, Dna,
+  History, Info, Layers, Play,
+  Shield, ShieldCheck, Skull, Sparkles, Swords, Target, Zap,
 } from 'lucide-react';
 import { PLAYER_TEAM, ENEMIES, INITIAL_SAVE } from './data/demo.ts';
 import PODERES from './data/poderes.json';
@@ -18,15 +18,14 @@ import { GameTabs } from './ui/GameTabs.tsx';
 import './styles.css';
 import './ui/game-ui.css';
 
-type Section = 'inicio' | 'heroes' | 'combate' | 'archivo';
+import { Home } from './features/home/Home';
+import { GameFrame, type Section } from './app/GameFrame';
 type ArchiveTab = 'poderes' | 'pasivas' | 'estructuras';
 type Filter = 'Todos' | HeroType;
 const STORE_KEY = 'vyrathen-v01';
 const TYPES: HeroType[] = ['Psico','Energía','Defensa','Control'];
 const typeIcon = { 'Psico': Brain, 'Energía': Zap, 'Defensa': Shield, 'Control': Compass };
 const typeClass = (type:HeroType) => ({'Psico':'psico','Energía':'energia','Defensa':'defensa','Control':'control'})[type];
-const intfmt = new Intl.NumberFormat('es-MX');
-const money = (num:number) => `$${intfmt.format(num)}`;
 
 function loadSave(): SaveData {
   try {
@@ -46,8 +45,8 @@ function TypePill({type}:{type:HeroType}){
   return <span className={`type-pill ${typeClass(type)}`}><TypeIcon type={type} size={13}/>{type}</span>;
 }
 function Eyebrow({children}:{children:ReactNode}) { return <span className="eyebrow">{children}</span>; }
-function StatBar({value,max,color}:{value:number,max:number,color?:string}) {
-  return <div className="stat-track" role="progressbar" aria-valuenow={value} aria-valuemin={0} aria-valuemax={max}>
+function StatBar({value,max,color,label}:{value:number,max:number,color?:string,label:string}) {
+  return <div className="stat-track" role="progressbar" aria-label={label} aria-valuenow={value} aria-valuemin={0} aria-valuemax={max}>
     <div style={{width:`${Math.max(0,Math.min(100,(value/max)*100))}%`,background:color}}/>
   </div>;
 }
@@ -59,27 +58,20 @@ function Avatar({hero,large=false}:{hero:Hero,large?:boolean}) {
 function HeroCard({hero,expanded=false,onOpen,restoreFocus=false}:{hero:Hero,expanded?:boolean,onOpen?:()=>void;restoreFocus?:boolean}) {
   return <article className={`hero-card ${expanded?'expanded':''}`}>
     <div className="hero-card-top"><Avatar hero={hero} large={expanded}/><div className="hero-card-level">LV <strong>{String(hero.level).padStart(2,'0')}</strong></div></div>
-    <div className="hero-card-details"><h3>{hero.name}</h3><TypePill type={hero.type}/></div>
+    <div className="hero-card-details"><h2>{hero.name}</h2><TypePill type={hero.type}/></div>
     <div className="hero-card-power"><Sparkles size={13}/><span>{hero.power}</span><span className="power-lvl">NV {hero.powerLevel}</span></div>
     {expanded && <div className="hero-expanded-stats">
-      <div className="hero-stat-line"><span>Vitalidad · HP</span><b>{hero.maxHp}</b></div><StatBar value={hero.maxHp} max={500} color="var(--mint)"/>
-      <div className="hero-stat-line"><span>Energía · MP</span><b>{hero.maxMp}</b></div><StatBar value={hero.maxMp} max={200} color="var(--violet)"/>
+      <div className="hero-stat-line"><span>Vitalidad · HP</span><b>{hero.maxHp}</b></div><StatBar label={`HP máximo de ${hero.name}`} value={hero.maxHp} max={500} color="var(--mint)"/>
+      <div className="hero-stat-line"><span>Energía · MP</span><b>{hero.maxMp}</b></div><StatBar label={`MP máximo de ${hero.name}`} value={hero.maxMp} max={200} color="var(--violet)"/>
       <div className="mini-stats">{[['Golpear',hero.hit],['Bloquear',hero.block],['Esquivar',hero.dodge],['Mental',hero.mental],['Velocidad',hero.speed]].map(([k,v])=><div key={k}><span>{k}</span><b>{v}</b></div>)}</div>
       {onOpen&&<button id={`hero-open-${hero.id}`} autoFocus={restoreFocus} type="button" className="text-button hero-card-open" aria-label={`Consultar ficha de ${hero.name}`} onClick={onOpen}>Consultar ficha <ArrowRight size={14}/></button>}
     </div>}
   </article>;
 }
 
-const navigation:{id:Section;label:string;icon:typeof House}[]=[
-  {id:'inicio',label:'Centro de control',icon:House},
-  {id:'heroes',label:'Mis héroes',icon:Dna},
-  {id:'combate',label:'Simulador de combate',icon:Swords},
-  {id:'archivo',label:'Archivo de reglas',icon:BookOpen},
-];
 
 export default function App(){
   const [section,setSection]=useState<Section>('inicio');
-  const [mobileMenu,setMobileMenu]=useState(false);
   const [save,setSave]=useState<SaveData>(loadSave);
   const [archiveTab,setArchiveTab]=useState<ArchiveTab>('poderes');
   const [typeFilter,setTypeFilter]=useState<Filter>('Todos');
@@ -100,7 +92,7 @@ export default function App(){
   const score=useMemo(()=>countTypePoints(PLAYER_TEAM,ENEMIES[save.selectedEnemy].heroes),[save.selectedEnemy]);
   const lastBattle=save.lastBattle;
 
-  function go(next:Section) {setSection(next);setMobileMenu(false);window.scrollTo?.({top:0,behavior:'smooth'});}
+  function go(next:Section) {setSection(next);window.scrollTo?.({top:0,behavior:'instant'});}
   function runBattle(){
     try{
       const battle=simulateCombat(PLAYER_TEAM,ENEMIES[save.selectedEnemy].heroes,save.seed);
@@ -108,52 +100,21 @@ export default function App(){
       setViewRound(1);setNotice('Combate simulado. Abre las rondas para revisar los eventos.');
     }catch(e){setNotice(e instanceof Error?e.message:'No fue posible simular.');}
   }
-  function progressQuest(){setSave(advanceStarterQuest);}
-  function claimQuest(){setSave(s=>claimStarterQuest(s,1));setNotice('Recompensa de misión incorporada al laboratorio.');}
+  function progressQuest(){
+    const next=advanceStarterQuest(save);
+    if(next===save) return;
+    setSave(next);
+    setNotice(`Misión: ${next.questProgress} / 10 pasos. −1 turno · ${next.turns} disponibles.`);
+  }
+  function claimQuest(){
+    const next=claimStarterQuest(save,1);
+    if(next===save) return;
+    setSave(next);setNotice('Recompensa incorporada: +$12,000,000. Misión disponible de nuevo.');
+  }
   function reset(){if(window.confirm('¿Restablecer todos los datos de la demo local?')){setSave({...INITIAL_SAVE});setViewRound(1);setNotice('Datos de demostración restablecidos.');}}
 
-  return <div className="shell">
-    <aside className={`sidebar ${mobileMenu?'open':''}`}>
-      <div className="brand"><div className="brand-emblem"><Hexagon size={29} strokeWidth={1.7}/><span>✦</span></div><div className="brand-text"><strong>VYRA<span>THEN</span></strong><small>ALPHA / 0.1</small></div><button className="mobile-close icon-button" aria-label="Cerrar menú" onClick={()=>setMobileMenu(false)}><X size={20}/></button></div>
-      <div className="sidebar-body"><div className="nav-label">NAVEGACIÓN</div><nav aria-label="Navegación principal">
-        {navigation.map(item=>{const Icon=item.icon;return <button key={item.id} className={`nav-item ${section===item.id?'active':''}`} onClick={()=>go(item.id)}><Icon size={18}/><span>{item.label}</span>{section===item.id&&<span className="nav-active-dot"/>}</button>;})}
-        <a className="nav-item" href="/character-lab" style={{textDecoration:'none'}}><Sparkles size={18}/><span>Character Lab · estudio visual</span></a>
-      </nav><div className="nav-label nav-label-spaced">TU MUNDO</div>
-      <div className="world-card"><span className="world-orbit"><span/></span><div><strong>Laboratorio local</strong><small>Partida de demostración</small></div><span className="online-dot"/></div>
-      <div className="side-explainer"><span className="small-tag"><ShieldCheck size={13}/> BASADO EN ARCHIVOS</span><p>Reglas documentadas en 2010 + simulación transparente cuando falta código original.</p><button onClick={()=>go('archivo')}>Ver procedencia <ArrowRight size={14}/></button></div></div>
-      <div className="sidebar-footer"><button onClick={reset} className="reset-button"><RotateCcw size={15}/> Reiniciar demo</button><span>Prototipo local independiente</span></div>
-    </aside>
-    {mobileMenu&&<div className="mobile-overlay" onClick={()=>setMobileMenu(false)}/>}
-    <div className="main-area">
-      <header className="topbar"><div className="topbar-left"><button className="mobile-menu icon-button" aria-label="Abrir menú" onClick={()=>setMobileMenu(true)}><Menu size={21}/></button><span className="topbar-path">SISTEMA / <strong>{navigation.find(n=>n.id===section)?.label}</strong></span></div><div className="topbar-right"><span className="chip-alpha"><span className="spark-dot"/> ALPHA LOCAL</span><span className="topbar-divider"/><span className="topbar-version">VERSIÓN · 0.1 ALPHA</span></div></header>
-      <main className="content">
-        {notice&&<div className="toast" role="status"><Info size={17}/><span>{notice}</span><button aria-label="Cerrar aviso" onClick={()=>setNotice('')}><X size={16}/></button></div>}
-        {section==='inicio'&&<>
-          <div className="welcome-head"><div><Eyebrow>ESTACIÓN DE MANDO / AURORA</Eyebrow><h1>Tu laboratorio.<br/><span>Tu próxima leyenda.</span></h1><p>Explora un universo de laboratorios, héroes extraordinarios y conflictos tácticos.</p></div><button className="primary-button game-action hero-cta" onClick={()=>go('combate')}><Play size={17} fill="currentColor"/> Iniciar combate <ArrowUpRight size={16}/></button></div>
-          <div className="metric-grid">
-            <Metric icon={<FlaskConical/>} label="LABORATORIO" value="Nivel 01" sub="Base experimental" tone="mint"/>
-            <Metric icon={<Wallet/>} label="FONDOS" value={money(save.funds)} sub="Economía de demostración" tone="blue"/>
-            <Metric icon={<Clock3/>} label="TURNOS DISPONIBLES" value={intfmt.format(save.turns)} sub="Límite histórico: 2,000" tone="violet"/>
-            <Metric icon={<Swords/>} label="COMBATES" value={String(save.battles).padStart(2,'0')} sub="Simulaciones locales" tone="orange"/>
-          </div>
-          <section className="overview-grid">
-            <div className="panel roster-panel"><div className="panel-head"><div><Eyebrow>ESCUADRÓN ACTIVO</Eyebrow><h2>Tus cinco héroes <span className="subtle-count">05 / 05</span></h2></div><button className="text-button" onClick={()=>go('heroes')}>Gestionar <ArrowUpRight size={16}/></button></div>
-              <div className="hero-roster">{PLAYER_TEAM.map(hero=><HeroCard key={hero.id} hero={hero}/>)}</div>
-              <div className="panel-footnote"><Info size={14}/> Personajes y estadísticas creados para esta demo; las categorías y nombres de poderes proceden del manual.</div>
-            </div>
-            <div className="panel next-quest"><div className="panel-head"><div><Eyebrow>PROGRESIÓN</Eyebrow><h2>Primera misión</h2></div><span className="quest-icon"><Target size={19}/></span></div>
-              <div className="quest-city"><Compass size={15}/> Pekín · Nivel de laboratorio 1</div><h3>Un trabajo bien remunerado</h3><p>Completa los diez pasos documentados y reclama la recompensa histórica de 12 millones de dólares por nivel del laboratorio.</p>
-              <div className="progress-head"><span>Progreso de misión</span><b>{save.questProgress} / 10 pasos</b></div><StatBar value={save.questProgress} max={10} color="var(--mint)"/>
-              <div className="quest-reward"><span><Wallet size={17}/> RECOMPENSA</span><b>+ $12,000,000</b></div>
-              {save.questProgress===10?<button className="primary-button block" onClick={claimQuest}><Check size={18}/> Reclamar recompensa</button>:<button className="primary-button block" onClick={progressQuest} disabled={save.turns===0}><ArrowRight size={17}/> Avanzar un paso <span>−1 turno*</span></button>}
-              <p className="assumption-note">*Coste de un turno por paso: decisión provisional del remake. Recompensa y diez pasos: documentados.</p>
-            </div>
-          </section>
-          <section className="overview-bottom"><div className="panel taxonomy-panel"><div className="panel-head"><div><Eyebrow>REGLA DOCUMENTADA</Eyebrow><h2>Ventajas elementales</h2></div><span className="verified"><Check size={13}/> VERIFICADA</span></div>
-            <div className="taxonomy-types">{TYPES.map((type,i)=><div className="type-path" key={type}><div className={`type-node ${typeClass(type)}`}><TypeIcon type={type}/><span>{type}</span></div><ArrowRight size={17} className="path-arrow"/>{i===3&&<span className="loop-caption">vuelve a Defensa</span>}</div>)}</div>
-            <div className="taxonomy-notice"><CircleHelp size={15}/><span>Defensa vence a Psico, Psico a Energía, Energía a Control y Control a Defensa. La conversión de puntos a bonus aún es desconocida.</span></div>
-          </div><div className="panel source-panel"><div className="source-icon"><Database size={24}/></div><div><Eyebrow>ARCHIVO HISTÓRICO</Eyebrow><h2>Un legado recuperado</h2><p>24 poderes documentados, 15 habilidades pasivas y reglas extraídas de la biblioteca original de 2010.</p><button className="text-button" onClick={()=>go('archivo')}>Explorar las reglas <ArrowRight size={16}/></button></div></div></section>
-        </>}
+  return <GameFrame section={section} save={save} notice={notice} onNavigate={go} onReset={reset} onDismissNotice={()=>setNotice('')}>
+        {section==='inicio'&&<Home save={save} heroes={PLAYER_TEAM} onHeroes={()=>go('heroes')} onCombat={()=>go('combate')} onArchive={()=>go('archivo')} onAdvance={progressQuest} onClaim={claimQuest}/>}
         {section==='heroes'&& (selectedHeroId ? <HeroProfile profile={toHeroProfile(PLAYER_TEAM.find(hero=>hero.id===selectedHeroId) ?? PLAYER_TEAM[0])} onBack={()=>{setRestoreHeroFocusId(selectedHeroId);setSelectedHeroId(null);}} onCombat={()=>go('combate')}/> : <>
           <PageHead eyebrow="PERSONAJES / ESTADÍSTICAS" title="Tu escuadrón" desc="Cinco héroes de ejemplo para probar el sistema de tipos, poderes y combate." right={<span className="outline-tag"><Dna size={16}/> COMPOSICIÓN DEMO</span>}/>
           <div className="hero-grid-full">{PLAYER_TEAM.map(hero=><HeroCard hero={hero} key={hero.id} expanded restoreFocus={restoreHeroFocusId===hero.id} onOpen={()=>{setRestoreHeroFocusId(null);setSelectedHeroId(hero.id);}}/>)}</div>
@@ -178,7 +139,7 @@ export default function App(){
           <GameTabs label="Secciones del archivo" panelId="archive-panel" active={archiveTab} onChange={id=>setArchiveTab(id as ArchiveTab)} tabs={[{id:'poderes',label:'Poderes · 24 + 3'},{id:'pasivas',label:'Pasivas · 15'},{id:'estructuras',label:'Estructuras · 16'}]}/>
           <section id="archive-panel" role="tabpanel" aria-labelledby={`archive-panel-tab-${archiveTab}`} tabIndex={0}>
           {archiveTab==='poderes'&&<><div className="archive-tools"><label className="search-box"><span className="sr-only">Buscar poder</span><BookOpen size={17}/><input placeholder="Buscar nombre o descripción..." value={search} onChange={e=>setSearch(e.target.value)}/></label><div className="filter-types"><button className={typeFilter==='Todos'?'active':''} onClick={()=>setTypeFilter('Todos')}>Todos</button>{TYPES.map(t=><button key={t} className={typeFilter===t?'active':''} onClick={()=>setTypeFilter(t)}>{t}</button>)}</div></div>
-            <div className="powers-list">{visiblePowers.map(p=><article className="power-entry" key={p.id}><div className={`power-type-icon ${typeClass(p.tipo as HeroType)}`}><TypeIcon type={p.tipo as HeroType} size={20}/></div><div><div className="power-entry-name"><h3>{p.nombre}</h3><TypePill type={p.tipo as HeroType}/></div><p>{p.descripcion}</p><div className="power-metadata"><span>ALCANCE {p.alcance}</span><span>{p.categoria}</span>{NOMINAL_POWER_DAMAGE[p.nombre]&&<span>Daño nominal · fórmula conocida</span>}</div></div><span className="source-flag">REFERENCIA</span></article>)}{visiblePowers.length===0&&<div className="nothing-found">No hay poderes con ese filtro.</div>}</div>
+            <div className="powers-list">{visiblePowers.map(p=><article className="power-entry" key={p.id}><div className={`power-type-icon ${typeClass(p.tipo as HeroType)}`}><TypeIcon type={p.tipo as HeroType} size={20}/></div><div><div className="power-entry-name"><h2>{p.nombre}</h2><TypePill type={p.tipo as HeroType}/></div><p>{p.descripcion}</p><div className="power-metadata"><span>ALCANCE {p.alcance}</span><span>{p.categoria}</span>{NOMINAL_POWER_DAMAGE[p.nombre]&&<span>Daño nominal · fórmula conocida</span>}</div></div><span className="source-flag">REFERENCIA</span></article>)}{visiblePowers.length===0&&<div className="nothing-found">No hay poderes con ese filtro.</div>}</div>
             <div className="unknown-powers"><div><History size={17}/><b>Conceptos pendientes de diseño</b></div><p>Hay capacidades reservadas para futuras versiones. No se mostrarán como jugables hasta tener reglas y pruebas.</p></div>
           </>}
           {archiveTab==='pasivas'&&<div className="powers-list passive-list">{PASIVAS.map((p,i)=><article className="power-entry" key={i}><div className="power-type-icon neutral"><Sparkles size={19}/></div><div><h2>{p.habilidad_pasiva}</h2><p>{p.efecto_declarado}</p><div className="power-metadata"><span>HABILIDAD PASIVA</span><span>2010</span></div></div><span className="source-flag">REFERENCIA</span></article>)}</div>}
@@ -186,13 +147,7 @@ export default function App(){
           </section>
           <div className="provenance-panel"><div><Layers size={19}/><strong>Origen de las reglas</strong></div><ul><li><span className="source-dot verified-dot"/><b>Documentación de referencia:</b> tipos, diez rondas, K.O. y reglas nominales auditables.</li><li><span className="source-dot observed-dot"/><b>Observación externa:</b> evidencia de sistemas en juegos clásicos, no implementación propia.</li><li><span className="source-dot assumption-dot"/><b>Decisión nueva:</b> estadísticas demo, IA, precisión, iniciativa, coste por paso y mitigación.</li></ul></div>
         </>}
-        <footer className="main-footer"><span>VYRATHEN / ALPHA EXPERIMENTAL</span><span>Un universo independiente · Mecánicas en evolución</span></footer>
-      </main>
-    </div>
-  </div>;
-}
-function Metric({icon,label,value,sub,tone}:{icon:ReactNode;label:string;value:string;sub:string;tone:string}){
-  return <div className={`metric metric-${tone}`}><div className="metric-top"><span>{label}</span><span className="metric-icon">{icon}</span></div><strong>{value}</strong><small>{sub}</small></div>;
+  </GameFrame>;
 }
 function PageHead({eyebrow,title,desc,right}:{eyebrow:string;title:string;desc:string;right:ReactNode}){
   return <div className="page-head"><div><Eyebrow>{eyebrow}</Eyebrow><h1>{title}</h1><p>{desc}</p></div><div>{right}</div></div>;

@@ -11,7 +11,7 @@ Patrones compartidos con consumidores reales:
 
 El SELECT, shards, reveal/glitch, composición del retrato, acentos por personaje y las ilustraciones permanecen específicos de Character Lab.
 
-La aplicación adopta paneles/acciones compartidos y la ficha de héroe. Inicio, Combate y Archivo conservan su lógica actual y su siguiente modernización se limita a adoptar gradualmente estas primitivas; no se rediseñan reglas ni simulación.
+La aplicación adopta paneles/acciones compartidos y la ficha de héroe. La propuesta de marco global e Inicio de 2026-10-20 extiende la composición a `src/app/GameFrame.tsx` y `src/features/home/Home.tsx`. Mis héroes, ficha, Combate y Archivo conservan su composición interna y recorridos dentro del nuevo marco. No se rediseñan reglas ni simulación. La propuesta está pendiente de revisión artística; véase [GLOBAL_FRAME_PROPOSAL.md](design/GLOBAL_FRAME_PROPOSAL.md).
 
 `src/features/heroes/heroProfile.ts` adapta `Hero` de forma pura. Los cinco héroes son datos demo: los colores, símbolos y fallback sin arte son presentación provisional. La ficha muestra máximos de configuración, nunca el estado final de `Fighter`, y separa poderes catalogados de poderes sin catálogo. Selene, Kuroe y Orion no participan en este adaptador.
 
@@ -28,3 +28,21 @@ No se comparan píxeles entre macOS y Linux ni se aumentan tolerancias automáti
 `.github/workflows/ui-review.yml` corre en Ubuntu 22.04 para PRs a `main`, pushes a `main` y ejecución manual. Instala con `npm ci`, instala Chromium y dependencias con la versión fijada por el lockfile, ejecuta tests, typecheck, build y `npm run test:ui:ci`. Esta última ruta sirve la build mediante `vite preview`; `review:ui` conserva Vite de desarrollo para la revisión local.
 
 El artefacto de cada ejecución se llama `ui-evidence-<commit>-chromium-ubuntu-22.04`, se conserva siete días y contiene `output/playwright/`: reporte, capturas, vídeos, trazas de fallo, `ci-metadata.json` del entorno y `review-metadata.json` de las dimensiones efectivamente medidas. En Work Mode: abrir la ejecución de Actions, descargar el artefacto y abrir `report/index.html`; comparar las capturas candidatas de Linux con las inspeccionadas en Mac sin declararlas aprobadas. No hay snapshots visuales ni actualización automática de referencias en CI.
+
+## Marco e Inicio: consumidores de la propuesta
+
+- `GameFrame`: navegación compacta, marca serif espaciada del Lab, HUD de recursos a partir de `SaveData`, región viva de confirmaciones, salto al contenido y menú móvil con foco contenido, Escape, retorno y fondo inerte. El marco aparece en las cuatro secciones del juego; Character Lab conserva su documento independiente.
+- `Home`: identidad guardada del laboratorio, formación de cinco símbolos del adaptador existente, objetivo con coste previo y recompensa, y entrada al simulador. La consulta de tipos/procedencia ocupa un desplegable secundario. Sin personajes, recursos ni reglas adicionales.
+- `game-panel` admite `--vyr-panel-bg` y `--vyr-panel-radius`; `game-action` admite `--vyr-action-bg`, `--vyr-action-text`, `--vyr-action-radius`. Se conservan valores por defecto fuera de los consumidores nuevos y el contrato secundario `--vyr-control-*`.
+- `.vyr-frame` aplica `--vyr-bg/panel/surface/border/text/muted/font-ui` y `--vyr-font-display` localmente. Las acciones usan `--vyr-fast/ease`, las entradas `--vyr-standard`. Tipos conservan sus símbolos y acentos semánticos; el blanco indica selección/acción y el menta, foco. El Lab no recibe estos overrides.
+- Se retiraron de `src/styles.css` las familias heredadas del marco (`shell`, `sidebar`, `brand`, `nav-*`, `world-*`, `side-explainer`, `topbar`, `content`, `toast`, `mobile-*`, `main-footer`) y de Inicio (`welcome-head`, `metric*`, `overview-*`, `hero-roster`, `next-quest`, `quest-*`, `taxonomy-*`, `type-node/path`, `source-panel/icon`). Se conservan las reglas usadas por roster, ficha, combate y archivo. La hoja minificada heredada se separó por reglas para revisar la eliminación.
+
+Pendiente: modernizar interiores del roster/ficha, composición del simulador, catálogo y sus microtextos; asignar ilustraciones con procedencia comprobada. El SELECT, shards, reveal y ambiente del Lab siguen siendo propios de selección. El marco nuevo usa ambiente gráfico estático: no necesita un control de pausa. Entradas de 260 ms y microfeedback de 160 ms; movimiento reducido muestra el contenido final sin animación.
+
+## Evidencia reproducible de marco e Inicio
+
+Después de `npm run build && npm run test:ui:ci`, ejecutar `node scripts/ui-evidence-index.mjs`. Abrir `output/playwright/index.html` para comparar Inicio y acceder a páginas completas, otras secciones y vídeo; `npx playwright show-report output/playwright/report` sirve el informe desde CLI. No requiere editor.
+
+`frame-before/` y `frame-after/` incluyen versión visual v01, fase, plataforma, Chromium, modo production y resolución en cada nombre. Cada JSON registra SHA, partida inicial v1, dimensiones reales, estado de fuentes y altura completa. Se espera contenido, imágenes, fuentes, animaciones finitas y dos frames. Se conserva el viewport después del device descriptor. En PRs, CI captura la base del PR en un checkout aislado con el mismo spec/fixture y luego captura el SHA exacto de la rama; ambos quedan en el mismo artefacto. Son candidatos, nunca baselines.
+
+Los nuevos recorridos comprueban HUD y acciones dentro de 1366×768, navegación con mouse/teclado, activo y foco separados, menú móvil, cambio de breakpoint con menú abierto, coste y recompensa, guardado v1 tras el Lab, ficha y retorno, pestañas y movimiento reducido dinámico. Axe se ejecuta sin exclusiones en Inicio, roster, ficha, combate, las tres pestañas del Archivo y menú móvil. La ampliación detectó y corrigió nombres de barras, jerarquía de encabezados, contraste de nivel/VS y retorno de foco; no se ocultaron hallazgos mediante desactivaciones.
