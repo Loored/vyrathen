@@ -57,7 +57,7 @@ jobs:
         if: github.event_name == 'pull_request'
         run: |
           mkdir -p output/playwright
-          cp -R .cache/ui-base/output/playwright/frame-before output/playwright/
+          cp -R .cache/ui-base/output/playwright/characters-before output/playwright/
       - name: Record candidate evidence metadata
         run: |
           mkdir -p output/playwright

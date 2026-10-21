@@ -7,7 +7,7 @@ import { INITIAL_SAVE } from '../../src/data/demo';
 const phase = process.env.EVIDENCE_PHASE || 'after';
 const sha = process.env.EVIDENCE_SHA || execFileSync('git', ['rev-parse', 'HEAD']).toString().trim();
 const environment = `${process.platform}-chromium-production`;
-const directory = `output/playwright/frame-${phase}`;
+const directory = `output/playwright/characters-${phase}`;
 
 for (const [width, height] of [[1366, 768], [1440, 900], [1920, 1080], [320, 720]]) {
   test(`frame candidate ${phase} ${width}x${height}`, async ({ page, browserName }, testInfo) => {
@@ -19,18 +19,23 @@ for (const [width, height] of [[1366, 768], [1440, 900], [1920, 1080], [320, 720
     await page.goto('/');
     await expect(page.getByRole('button', { name: /Avanzar un paso/ })).toBeVisible();
     mkdirSync(directory, { recursive: true });
-    const name = `v01-frame-${phase}-${environment}-${width}x${height}`;
+    const name = `v1-characters-${phase}-${environment}-${width}x${height}`;
     const captures: unknown[] = [];
     async function capture(section: string) {
       await page.evaluate(async () => {
+        // Focus restoration can scroll a long roster. Compare the same top-of-page
+        // viewport in both revisions; keyboard/focus behavior is verified separately.
         await document.fonts.ready;
         await Promise.all([...document.images].map(image => image.decode()));
         await Promise.all(document.getAnimations().filter(animation => animation.effect?.getComputedTiming().iterations !== Infinity).map(animation => animation.finished.catch(() => {})));
         await new Promise<void>(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve())));
+        window.scrollTo({ top: 0, behavior: 'instant' });
+        await new Promise<void>(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve())));
       });
-      const dimensions = await page.evaluate(() => ({ width: innerWidth, height: innerHeight, scrollWidth: document.documentElement.scrollWidth, scrollHeight: document.documentElement.scrollHeight, fonts: document.fonts.status }));
+      const dimensions = await page.evaluate(() => ({ width: innerWidth, height: innerHeight, scrollX, scrollY, scrollWidth: document.documentElement.scrollWidth, scrollHeight: document.documentElement.scrollHeight, fonts: document.fonts.status }));
       expect(dimensions.width).toBe(width);
       expect(dimensions.height).toBe(height);
+      expect(dimensions.scrollY).toBe(0);
       expect(dimensions.scrollWidth).toBe(width);
       for (const fullPage of [false, true]) {
         const file = `${directory}/${name}-${section}-${fullPage ? 'full' : 'viewport'}.png`;
@@ -41,7 +46,6 @@ for (const [width, height] of [[1366, 768], [1440, 900], [1920, 1080], [320, 720
       writeFileSync(`${directory}/${name}.json`, JSON.stringify({ sha, phase, environment, browserName, captures, fixture: INITIAL_SAVE, status: 'candidate_pending_owner_approval' }, null, 2));
     }
     await capture('inicio');
-    if (phase === 'before') return;
     async function navigate(label: string) {
       if (width <= 900) await page.getByRole('button', { name: 'Abrir menú' }).click();
       await page.getByRole('navigation', { name: 'Navegación principal' }).getByRole('button', { name: label, exact: true }).click();
@@ -57,6 +61,11 @@ for (const [width, height] of [[1366, 768], [1440, 900], [1920, 1080], [320, 720
     await page.getByRole('button', { name: 'Consultar ficha de Vesper' }).click();
     await expect(page.getByRole('heading', { name: 'Vesper', exact: true })).toBeVisible();
     await capture('ficha-vesper');
+    await page.getByRole('button', { name: 'Volver a Mis héroes' }).click();
+    await expect(page.getByRole('button', { name: 'Consultar ficha de Vesper' })).toBeFocused();
+    await capture('heroes-retorno-vesper');
+    if (phase === 'before') return;
+    await page.getByRole('button', { name: 'Consultar ficha de Vesper' }).click();
     await page.getByRole('button', { name: 'Abrir simulador' }).click();
     await expect(page.getByRole('heading', { name: 'Cámara de combate' })).toBeVisible();
     await capture('combate');
