@@ -23,12 +23,15 @@ for (const [width, height] of [[1366, 768], [1440, 900], [1920, 1080], [320, 720
     const captures: unknown[] = [];
     async function capture(section: string) {
       await page.evaluate(async () => {
+        // Focus restoration can scroll a long roster. Compare the same top-of-page
+        // viewport in both revisions; keyboard/focus behavior is verified separately.
+        window.scrollTo({ top: 0, behavior: 'instant' });
         await document.fonts.ready;
         await Promise.all([...document.images].map(image => image.decode()));
         await Promise.all(document.getAnimations().filter(animation => animation.effect?.getComputedTiming().iterations !== Infinity).map(animation => animation.finished.catch(() => {})));
         await new Promise<void>(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve())));
       });
-      const dimensions = await page.evaluate(() => ({ width: innerWidth, height: innerHeight, scrollWidth: document.documentElement.scrollWidth, scrollHeight: document.documentElement.scrollHeight, fonts: document.fonts.status }));
+      const dimensions = await page.evaluate(() => ({ width: innerWidth, height: innerHeight, scrollX, scrollY, scrollWidth: document.documentElement.scrollWidth, scrollHeight: document.documentElement.scrollHeight, fonts: document.fonts.status }));
       expect(dimensions.width).toBe(width);
       expect(dimensions.height).toBe(height);
       expect(dimensions.scrollWidth).toBe(width);
