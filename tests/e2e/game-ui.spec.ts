@@ -81,7 +81,8 @@ test.describe('Game UI review evidence', () => {
     const opener = page.getByRole('button', { name: 'Consultar ficha de Vesper' });
     await opener.click();
     await expect(page.getByRole('heading', { name: 'Vesper' })).toBeVisible();
-    await expect(page.getByText('Psico · Nivel 7')).toBeVisible();
+    await expect(page.locator('.vyr-profile-class')).toContainText('Psico');
+    await expect(page.locator('.vyr-profile-class')).toContainText('NIVEL 07');
     await expect(page.getByText('HP máximo')).toBeVisible();
     await expect(page.getByText('330')).toBeVisible();
     await expect(page.locator('.hero-profile')).toHaveCSS('animation-name', 'none');
