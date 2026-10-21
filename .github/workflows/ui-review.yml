@@ -47,17 +47,17 @@ jobs:
           EVIDENCE_PHASE: before
           EVIDENCE_SHA: ${{ github.event.pull_request.base.sha }}
         run: |
-          cp tests/e2e/frame-evidence.spec.ts .cache/ui-base/tests/e2e/frame-evidence.spec.ts
+          cp tests/e2e/frame-evidence.spec.ts tests/e2e/combat-evidence.spec.ts .cache/ui-base/tests/e2e/
           cd .cache/ui-base
           npm ci
           npx playwright install chromium
           npm run build
-          npm run test:ui:ci -- frame-evidence.spec.ts
+          npm run test:ui:ci -- frame-evidence.spec.ts combat-evidence.spec.ts
       - name: Preserve base candidate captures in the review artifact
         if: github.event_name == 'pull_request'
         run: |
           mkdir -p output/playwright
-          cp -R .cache/ui-base/output/playwright/characters-before output/playwright/
+          cp -R .cache/ui-base/output/playwright/characters-before .cache/ui-base/output/playwright/combat-before output/playwright/
       - name: Record candidate evidence metadata
         run: |
           mkdir -p output/playwright

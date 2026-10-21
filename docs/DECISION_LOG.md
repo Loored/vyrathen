@@ -22,3 +22,7 @@ ADR-010: cargar ambas pantallas completas (`App` y `CharacterLabRoute`) de forma
 ## 2026-10-20 — Game UI System v1 y ficha de consulta
 
 ADR-011: tokens y primitivas pequeñas se comparten desde `src/ui/`, con CSS apto para ambas rutas y navegación de pestañas reutilizada. La ficha consume un adaptador puro de `Hero`; HP/MP son máximos de configuración y el catálogo sólo describe poderes, sin inferir ejecución. SELECT, shards y retrato permanecen específicos del Lab. La composición provisional sin arte no canoniza personajes ni equipamiento; requiere revisión visual del propietario antes de escalarla.
+
+## 2026-10-21 — Reproducción de combate independiente
+
+ADR-012: Combat Experience v0.1 presenta CombatResult con adaptador y transiciones puras, cursor único y reloj de UI. No cambia motor ni SaveData v1. Configuración futura conserva lastBattle; replay no escribe guardado. Salir desmonta y cancela el reloj; regresar empieza listo desde el inicio. Datos finales se separan de los eventos sin snapshots intermedios. Composición y ritmo son candidatos pendientes del propietario; contrato futuro aditivo y límites en [propuesta](design/COMBAT_EXPERIENCE_V01.md).

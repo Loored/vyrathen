@@ -1,0 +1,59 @@
+# Combat Experience v0.1 — propuesta candidata
+
+Base: main 2739e4f (PR #6 fusionado). Composición pendiente de aprobación artística; no sustituye Character Lab, marco, roster ni ficha. Sin arte, audio, dependencias ni reglas nuevas.
+
+## Auditoría y separación
+
+`simulateCombat` calcula una sola vez por acción Iniciar/Nueva simulación en App. Conserva RNG, orden, fórmulas, poderes y desempate. `CombatResult` registra semilla, diez RoundSnapshot, eventos ordenados, equipos finales y resultado. SaveData v1 y `lastBattle` conservan su forma. Seleccionar rival ya no elimina el informe: configuración futura y encuentro almacenado son independientes. Nueva simulación incrementa battles como antes; reproducción no recibe setter de SaveData ni escribe almacenamiento.
+
+`features/combat/playback.ts` adapta cada evento en orden sin ordenar ni analizar message. Una ronda vacía ocupa un punto de navegación sin fabricar CombatEvent. `transition` es una función pura; el único cursor empieza en -1. React usa un reducer y un timeout de 1100 ms, hipótesis de lectura revisable. Cada cambio de estado cancela el timeout anterior; desmontar cancela el pendiente. El componente se monta sólo en Combate y su key cambia con el contador de simulaciones. No hay reproducción invisible al salir; al regresar vuelve al inicio, sin autoplay. Los controles no mueven el foco.
+
+| Estado | Entrada / salida |
+|---|---|
+| Sin resultado | Configuración y explicación existentes; no reproductor |
+| Sin eventos | Resultado disponible; controles de avance deshabilitados |
+| Listo | Cursor -1; iniciar explícitamente o inspeccionar una ronda |
+| Reproduciendo | Un avance cada 1100 ms; Pausar conserva cursor |
+| Pausado | Avance manual pausa también; seleccionar ronda siempre pausa |
+| Finalizado | Último punto; avanzar/continuar deshabilitados; reinicio disponible |
+
+Reiniciar sólo restablece cursor/estado. Ir al final termina inmediatamente. Consultar resultado es un enlace a una sección siempre disponible y no cambia el cursor. El registro textual muestra la ronda inspeccionada, o todas antes de iniciar; sus cifras de supervivientes se etiquetan al cierre. Anuncio accesible sólo de estado, nunca cada evento. Select nativo para rondas, botones para acciones, foco compartido y datos completos sin animación. Movimiento reducido no necesita otra secuencia: la escena es estática y únicamente cambia datos por reloj explícito.
+
+## Límites y procedencia
+
+Actor/target son nombres. Actor se resuelve únicamente dentro del bando indicado; target sólo si es único entre todos los participantes. Sistema, ausente y ambiguo conservan texto sin resaltar símbolos. `side` en K.O. identifica al actor: sólo target recibe «Objetivo · K.O.». La marca es del evento actual, no un estado acumulado inferido.
+
+Equipos finales no sirven de snapshot inicial. No se muestran barras ni HP/MP intermedios. Valores finales se consultan en un desplegable rotulado; K.O. finales y conteo están separados de la reproducción. blocked/miss/dodged no se enriquecen con poder o consumo inferido. message se conserva literalmente como descripción, nunca se analiza con regex. Ningún fixture de Selene/Kuroe/Orion entra al combate.
+
+| Dato | Fuente / procedencia |
+|---|---|
+| Eventos, daño, semilla, resultado | CombatResult existente, ruleOrigin conservado |
+| Cinco por bando, diez rondas, criterio K.O./empate | historical_document existente |
+| Iniciativa, targeting, precisión, daño final | remake_assumption existente |
+| Símbolo y acento de tipo | Adaptador de héroes existente; presentación provisional |
+| Cursor, reloj, composición | UI nueva, no regla de combate |
+
+## Composición y responsive
+
+Dos formaciones verticales de cinco participantes flanquean una acción central. Actor: borde sólido y etiqueta; objetivo: borde discontinuo y etiqueta; K.O.: borde doble y texto; reposo: «En espera». Neon Elegance aporta estructura y lectura; diagonal estática y tipografía aportan Cyberpunk Expression sin efectos intensos. A 1366×768 se priorizan participantes, evento y controles; resultado y configuración continúan debajo. En móvil se mantienen ambos bandos en dos columnas y el evento debajo; controles se apilan. No representa casillas, distancias ni posiciones mecánicas.
+
+Game UI System aporta tokens, game-action, foco y HeroSigil compartido con roster/ficha. La escena, reloj, roles, registro y select de rondas son específicos de Combate; CSS acotado a `vyr-combat`. No se extraen abstracciones sin consumidores reales. Configuración se pliega con resultado presente y queda disponible para una nueva simulación.
+
+## Contrato aditivo futuro (no implementado)
+
+Añadir versión opcional de telemetría al resultado, snapshot inicial por ID, event sequence estable y actorId/targetId opcionales; acción con actionId y powerId explícitos, resultado discriminado y recursos antes/después (HP/MP), coste realmente consumido y efectos/estados aplicados por participante. Emitir estos campos desde el motor en el punto de resolución, no desde la UI. Para acciones bloqueadas/fallidas/esquivadas registrar igualmente habilidad intentada y consumo efectivo. Para K.O. registrar defeatedId independiente del actor. Sprites/VFX consumirían esta telemetría sin gobernar la simulación.
+
+Mantener los campos actuales y su lectura; resultados v1 antiguos carecen de los campos nuevos y usan exactamente el fallback textual/simbólico de esta versión. No reconstruir snapshots de guardados antiguos, ni resimularlos silenciosamente. Versionar y probar ambas capacidades antes de habilitar recursos animados.
+
+## Evidencia y revisión
+
+`combat-evidence.spec.ts`: guardado v1 con patrulla, semilla 1024, un combate. Cuatro viewports (1366×768, 1440×900, 1920×1080, 320×720), initial comparable con base, paused-event-1 y final mediante controles reales. Cada estado produce viewport/full y JSON con SHA, fixture, evento y dimensiones. Vídeo normal: reproducir, pausar, avanzar, ronda 5 y reiniciar. CI usa el mismo spec en base/head, build de producción y workflow actual. `node scripts/ui-evidence-index.mjs` genera `output/playwright/combat.html`. No baselines automáticas.
+
+Pruebas puras cubren orden, inmutabilidad, límites, rondas vacías y participantes ambiguos/sistema. Playwright comprueba entrada rápida con mouse/teclado reales, espera sin avance tras pausa/salida, guardado idéntico, nueva simulación, accesibilidad y overflow. La revisión automática no equivale a aprobación artística ni prueba con lector de pantalla humano.
+
+Decisiones artísticas del propietario (máximo tres):
+1. Formación vertical enfrentada con acción central y símbolos actuales.
+2. Tratamiento de actor/objetivo/K.O. mediante bordes y etiquetas, sin VFX.
+3. Ritmo de lectura de 1100 ms y configuración plegada después de simular.
+
+Contenido: se reutilizan exclusivamente datos demo y recursos de código existentes. El catálogo alfa conserva la revisión de nombres/contenido pendiente antes de distribución comercial; no se añaden recursos de terceros.
