@@ -49,12 +49,12 @@ Los nuevos recorridos comprueban HUD y acciones dentro de 1366×768, navegación
 
 ## Personajes v1 — candidato, no aprobación artística
 
-- `HeroRoster`: cinco paneles, selección de consulta explícita, nombre/nivel/tipo, HP/MP máximos y poder; acceso independiente a ficha.
-- `HeroProfile`: dossier asimétrico, siete valores reales, poder y disponibilidad documentada. Foco inicial en h1 y retorno al botón de origen.
+- `HeroRoster`: cinco paneles con «Consultar ficha» como única acción por héroe; nombre/nivel/tipo, HP/MP máximos y poder. El último consultado conserva resaltado y etiqueta al volver; ningún héroe se resalta antes de consultar.
+- `HeroProfile`: dossier asimétrico, siete valores reales, poder y disponibilidad documentada. Foco inicial en h1 y retorno al botón de origen. El roster no incorpora un control independiente de selección.
 - `HeroSigil` y `HeroVitals`: patrones compartidos entre ambas pantallas, consumen el adaptador puro existente. Geometría y SVG tipográfico decorativo, sin asignación de arte.
 - Tokens adoptados: `--vyr-bg/panel/border/text/muted/focus/font-ui/font-display/fast/standard/ease`; `--hero-accent` procede del adaptador. Acciones y kickers existentes, sin nueva biblioteca.
 - CSS acotado en `features/heroes/characters.css`. Se retiran `hero-card*`, `hero-avatar*`, `avatar-halo`, `power-lvl`, `stat-track`, `hero-grid-full`, `hero-expanded-stats`, `hero-stat-line`, `mini-stats`, `type-explainer`, `type-card*` y `hero-profile*` heredados; se conserva `type-pill` para Archivo.
 - Fuera de alcance: interiores del simulador/Archivo, arte asignado, progresión/equipamiento/formación editable. GameFrame, Inicio y Lab no se modifican.
-- Evidencia extendida en el workflow actual: roster inicial, ficha Vesper y retorno en cuatro tamaños; comparación base/head, vídeo normal y metadatos por SHA. `node scripts/ui-evidence-index.mjs` genera la galería; `npx playwright show-report output/playwright/report` sirve los recorridos sin editor.
+- Evidencia extendida en el workflow actual: roster inicial, ficha Vesper y retorno resaltado en cuatro tamaños; comparación base/head, vídeo normal y metadatos por SHA. Interacción rápida con mouse/teclado reales, registro de eventos confiables durante animación, sin dispatchEvent ni force. `node scripts/ui-evidence-index.mjs` genera la galería; `npx playwright show-report output/playwright/report` sirve los recorridos sin editor.
 
 Composición, contratos, estados, hallazgos y decisiones pendientes: [Personajes v1](design/CHARACTERS_V1_PROPOSAL.md).

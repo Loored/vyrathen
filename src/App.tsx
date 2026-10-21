@@ -54,7 +54,7 @@ export default function App(){
   const [search,setSearch]=useState('');
   const [viewRound,setViewRound]=useState(1);
   const [notice,setNotice]=useState('');
-  const [rosterHeroId,setRosterHeroId]=useState(PLAYER_TEAM[0].id);
+  const [lastConsultedHeroId,setLastConsultedHeroId]=useState<string | null>(null);
   const [selectedHeroId,setSelectedHeroId]=useState<string | null>(null);
   const [restoreHeroFocusId,setRestoreHeroFocusId]=useState<string | null>(null);
   useEffect(()=>{
@@ -92,7 +92,7 @@ export default function App(){
 
   return <GameFrame section={section} save={save} notice={notice} onNavigate={go} onReset={reset} onDismissNotice={()=>setNotice('')}>
         {section==='inicio'&&<Home save={save} heroes={PLAYER_TEAM} onHeroes={()=>go('heroes')} onCombat={()=>go('combate')} onArchive={()=>go('archivo')} onAdvance={progressQuest} onClaim={claimQuest}/>}
-        {section==='heroes'&& (selectedHeroId ? <HeroProfile profile={toHeroProfile(PLAYER_TEAM.find(hero=>hero.id===selectedHeroId) ?? PLAYER_TEAM[0])} onBack={()=>{setRestoreHeroFocusId(selectedHeroId);setSelectedHeroId(null);}} onCombat={()=>go('combate')}/> : <HeroRoster profiles={PLAYER_TEAM.map(toHeroProfile)} selectedId={rosterHeroId} onSelect={setRosterHeroId} onOpen={id=>{setRestoreHeroFocusId(null);setRosterHeroId(id);setSelectedHeroId(id);}} onCombat={()=>go('combate')}/> )}
+        {section==='heroes'&& (selectedHeroId ? <HeroProfile profile={toHeroProfile(PLAYER_TEAM.find(hero=>hero.id===selectedHeroId) ?? PLAYER_TEAM[0])} onBack={()=>{setRestoreHeroFocusId(selectedHeroId);setSelectedHeroId(null);}} onCombat={()=>go('combate')}/> : <HeroRoster profiles={PLAYER_TEAM.map(toHeroProfile)} lastConsultedId={lastConsultedHeroId} onOpen={id=>{setRestoreHeroFocusId(null);setLastConsultedHeroId(id);setSelectedHeroId(id);}} onCombat={()=>go('combate')}/> )}
         {section==='combate'&&<>
           <PageHead eyebrow="SIMULADOR / 5 CONTRA 5" title="Cámara de combate" desc="Diez rondas, ventaja de tipos y resultado por K.O. Usa una semilla para obtener reportes reproducibles." right={<span className="outline-tag"><ShieldCheck size={16}/> MOTOR EXPERIMENTAL</span>}/>
           <div className="battle-grid"><div className="panel match-setup"><div className="panel-head"><div><Eyebrow>CONFIGURAR ENCUENTRO</Eyebrow><h2>Prepara tu equipo</h2></div><span className="match-crest"><Swords size={22}/></span></div>

@@ -6,7 +6,7 @@
 
 ```text
 Roster: identidad del escuadrón / consulta, no edición
-        cinco paneles: selección → símbolo → nombre/nivel/tipo
+        cinco paneles: estado de consulta → símbolo → nombre/nivel/tipo
         máximos HP/MP → poder → Consultar ficha
         nota provisional / simulador / referencia de tipos desplegable
 Ficha:  Volver
@@ -31,18 +31,18 @@ Desktop compara cinco héroes sin repetir toda la ficha. En 1366×768 se ven las
 | Poder sin catálogo | Estado uncatalogued, sin coste o efecto supuesto |
 | Tipo y símbolo | Presentación provisional del adaptador; no rareza ni ilustración |
 
-Motor, RNG, semilla, resultado, guardado v1, economía, misiones y formación no cambian. Selección de consulta conservada en memoria al volver y entre secciones, no al recargar; no hay nuevos campos persistidos. Selene, Kuroe y Orion siguen aislados en el sandbox.
+Motor, RNG, semilla, resultado, guardado v1, economía, misiones y formación no cambian. Último héroe consultado conservado en memoria al volver y entre secciones, no al recargar; no hay nuevos campos persistidos. Selene, Kuroe y Orion siguen aislados en el sandbox.
 
 ## Estados
 
 | Estado | Comportamiento |
 |---|---|
 | Reposo | Identidad, máximos, poder y acciones visibles |
-| Selección | aria-pressed, check, borde/acento y consulta blanca; no cambia formación |
+| Último consultado | Etiqueta textual, check, borde/acento y consulta blanca; sin control de selección ni cambio de formación |
 | Hover | Respuesta geométrica breve, sin datos exclusivos |
-| Teclado | Tab/Espacio selecciona; Tab/Enter abre; foco menta |
+| Teclado | Tab recorre un botón de consulta por héroe; Enter/Espacio abre; foco menta |
 | Entrada | Foco en h1, scroll al inicio, valores inmediatos |
-| Volver | Misma selección y foco al botón de consulta de origen |
+| Volver | Último consultado resaltado y foco al botón de consulta de origen |
 | Clics repetidos | Estado inmediato, sin overlay, bloqueo ni callback atrasado |
 | Movimiento reducido | Contenido final completo sin animación |
 
@@ -52,20 +52,27 @@ Entradas de 260 ms y microfeedback de 160 ms reutilizan tokens. Ambiente estáti
 
 HeroSigil y HeroVitals tienen consumidores reales en ambas pantallas; reutilizan game-action y game-section-kicker. El adaptador permanece intacto. characters.css acota estilos; no cambia GameFrame, Home, Archivo, Combate o Lab.
 
-Símbolos y geometría son provisionales. La repetición ambiental del nombre es un gráfico SVG decorativo separado del encabezado legible y del selector; no contiene datos exclusivos. Sin nuevos raster, arte asignado, fuentes o dependencias. No certifica derechos pendientes del arte preexistente del Lab.
+Símbolos y geometría son provisionales. La repetición ambiental del nombre es un gráfico SVG decorativo separado del encabezado legible y de la acción de consulta; no contiene datos exclusivos. Sin nuevos raster, arte asignado, fuentes o dependencias. No certifica derechos pendientes del arte preexistente del Lab.
 
 Se retiran familias heredadas de roster/ficha, no se acumulan overrides. hero-card permanece sólo como gancho de compatibilidad DOM sin estilos antiguos.
 
 ## Evidencia y límites
 
-Antes/después con INITIAL_SAVE y Vesper en 1366×768, 1440×900, 1920×1080 y 320×720, viewport y página completa; incluye retorno seleccionado. Comparación sólo dentro del mismo entorno. Galería: output/playwright/index.html. Candidatos, nunca baselines.
+Antes/después con INITIAL_SAVE y Vesper en 1366×768, 1440×900, 1920×1080 y 320×720, viewport y página completa; incluye retorno con el último consultado resaltado. Comparación sólo dentro del mismo entorno. Galería: output/playwright/index.html. Candidatos, nunca baselines.
 
 Se extiende el workflow existente: base aislada, mismo capturador, build de producción, SHA real y artefacto por siete días. Resultados y enlaces finales se entregan en el PR. No equivale a revisión con lector de pantalla ni aprobación artística.
 
-Axe detectó discrepancia texto/nombre del selector y contraste del texto ambiental. Se separó el control de la presentación, retiró el índice del botón y modeló el nombre repetido como gráfico decorativo. No se excluyeron reglas de axe ni elementos informativos.
+En la primera iteración, axe detectó discrepancia texto/nombre del selector y contraste del texto ambiental. Se corrigieron y el nombre repetido se modeló como gráfico decorativo. En la revisión del propietario se elimina por completo el selector independiente. No se excluyeron reglas de axe ni elementos informativos.
 
 ## Tres decisiones del propietario
 
-1. Cinco paneles con selección y consulta separadas: comparación rápida frente a densidad de controles.
+1. Cinco paneles con una sola acción «Consultar ficha» por héroe; el último consultado queda resaltado al volver (ajuste solicitado por el propietario).
 2. Presencia simbólica y nombre ambiental mientras no exista arte asignado.
 3. Dossier asimétrico: identidad y máximos a la izquierda; estadísticas y poder a la derecha.
+
+
+## Ajuste del PR #6
+
+Se retira «Seleccionar» y su callback/estilos. Antes de la primera consulta no se resalta ningún héroe; abrir la ficha actualiza el último consultado en memoria. Volver recupera su botón de origen. La etiqueta «Último consultado» no es un control ni depende sólo del color. Se mantienen composición, símbolos, ficha asimétrica, marco y contratos.
+
+La cobertura rápida usa `page.mouse.click` con hit-testing real y `page.keyboard.press` (Enter y Shift+Tab), sin dispatchEvent, force ni esperas artificiales. Registra eventos confiables (`isTrusted`) y exige que al menos uno llegue durante la animación de entrada real de 260 ms. Verifica varias fichas consecutivas, datos, foco, resaltado y guardado intacto. El registro JSON se adjunta al reporte Playwright. No prueba todos los dispositivos o velocidades de hardware.
