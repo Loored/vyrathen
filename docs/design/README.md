@@ -7,3 +7,5 @@ The existing `docs/VISUAL_DIRECTION.md` was **v0.1 exploratory**; this directory
 For the post-integration audit, actual checks and outstanding visual gate, see [CHARACTER_LAB_INTEGRATION_AUDIT.md](CHARACTER_LAB_INTEGRATION_AUDIT.md). The proposed next slices and engine adapter/replay gaps are in [GAME_UI_ROADMAP.md](GAME_UI_ROADMAP.md).
 
 Do not commit footage/screenshots/art belonging to reference games or private Wayback research. The v0.5 visual prototype is a sandbox, not official character lore.
+
+Catálogo existente, paridad y validación: [DESIGN_CATALOG.md](DESIGN_CATALOG.md). El roadmap anterior describe propuestas de su fecha; contrastar siempre con la implementación actual.

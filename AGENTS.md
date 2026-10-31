@@ -39,3 +39,5 @@ Flujo operativo versionado: [`docs/DEVELOPMENT_WORKFLOW.md`](docs/DEVELOPMENT_WO
 
 ## Approved UI identity and character lab (2026-10-20)
 For significant UI/motion/design work, read relevant docs in `docs/design/`: `VISUAL_DIRECTION_V05.md`, `MOTION_LANGUAGE.md`, `CHARACTER_LAB_SPEC.md` and `DECISIONS_V05.md`. Desktop-first original cyberpunk science-fantasy: **Neon Elegance (base) + Cyberpunk Expression (personality) + Arcane Cyberpunk (rare VFX)**. Splash-art menus, future 2D sprites for automatic battle. Preserve one fixed vertical white right-side SELECT, firing right→left into shards and disappearing (never duplicate it horizontally), large fast fill/glitch name reveal, slow ambient typography behind and in front of artwork, distinct tabs and visible primary stats without scroll. `/character-lab` is a **noncanonical visual sandbox**, not a replacement for existing `src/App.tsx`, engine, rules, saves or tests. Use task-specific skills in `.agents/skills/`. Do not copy reference-game art or undocumented mechanics.
+
+Catálogo de diseño y paso Claude Design → Codex CLI: [fuentes de verdad, ejecución y validación](docs/design/DESIGN_CATALOG.md).

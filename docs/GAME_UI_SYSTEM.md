@@ -70,3 +70,7 @@ La integración de v0.2 no aprueba arte nuevo. El [piloto v0.3](design/COMBAT_EX
 ## Combat Experience v0.4 — secuencia de referencia candidata
 
 [Nyra → Grim](design/COMBAT_EXPERIENCE_V04.md) añade un clip local elegible por IDs, intento y acierto con supervivencia, seis dibujos por actor y dos recortes reparados de Grim. Conserva el reloj de 2500 ms, recursos posteriores al evento y fallback del piloto. `sequence.html` extiende la galería con mismo cruce base/head, vídeo normal, frames decodificados y bounds de píxeles reales. Sin aprobación de arte final, ampliación del elenco ni baselines.
+
+## Catálogo local verificable
+
+`.design-sync` reutiliza estos componentes y tokens. El contexto del marco (`.vyr-frame` / `.vyr-game-scope`) vive en `game-ui.css` sin cambiar sus valores; el Lab conserva su composición. [DESIGN_CATALOG.md](design/DESIGN_CATALOG.md) define contratos, fuentes/fallback, diferencias intencionadas, comandos y evidencia candidata. La validación local no acredita conversión ni sincronización externa.
