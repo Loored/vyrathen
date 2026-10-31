@@ -9,11 +9,7 @@
     "rows": 2,
     "cellWidth": 384,
     "cellHeight": 512,
-    "frames": 8,
-    "feetAnchor": [
-      192,
-      470
-    ]
+    "frames": 8
   },
   "frames": {
     "idle": 0,
@@ -32,10 +28,6 @@
       "side": "atacante",
       "facing": "right",
       "src": "/combat-pilot/nyra-poses.png",
-      "handAnchor": [
-        330,
-        200
-      ],
       "dimensions": {
         "width": 1536,
         "height": 1024
@@ -48,10 +40,6 @@
       "side": "defensor",
       "facing": "left",
       "src": "/combat-pilot/grim-poses.png",
-      "handAnchor": [
-        60,
-        220
-      ],
       "dimensions": {
         "width": 1536,
         "height": 1024
@@ -63,6 +51,18 @@
     "tool": "OpenAI built-in ImageGen",
     "inputs": "Original text descriptions; packing edit references only the first self-generated sheets. No third-party images or Character Lab art.",
     "edits": "Reduced poses within the uniform cells to provide transparent margins.",
-    "limitations": "Eight held poses with CSS root motion; no hand-cleaned animation inbetweens or production art approval."
+    "limitations": "Eight generated held poses; per-pose manual support/contact/hand calibration is in pilotGeometry.ts. Grim dodge and KO have source-edge clipping and need later art cleanup; metadata cannot restore missing pixels."
+  },
+  "poseAnchors": {
+    "source": "src/features/combat/pilotGeometry.ts",
+    "coordinates": "Cell-local pixels in the 384x512 sprite sheet",
+    "fields": [
+      "support",
+      "contact",
+      "hand when drawn",
+      "visible bounds",
+      "sourceClipped when present"
+    ],
+    "scalePolicy": "one uniform scale per actor and framing; no pose bounding-box normalization"
   }
 }

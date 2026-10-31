@@ -1,16 +1,19 @@
+import type { PilotFraming } from './pilotGeometry.ts';
 import type { CombatEvent, CombatResult } from '../../engine/types.ts';
 import { initialPlayback, transition, type Playback, type PlaybackAction, type Timeline } from './playback.ts';
 import { resourcesAtCursor, type ResourcePlayback } from './resourcePlayback.ts';
 
 export type PilotPhase = 'event' | 'anticipation' | 'action' | 'reaction' | 'rest';
 export type PilotPose = 'idle' | 'anticipation' | 'basic' | 'power' | 'hit' | 'block' | 'dodge' | 'ko';
-export type PilotPlayer = Playback & { view: 'tactical' | 'scene'; phase: PilotPhase; animated: boolean; visualSerial: number };
-export type PilotAction = PlaybackAction | { type: 'view'; view: PilotPlayer['view'] } | { type: 'inspect'; phase: PilotPhase };
+export type PilotPlayer = Playback & { view: 'tactical' | 'scene'; phase: PilotPhase; animated: boolean; visualSerial: number; framing: PilotFraming; debugAnchors: boolean };
+export type PilotAction = PlaybackAction | { type: 'view'; view: PilotPlayer['view'] } | { type: 'inspect'; phase: PilotPhase } | { type:'framing'; framing:PilotFraming } | { type:'anchors'; enabled:boolean };
 export function initialPilotPlayer(timeline: Timeline): PilotPlayer {
-  return { ...initialPlayback(timeline), view: 'tactical', phase: 'rest', animated: false, visualSerial: 0 };
+  return { ...initialPlayback(timeline), view: 'tactical', phase: 'rest', animated: false, visualSerial: 0, framing:'expanded', debugAnchors:false };
 }
 /** Only the existing playback transition changes cursor/status. No additional clock. */
 export function pilotTransition(state: PilotPlayer, action: PilotAction, timeline: Timeline): PilotPlayer {
+  if (action.type === 'anchors') return { ...state, debugAnchors:action.enabled };
+  if (action.type === 'framing') return action.framing === state.framing ? state : { ...state, framing:action.framing, phase:'rest', animated:false, visualSerial:state.visualSerial+1 };
   if (action.type === 'view') return action.view === state.view ? state : { ...state, view: action.view, phase: 'rest', animated: false, visualSerial: state.visualSerial + 1 };
   if (action.type === 'inspect') return state.status === 'playing' ? state : { ...state, phase: action.phase, animated: false, visualSerial: state.visualSerial + 1 };
   const next = transition({ cursor: state.cursor, status: state.status }, action, timeline);
@@ -24,10 +27,10 @@ export function pilotTransition(state: PilotPlayer, action: PilotAction, timelin
   return { ...state, ...next };
 }
 
-export const PILOT_SHEET = { width:1536, height:1024, columns:4, rows:2, cellWidth:384, cellHeight:512, frames:8, feetAnchor:[192,470] } as const;
+export const PILOT_SHEET = { width:1536, height:1024, columns:4, rows:2, cellWidth:384, cellHeight:512, frames:8 } as const;
 export const PILOT_ACTORS = {
-  h4: { name: 'Nyra', side: 'atacante', facing: 'right', src: '/combat-pilot/nyra-poses.png', handAnchor:[330,200] },
-  e3: { name: 'Grim', side: 'defensor', facing: 'left', src: '/combat-pilot/grim-poses.png', handAnchor:[60,220] },
+  h4: { name: 'Nyra', side: 'atacante', facing: 'right', src: '/combat-pilot/nyra-poses.png' },
+  e3: { name: 'Grim', side: 'defensor', facing: 'left', src: '/combat-pilot/grim-poses.png' },
 } as const;
 export interface PilotActorState { id: string; pose: PilotPose; knockedOut: boolean; role: 'actor' | 'target' | 'idle' }
 export interface PilotFrame {

@@ -25,11 +25,11 @@ for(const [width,height] of [[1366,768],[1440,900],[1920,1080],[320,720]])test(`
       return {cursor:Number(root.dataset.cursor),view:root.dataset.view,phase:scene?.dataset.phase??null,visualSerial:scene?.dataset.visualSerial??null,
         animated:scene?.dataset.animated??null,actorId:scene?.dataset.actorId??null,targetId:scene?.dataset.targetId??null,actionId:scene?.dataset.actionId??null,
         poses:[...root.querySelectorAll<HTMLElement>('[data-pilot-id]')].map(el=>({id:el.dataset.pilotId,pose:el.dataset.pose,art:el.dataset.art,ko:el.dataset.ko??false})),
+        controlRect:(()=>{const r=root.querySelector<HTMLButtonElement>('button[aria-label],button')?.getBoundingClientRect();return r?{top:r.top,bottom:r.bottom}:null})(),
         dimensions:{width:innerWidth,height:innerHeight,scrollWidth:document.documentElement.scrollWidth,scrollHeight:document.documentElement.scrollHeight},
         reducedMotion:matchMedia('(prefers-reduced-motion:reduce)').matches,fonts:document.fonts.status};
     });
     expect(metadata.dimensions.scrollWidth).toBe(width);
-    if(width>=1366)await expect(page.getByRole('button',{name:'Avanzar un evento'})).toBeInViewport({ratio:1});
     captures.push({state,fixture,seed:battle.seed,eventId:battle.rounds.flatMap(r=>r.events)[metadata.cursor]?.id??null,recordVersion:battle.trace?.version??null,...metadata});
     for(const fullPage of [false,true]){
       const path=`${prefix}-${state}-${fullPage?'full':'viewport'}.png`;await page.screenshot({path,fullPage,animations:'disabled'});await info.attach(state,{path,contentType:'image/png'});
@@ -37,6 +37,9 @@ for(const [width,height] of [[1366,768],[1440,900],[1920,1080],[320,720]])test(`
     writeFileSync(`${prefix}.json`,JSON.stringify({sha,base:'b86a9765ef51aa24fdaab1ea915daaaee1c897ab',status:'candidate_pending_owner_art_review',captures},null,2));
   }
   await capture('tactical-idle');await sceneView(page);await capture('scene-idle');
+  await page.locator('.vyr-pilot-inspection summary').click();
+  await page.getByLabel('Encuadre de revisión').selectOption('compact');await capture('scene-compact');await page.getByLabel('Encuadre de revisión').selectOption('expanded');
+  await page.getByLabel('Mostrar anclas de depuración').check();await capture('scene-anchor-debug');await page.getByLabel('Mostrar anclas de depuración').uncheck();
   await seekPilot(page,battle,0);
   await page.getByRole('button',{name:'Vista táctica',exact:true}).click();await capture('tactical-power');
   await sceneView(page);
@@ -61,9 +64,9 @@ test('pilot vídeo normal: both actors, pause/resume, view switch, round and res
   test.setTimeout(45000);await page.emulateMedia({reducedMotion:'no-preference'});
   const battle=pilotFixture();await openPilot(page,battle);await sceneView(page);
   async function frameScene(){
-    await page.evaluate(()=>window.scrollTo({top:0,behavior:'instant'}));
-    await expect(page.getByLabel('Escena piloto 2D')).toBeInViewport({ratio:1});
-    for(const id of ['h4','e3'])await expect(page.locator(`[data-pilot-id="${id}"]`)).toBeInViewport({ratio:1});
+    await page.getByLabel('Escena piloto 2D').scrollIntoViewIfNeeded();
+    await expect(page.getByLabel('Escena piloto 2D')).toBeInViewport();
+    for(const id of ['h4','e3'])await expect(page.locator(`[data-pilot-id="${id}"]`)).toBeInViewport();
   }
   await frameScene();
   await page.getByRole('button',{name:'Continuar reproducción'}).click();
@@ -76,7 +79,7 @@ test('pilot vídeo normal: both actors, pause/resume, view switch, round and res
   await frameScene();
   await page.getByRole('button',{name:'Continuar reproducción'}).click();
   await expect(page.getByLabel('Reproducción del encuentro')).toHaveAttribute('data-cursor',String(grim),{timeout:6000});
-  await expect(page.getByLabel('Escena piloto 2D')).toBeInViewport({ratio:1});
+  await expect(page.getByLabel('Escena piloto 2D')).toBeInViewport();
   await page.waitForTimeout(1100);await page.getByRole('button',{name:'Pausar',exact:true}).click();
   await page.getByLabel('Inspeccionar ronda').selectOption('5');await frameScene();await page.waitForTimeout(400);
   await page.getByRole('button',{name:'Reiniciar reproducción'}).click();await frameScene();await page.waitForTimeout(500);

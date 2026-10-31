@@ -127,3 +127,20 @@ test('all existing playback actions keep original semantics, and invalid trace n
   invalid.trace!.events.pop();
   assert.deepEqual(pilotFrame(invalid, adaptResources(invalid), adaptBattle(invalid), 0), { supported:false, actors:[] });
 });
+
+test('all 16 pose anchors map support to the same floor and preserve one scale per actor', async () => {
+  const { POSE_ANCHORS, pilotLayout, projectPose } = await import('../src/features/combat/pilotGeometry.ts');
+  for (const id of ['h4','e3'] as const) {
+    assert.deepEqual(Object.keys(POSE_ANCHORS[id]).sort(), ['anticipation','basic','block','dodge','hit','idle','ko','power']);
+    for (const pose of Object.keys(POSE_ANCHORS[id]) as (keyof typeof POSE_ANCHORS[typeof id])[]) {
+      const geometry = projectPose(id, pose, 'expanded');
+      assert.equal(geometry.support[1], pilotLayout('expanded').ground, `${id}/${pose} support`);
+      assert.equal(geometry.scale, pilotLayout('expanded').scale);
+      assert.ok(geometry.contact.every(Number.isFinite));
+      if (POSE_ANCHORS[id][pose].hand) assert.ok(geometry.hand?.every(Number.isFinite));
+    }
+  }
+  assert.equal(POSE_ANCHORS.e3.dodge.sourceClipped, 'right');
+  assert.equal(POSE_ANCHORS.e3.ko.sourceClipped, 'left');
+  assert.equal(projectPose('h4','ko','expanded').support[1], projectPose('e3','ko','expanded').support[1]);
+});

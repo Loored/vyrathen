@@ -55,6 +55,26 @@ jobs:
           npx playwright install chromium
           npm run build
           npm run test:ui:ci -- frame-evidence.spec.ts combat-evidence.spec.ts
+      - name: Checkout PR #9 previous candidate for a same-crossing comparison
+        if: github.event_name == 'pull_request'
+        uses: actions/checkout@v4
+        with:
+          ref: 3793ce2330aecd457e7f3f6d7a05f39b7ee29e24
+          path: .cache/pilot-before
+      - name: Capture previous 2D pilot with the same fixtures and four viewports
+        if: github.event_name == 'pull_request'
+        env:
+          EVIDENCE_SHA: 3793ce2330aecd457e7f3f6d7a05f39b7ee29e24
+        run: |
+          cd .cache/pilot-before
+          npm run build
+          npm run test:ui:ci -- pilot-evidence.spec.ts
+      - name: Preserve previous pilot evidence in the review artifact
+        if: github.event_name == 'pull_request'
+        run: |
+          mkdir -p output/playwright/pilot-before output/playwright/pilot-before-video
+          cp -R .cache/pilot-before/output/playwright/pilot-after/. output/playwright/pilot-before/
+          find .cache/pilot-before/output/playwright/test-results -name '*.webm' -exec cp {} output/playwright/pilot-before-video/ \;
       - name: Preserve base candidate captures in the review artifact
         if: github.event_name == 'pull_request'
         run: |

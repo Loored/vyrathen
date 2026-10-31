@@ -7,6 +7,7 @@ import { actionCues, actionLabels, adaptBattle, eventParticipants, PLAYBACK_INTE
 import { adaptResources, resourcesAtCursor } from './resourcePlayback';
 import { initialPilotPlayer, pilotFrame, pilotTransition, type PilotAction, type PilotPhase, type PilotPlayer } from './pilotModel';
 import { CombatPilotScene } from './CombatPilotScene';
+import type { PilotFraming } from './pilotGeometry';
 import './combat.css';
 
 const statusLabels = { empty: 'Sin eventos', ready: 'Listo para reproducir', playing: 'Reproduciendo', paused: 'Pausado', finished: 'Finalizado' };
@@ -30,7 +31,7 @@ export function CombatPlayback({ battle }: { battle: CombatResult }) {
   const cue = event ? actionCues[event.kind] : undefined;
   const ActionIcon = event ? actionIcons[event.kind] : Radio;
   const scene = pilotFrame(battle, recording, timeline, state.cursor);
-  return <section className="vyr-combat" aria-label="Reproducción del encuentro" data-view={state.view} data-cursor={state.cursor} data-recording={recording.mode === 'recorded' ? recording.version : 'legacy'}>
+  return <section className="vyr-combat" aria-label="Reproducción del encuentro" data-view={state.view} data-framing={state.framing} data-cursor={state.cursor} data-recording={recording.mode === 'recorded' ? recording.version : 'legacy'}>
     <header className="vyr-combat-header"><div><span className="eyebrow">ENCUENTRO REGISTRADO / #{battle.seed}</span><h2>Frente a frente</h2></div><div className="vyr-combat-header-tools">
       <div role="group" aria-label="Vista de combate" className="vyr-pilot-view-switch">
         <button className="game-action secondary" aria-pressed={state.view === 'tactical'} onClick={() => dispatch({ type: 'view', view: 'tactical' })}>Vista táctica</button>
@@ -78,6 +79,8 @@ export function CombatPlayback({ battle }: { battle: CombatResult }) {
     <div className="vyr-combat-controls"><span role="status">{statusLabels[state.status]}</span><button className="game-action" disabled={state.status === 'empty' || state.status === 'finished'} onClick={() => dispatch({ type: state.status === 'playing' ? 'pause' : 'play' })}>{state.status === 'playing' ? <Pause size={15} aria-hidden="true"/> : <Play size={15} aria-hidden="true"/>}{state.status === 'playing' ? 'Pausar' : 'Continuar reproducción'}</button><button className="game-action secondary" disabled={state.status === 'empty' || state.status === 'finished'} onClick={() => dispatch({ type: 'step' })}><StepForward size={15} aria-hidden="true"/>Avanzar un evento</button><button className="game-action secondary" disabled={state.status === 'ready' || state.status === 'empty'} onClick={() => dispatch({ type: 'restart' })}><RotateCcw size={15} aria-hidden="true"/>Reiniciar reproducción</button><button className="game-action secondary" disabled={state.status === 'empty' || state.status === 'finished'} onClick={() => dispatch({ type: 'finish' })}><SkipForward size={15} aria-hidden="true"/>Ir al final</button></div>
     <label className="vyr-combat-round">Inspeccionar ronda <select value={item?.round ?? ''} onChange={e => dispatch({ type: 'round', round: Number(e.target.value) })}><option value="" disabled>Elegir ronda</option>{battle.rounds.map(r => <option key={r.round} value={r.round}>Ronda {r.round}</option>)}</select><span>Seleccionar una ronda pausa la reproducción.</span></label>
     {state.view === 'scene' && scene.supported && <details className="vyr-pilot-inspection"><summary>Inspección de poses del piloto</summary>
+      <label>Encuadre de revisión <select value={state.framing} onChange={e => dispatch({ type: 'framing', framing:e.target.value as PilotFraming })}><option value="expanded">Ampliado · candidato</option><option value="compact">Compacto · comparación</option></select></label>
+      <label><input type="checkbox" checked={state.debugAnchors} onChange={e => dispatch({type:'anchors', enabled:e.target.checked})}/>Mostrar anclas de depuración</label>
       <label>Pose de revisión <select value={state.phase} disabled={state.status === 'playing'} onChange={e => dispatch({ type: 'inspect', phase: e.target.value as PilotPhase })}>
         <option value="event">Acción registrada</option><option value="anticipation">Anticipación</option><option value="action">Acción</option><option value="reaction">Reacción</option><option value="rest">Reposo / K.O.</option>
       </select></label><p>Las cifras corresponden al estado posterior al evento. La pose sólo permite inspeccionar su presentación; el registro textual conserva la descripción completa.</p>

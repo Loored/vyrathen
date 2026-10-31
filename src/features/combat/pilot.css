@@ -5,53 +5,33 @@
 .vyr-pilot-inspection label { display:flex; align-items:center; gap:12px; flex-wrap:wrap; font-size:13px; }
 .vyr-pilot-inspection select { background:var(--vyr-surface); color:var(--vyr-text); padding:8px; border:1px solid var(--vyr-border); }
 .vyr-pilot-inspection p { font-size:12px; color:var(--vyr-muted); max-width:650px; }
-.vyr-pilot-scene { position:relative; height:174px; overflow:hidden; isolation:isolate; background:radial-gradient(ellipse at 50% 90%,#6ff0ce12,transparent 65%); }
+@property --pilot-beat { syntax:"<integer>"; inherits:true; initial-value:4; }
+.vyr-pilot-scene { position:relative; height:174px; isolation:isolate; background:radial-gradient(ellipse at 50% 90%,#6ff0ce12,transparent 65%); }
 .vyr-pilot-kicker { position:absolute; top:0; left:0; width:100%; font-size:9px; font-weight:700; letter-spacing:.08em; color:var(--vyr-muted); }
-.vyr-pilot-floor { position:absolute; left:4%; right:4%; bottom:25px; height:27px; border:1px solid #6ff0ce36; border-radius:50%; background:#6ff0ce06; transform:perspective(90px) rotateX(30deg); }
-.vyr-pilot-actor { --pilot-dir:1; position:absolute; width:120px; height:172px; bottom:1px; left:5%; }
-.vyr-pilot-actor.left { --pilot-dir:-1; left:auto; right:5%; }
-.vyr-pilot-body { height:146px; position:relative; }
-.vyr-pilot-sprite { display:block; width:100%; height:100%; overflow:hidden; filter:drop-shadow(0 1px 2px #07101b); }
-.vyr-pilot-sheet { transform:translate(var(--pose-x),var(--pose-y)); }
-.vyr-pilot-loading { position:absolute; top:45%; left:0; right:0; font-size:10px; color:var(--vyr-muted); }
-.vyr-pilot-name { display:block; font-size:11px; line-height:13px; font-weight:800; color:var(--vyr-text); }
-.vyr-combat .vyr-pilot-name small { font-size:9px; line-height:11px; margin:1px 0 0; }
-.vyr-pilot-art-fallback { height:100%; display:grid; place-items:center; align-content:center; gap:8px; font-size:10px; color:var(--vyr-muted); }
+.vyr-pilot-world { display:block; width:100%; height:100%; overflow:hidden; }
+.vyr-pilot-floor { fill:#6ff0ce06; stroke:#6ff0ce36; }
+.vyr-pilot-scene[data-animated="true"] .vyr-pilot-sequence { animation:vyr-pilot-beats 1800ms steps(1,end) both; }
+.vyr-pilot-scene[data-animated="true"] .vyr-pilot-beat { opacity:max(0,calc(1 - max(var(--pilot-beat) - var(--beat),var(--beat) - var(--pilot-beat)))); }
+.vyr-pilot-scene[data-running="false"] * { animation-play-state:paused!important; }
+@keyframes vyr-pilot-beats { 0%{--pilot-beat:0}18%{--pilot-beat:1}35%{--pilot-beat:2}55%{--pilot-beat:3}75%,100%{--pilot-beat:4} }
+.vyr-pilot-actor { position:absolute; bottom:0; width:110px; transform:translateX(-50%); pointer-events:none; }
+.vyr-pilot-name { display:block; font-size:12px; line-height:14px; font-weight:800; color:var(--vyr-text); }
+.vyr-combat .vyr-pilot-name small { font-size:10px; line-height:12px; margin:1px 0 0; }
+.vyr-pilot-loading { font-size:10px; color:var(--vyr-muted); }
+.vyr-pilot-art-fallback { position:absolute; bottom:40px; width:100%; display:grid; place-items:center; gap:8px; font-size:10px; color:var(--vyr-muted); }
 .vyr-pilot-art-fallback .vyr-hero-sigil { width:48px; height:48px; min-height:0; }
 .vyr-pilot-art-fallback :is(.vyr-hero-ambient,.vyr-hero-registration) { display:none; }
-.vyr-pilot-symbol { position:absolute; top:65px; left:0; width:48px; z-index:2; font-size:10px; color:var(--vyr-text); }
-.vyr-pilot-symbol.left { left:auto; right:0; }
+.vyr-pilot-symbol { position:absolute; transform:translate(-50%,-50%); width:48px; z-index:2; font-size:10px; color:var(--vyr-text); }
 .vyr-pilot-symbol .vyr-hero-sigil { width:34px; height:34px; min-height:0; margin:auto; }
 .vyr-pilot-symbol :is(.vyr-hero-ambient,.vyr-hero-registration) { display:none; }
 .vyr-pilot-symbol .vyr-hero-glyph { font-size:22px; }
-.vyr-pilot-effect { position:absolute; inset:0; width:100%; height:100%; pointer-events:none; overflow:visible; z-index:3; }
-.vyr-pilot-path { fill:none; stroke:var(--combat-accent); stroke-width:2; stroke-dasharray:4 3; opacity:0; }
-.vyr-pilot-contact { stroke:var(--combat-accent); fill:none; stroke-width:1.5; opacity:0; }
+.vyr-pilot-effect { pointer-events:none; }
+.vyr-pilot-path { fill:none; stroke:var(--combat-accent); stroke-width:2; stroke-dasharray:4 3; opacity:.7; }
+.vyr-pilot-contact { stroke:var(--combat-accent); fill:none; stroke-width:1.5; opacity:.8; }
 .vyr-pilot-contact[data-contact="guard"] { stroke-width:3; }
-.vyr-pilot-scene:is([data-phase="event"],[data-phase="action"]) .vyr-pilot-path { opacity:.65; }
-.vyr-pilot-scene:is([data-phase="event"],[data-phase="reaction"]) .vyr-pilot-contact { opacity:.8; }
-.vyr-pilot-scene[data-animated="true"] .vyr-pilot-body { animation-duration:1800ms; animation-timing-function:var(--vyr-ease); animation-fill-mode:both; }
-.vyr-pilot-scene[data-animated="true"] .vyr-pilot-sheet { animation-duration:1800ms; animation-timing-function:steps(1,end); animation-fill-mode:both; }
-.vyr-pilot-scene [data-sequence="basic"] { animation-name:vyr-pilot-strike; }.vyr-pilot-scene [data-sequence="basic"] .vyr-pilot-sheet { animation-name:vyr-pilot-basic; }
-.vyr-pilot-scene [data-sequence="power"] { animation-name:vyr-pilot-strike; }.vyr-pilot-scene [data-sequence="power"] .vyr-pilot-sheet { animation-name:vyr-pilot-power; }
-.vyr-pilot-scene [data-sequence="hit"] { animation-name:vyr-pilot-recoil; }.vyr-pilot-scene [data-sequence="hit"] .vyr-pilot-sheet { animation-name:vyr-pilot-hit; }
-.vyr-pilot-scene [data-sequence="block"] .vyr-pilot-sheet { animation-name:vyr-pilot-block; }
-.vyr-pilot-scene [data-sequence="dodge"] { animation-name:vyr-pilot-recoil; }.vyr-pilot-scene [data-sequence="dodge"] .vyr-pilot-sheet { animation-name:vyr-pilot-dodge; }
-.vyr-pilot-scene [data-sequence="fall"] .vyr-pilot-sheet { animation-name:vyr-pilot-fall; }
-.vyr-pilot-scene[data-animated="true"] .vyr-pilot-path { animation:vyr-pilot-path 1800ms both; }
-.vyr-pilot-scene[data-animated="true"] .vyr-pilot-contact { animation:vyr-pilot-contact 1800ms both; }
-.vyr-pilot-scene[data-running="false"] * { animation-play-state:paused!important; }
-.vyr-pilot-scene [data-art="fallback"] * { animation:none!important; }
-@keyframes vyr-pilot-basic { 0%,18%{transform:translate(-384px,0)}18.01%,40%{transform:translate(-768px,0)}40.01%,100%{transform:translate(0,0)} }
-@keyframes vyr-pilot-power { 0%,18%{transform:translate(-384px,0)}18.01%,42%{transform:translate(-1152px,0)}42.01%,100%{transform:translate(0,0)} }
-@keyframes vyr-pilot-hit { 0%,35%{transform:translate(0,0)}35.01%,67%{transform:translate(0,-512px)}67.01%,100%{transform:translate(0,0)} }
-@keyframes vyr-pilot-block { 0%,28%{transform:translate(0,0)}28.01%,67%{transform:translate(-384px,-512px)}67.01%,100%{transform:translate(0,0)} }
-@keyframes vyr-pilot-dodge { 0%,25%{transform:translate(0,0)}25.01%,67%{transform:translate(-768px,-512px)}67.01%,100%{transform:translate(0,0)} }
-@keyframes vyr-pilot-fall { 0%,35%{transform:translate(0,0)}35.01%,65%{transform:translate(0,-512px)}65.01%,100%{transform:translate(-1152px,-512px)} }
-@keyframes vyr-pilot-strike { 0%,12%{transform:translateX(calc(-3px * var(--pilot-dir)))}28%,38%{transform:translateX(calc(10px * var(--pilot-dir)))}70%,100%{transform:translateX(0)} }
-@keyframes vyr-pilot-recoil { 0%,30%{transform:translateX(0)}45%,60%{transform:translateX(calc(-8px * var(--pilot-dir)))}85%,100%{transform:translateX(0)} }
-@keyframes vyr-pilot-path { 0%,18%{opacity:0;stroke-dashoffset:30}30%,40%{opacity:.8}62%,100%{opacity:0;stroke-dashoffset:0} }
-@keyframes vyr-pilot-contact { 0%,33%{opacity:0}40%,50%{opacity:.9}72%,100%{opacity:0} }
+.vyr-pilot-anchors { stroke:#ffca72; fill:none; stroke-width:1; }
+.vyr-pilot-anchors text { stroke:none; fill:#ffdf9c; font:11px monospace; }
+.vyr-pilot-ground-debug { stroke:#ffca72; stroke-width:1; stroke-dasharray:5 3; }
 /* Scene keeps the same ten resource rows and all controls; only the central presentation changes. */
 .vyr-combat[data-view="scene"] .vyr-combat-event-content { min-height:0; animation:none; }
 .vyr-combat[data-view="scene"] .vyr-combat-action-heading { grid-template-columns:28px minmax(0,1fr); gap:1px 8px; margin:3px 0 5px; }
@@ -69,8 +49,43 @@
 @media(max-width:480px) {
   .vyr-combat-header-tools { margin-bottom:8px; }.vyr-combat-header-tools a { margin-top:0; }
   .vyr-pilot-view-switch { width:100%; }.vyr-pilot-view-switch .game-action { width:100%; }
-  .vyr-pilot-actor { left:0; width:100px; }.vyr-pilot-actor.left { right:0; }
+  .vyr-pilot-actor { width:90px; }
   .vyr-pilot-symbol { width:30px; }.vyr-pilot-symbol .vyr-hero-sigil { width:25px; height:25px; }
   .vyr-pilot-kicker { font-size:8px; letter-spacing:0; }
 }
 @media(prefers-reduced-motion:reduce) { .vyr-combat .vyr-pilot-scene * { animation:none!important; transition:none!important; } }
+
+/* Reversible composition candidate. Tactical layout is intentionally outside these selectors. */
+.vyr-combat[data-view="scene"][data-framing="expanded"] .vyr-combat-stage { grid-template-columns:minmax(204px,.75fr) minmax(0,2.2fr) minmax(204px,.75fr); gap:12px; }
+.vyr-combat[data-view="scene"][data-framing="expanded"] .vyr-pilot-scene { height:270px; }
+.vyr-combat[data-view="scene"][data-framing="expanded"] .vyr-combat-header { margin-bottom:10px; }
+.vyr-combat[data-view="scene"][data-framing="expanded"] .vyr-combat-header h2 { font-size:22px; margin:3px 0; }
+.vyr-combat[data-view="scene"][data-framing="expanded"] .vyr-combat-event { padding:12px; }
+.vyr-combat[data-view="scene"][data-framing="expanded"] .vyr-combat-event-content { display:flex; flex-wrap:wrap; justify-content:center; align-items:center; gap:4px 12px; }
+.vyr-combat[data-view="scene"][data-framing="expanded"] .vyr-combat-chain { width:100%; }
+.vyr-combat[data-view="scene"][data-framing="expanded"] .vyr-combat-event h3 { font-size:16px; }
+.vyr-combat[data-view="scene"][data-framing="expanded"] .vyr-combat-cost { margin:0; }
+.vyr-combat[data-view="scene"][data-framing="expanded"] .vyr-combat-team li { padding:7px; grid-template-columns:30px minmax(0,1fr); gap:3px 7px; }
+.vyr-combat[data-view="scene"][data-framing="expanded"] .vyr-combat-team .vyr-hero-sigil { width:30px; height:30px; }
+.vyr-combat[data-view="scene"][data-framing="expanded"] .vyr-combat-identity strong { font-size:14px; }
+@media(max-width:900px) {
+ .vyr-combat[data-view="scene"][data-framing="expanded"] .vyr-combat-stage { grid-template-columns:repeat(2,minmax(0,1fr)); }
+ .vyr-combat[data-view="scene"][data-framing="expanded"] .vyr-combat-team li { grid-template-columns:minmax(0,1fr); }
+ .vyr-combat[data-view="scene"][data-framing="expanded"] .vyr-pilot-scene { height:210px; }
+}
+@media(prefers-reduced-motion:reduce) {
+ .vyr-pilot-scene[data-animated="true"] .vyr-pilot-beat { opacity:0; }
+ .vyr-pilot-scene[data-animated="true"] .vyr-pilot-beat[data-beat="2"] { opacity:1; }
+}
+@media(min-width:1051px) {
+ .vyr-combat-page:has(.vyr-combat[data-view="scene"][data-framing="expanded"]) .page-head { margin-bottom:8px; }
+ .vyr-combat-page:has(.vyr-combat[data-view="scene"][data-framing="expanded"]) .page-head h1 { font-size:25px; margin:3px 0; }
+ .vyr-combat-page:has(.vyr-combat[data-view="scene"][data-framing="expanded"]) .page-head p { font-size:11px; }
+ .vyr-combat[data-view="scene"][data-framing="expanded"] { padding:12px 18px; }
+ .vyr-combat[data-view="scene"][data-framing="expanded"] .vyr-combat-header { margin-bottom:5px; }
+ .vyr-combat[data-view="scene"][data-framing="expanded"] .vyr-pilot-scene { height:220px; }
+ .vyr-combat[data-view="scene"][data-framing="expanded"] .vyr-combat-team li { min-height:51px; padding:4px 6px; }
+ .vyr-combat[data-view="scene"][data-framing="expanded"] .vyr-combat-position { margin-top:5px; }
+ .vyr-combat[data-view="scene"][data-framing="expanded"] .vyr-combat-controls { margin-top:5px; padding-top:6px; }
+ .vyr-combat[data-view="scene"][data-framing="expanded"] .vyr-combat-event>small { margin-top:5px; }
+}
