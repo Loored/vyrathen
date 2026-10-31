@@ -62,3 +62,7 @@ Composición, contratos, estados, hallazgos y decisiones pendientes: [Personajes
 ## Combat Experience — v0.1 aprobado, recursos v0.2 candidatos
 
 Combate reutiliza tokens, acciones y HeroSigil. Formaciones, evento, roles, reloj y selección de ronda son específicos de `features/combat/`; no se promueven como primitivas globales. La [composición v0.1](design/COMBAT_EXPERIENCE_V01.md) y el intervalo de 2500 ms están aprobados. Las barras de recursos actuales, consumo por acción y K.O. persistente de [v0.2](design/COMBAT_EXPERIENCE_V02.md) también permanecen específicos de Combate y requieren revisión de sus adiciones visuales. La galería `output/playwright/combat.html` compara base/head en los mismos eventos, registra fallback antiguo y enlaza prueba de equivalencia; no crea baselines.
+
+## Combat Experience v0.3 — piloto 2D candidato
+
+La integración de v0.2 no aprueba arte nuevo. El [piloto v0.3](design/COMBAT_EXPERIENCE_V03.md) alterna táctica y escena usando el mismo cursor, reloj y controles. Añade sólo dos hojas originales de ocho poses para h4/e3, recorte SVG, presentación CSS y control de inspección. Los diez participantes y recursos se conservan; los otros ocho mantienen HeroSigil. Renderer, metadatos, efectos mínimos y cancelación permanecen específicos de Combate, sin nuevas primitivas globales ni dependencias. `pilot.html` añade comparación entre vistas, poses fijas, vídeo y procedencia; requiere revisión del propietario y no genera baselines.
