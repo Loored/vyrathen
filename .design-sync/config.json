@@ -1,0 +1,48 @@
+{
+  "pkg": "vyrathen",
+  "globalName": "Vyrathen",
+  "shape": "package",
+  "tsconfig": "tsconfig.json",
+  "componentSrcMap": {
+    "GameTabs": "src/ui/GameTabs.tsx",
+    "HeroSigil": "src/features/heroes/HeroPresentation.tsx",
+    "HeroVitals": "src/features/heroes/HeroPresentation.tsx",
+    "CharacterRail": "src/features/character-lab/components/CharacterRail.tsx",
+    "CharacterStage": "src/features/character-lab/components/CharacterStage.tsx",
+    "CharacterDetails": "src/features/character-lab/components/CharacterDetails.tsx",
+    "CharacterTabs": "src/features/character-lab/components/CharacterTabs.tsx",
+    "SwitchFX": "src/features/character-lab/components/SwitchFX.tsx"
+  },
+  "guidelinesGlob": [],
+  "provider": {
+    "component": "LabScope"
+  },
+  "dtsPropsFor": {
+    "GameTabs": "/** Pestañas en orden de lectura. */\n  tabs: ReadonlyArray<{ id: string; label: string }>;\n  /** id de la pestaña seleccionada. */\n  active: string;\n  /** Recibe el id elegido con clic o con ←/→, Inicio y Fin. */\n  onChange: (id: string) => void;\n  /** aria-label del tablist. */\n  label: string;\n  /** id del tabpanel que controlan. Cada botón recibe el id `${panelId}-tab-${tab.id}`. */\n  panelId: string;",
+    "HeroSigil": "/** Constrúyelo con `toHeroProfile(hero)`. El color sale de la variable CSS `--hero-accent` de un ancestro (usa `profile.presentation.accent`). */\n  profile: {\n    id: string;\n    name: string;\n    type: 'Psico' | 'Energía' | 'Defensa' | 'Control';\n    level: number;\n    /** Máximo de configuración, no el HP actual de un combate. */\n    maxHp: number;\n    /** Máximo de configuración, no el MP actual de un combate. */\n    maxMp: number;\n    /** Golpear, Bloquear, Esquivar, Mental y Velocidad, en ese orden. */\n    stats: ReadonlyArray<{ label: string; value: number }>;\n    power: {\n      name: string;\n      level: number;\n      status:\n        | { kind: 'documented'; description: string; mpCost: number; nominalDamage?: number; implementation: string }\n        | { kind: 'uncatalogued'; description: string; implementation: string };\n    };\n    /** Símbolo y acento provisionales por tipo; nunca hay ilustración asignada. */\n    presentation: { symbol: string; accent: string; art: 'absent' };\n  };",
+    "HeroVitals": "/** Constrúyelo con `toHeroProfile(hero)`. Muestra HP máximo y MP máximo. */\n  profile: {\n    id: string;\n    name: string;\n    type: 'Psico' | 'Energía' | 'Defensa' | 'Control';\n    level: number;\n    /** Máximo de configuración, no el HP actual de un combate. */\n    maxHp: number;\n    /** Máximo de configuración, no el MP actual de un combate. */\n    maxMp: number;\n    /** Golpear, Bloquear, Esquivar, Mental y Velocidad, en ese orden. */\n    stats: ReadonlyArray<{ label: string; value: number }>;\n    power: {\n      name: string;\n      level: number;\n      status:\n        | { kind: 'documented'; description: string; mpCost: number; nominalDamage?: number; implementation: string }\n        | { kind: 'uncatalogued'; description: string; implementation: string };\n    };\n    /** Símbolo y acento provisionales por tipo; nunca hay ilustración asignada. */\n    presentation: { symbol: string; accent: string; art: 'absent' };\n  };",
+    "CharacterRail": "/** Personajes del rail; `art` es el retrato. */\n  characters: Array<{\n    id: string;\n    name: string;\n    /** Subtítulo en mayúsculas bajo el nombre (voz dossier). */\n    title: string;\n    /** Código de registro, p. ej. `VYR-H2`. */\n    code: string;\n    /** Etiqueta de archivo, p. ej. `PSICO // ARCHIVO`. */\n    archive: string;\n    category: string;\n    /** Cita del desplegable LORE SIGNAL (oculta hasta que se abre). */\n    quote: string;\n    /** Entradilla de 1–2 líneas (se recorta a 2). */\n    intro: string;\n    /** Chips cortos en mayúsculas. */\n    tags: string[];\n    /** Filas de la pestaña de estadísticas; el valor ya va formateado. */\n    stats: Array<{ label: string; value: string }>;\n    /** Acento del personaje en hex; debe coincidir con el `accent` de su LabScope. */\n    accent: string;\n    /** El mismo acento como `r,g,b`. */\n    accentRgb: string;\n    /** Fondo del escenario en hex. */\n    surface: string;\n    /** URL de la imagen del retrato y del escenario. */\n    art: string;\n  }>;\n  /** Índice del personaje mostrado (lleva el marcador). */\n  selected: number;\n  /** Índice pedido (aria-pressed y contador `01 / 03`). Igual que `selected` salvo durante un cambio. */\n  requested: number;\n  /** true durante la transición de cambio: deshabilita los retratos. */\n  busy: boolean;\n  /** Movimiento reducido: sin hover ni tap animados. */\n  reduced: boolean;\n  onSelect: (index: number) => void;",
+    "CharacterStage": "character: {\n    id: string;\n    name: string;\n    /** Subtítulo en mayúsculas bajo el nombre (voz dossier). */\n    title: string;\n    /** Código de registro, p. ej. `VYR-H2`. */\n    code: string;\n    /** Etiqueta de archivo, p. ej. `PSICO // ARCHIVO`. */\n    archive: string;\n    category: string;\n    /** Cita del desplegable LORE SIGNAL (oculta hasta que se abre). */\n    quote: string;\n    /** Entradilla de 1–2 líneas (se recorta a 2). */\n    intro: string;\n    /** Chips cortos en mayúsculas. */\n    tags: string[];\n    /** Filas de la pestaña de estadísticas; el valor ya va formateado. */\n    stats: Array<{ label: string; value: string }>;\n    /** Acento del personaje en hex; debe coincidir con el `accent` de su LabScope. */\n    accent: string;\n    /** El mismo acento como `r,g,b`. */\n    accentRgb: string;\n    /** Fondo del escenario en hex. */\n    surface: string;\n    /** URL de la imagen del retrato y del escenario. */\n    art: string;\n  };\n  /** false pausa la tipografía ambiental, las órbitas y las cruces. */\n  ambient: boolean;\n  /** Movimiento reducido: sin entrada de la ilustración y con el ambiente pausado. */\n  reduced: boolean;",
+    "CharacterDetails": "character: {\n    id: string;\n    name: string;\n    /** Subtítulo en mayúsculas bajo el nombre (voz dossier). */\n    title: string;\n    /** Código de registro, p. ej. `VYR-H2`. */\n    code: string;\n    /** Etiqueta de archivo, p. ej. `PSICO // ARCHIVO`. */\n    archive: string;\n    category: string;\n    /** Cita del desplegable LORE SIGNAL (oculta hasta que se abre). */\n    quote: string;\n    /** Entradilla de 1–2 líneas (se recorta a 2). */\n    intro: string;\n    /** Chips cortos en mayúsculas. */\n    tags: string[];\n    /** Filas de la pestaña de estadísticas; el valor ya va formateado. */\n    stats: Array<{ label: string; value: string }>;\n    /** Acento del personaje en hex; debe coincidir con el `accent` de su LabScope. */\n    accent: string;\n    /** El mismo acento como `r,g,b`. */\n    accentRgb: string;\n    /** Fondo del escenario en hex. */\n    surface: string;\n    /** URL de la imagen del retrato y del escenario. */\n    art: string;\n  };\n  /** Composición del panel: filas de stats, rejilla de habilidades o anillo de equipo. */\n  tab: 'stats' | 'skills' | 'equipment';\n  /** Movimiento reducido: sin relleno con glitch del nombre ni entradas escalonadas. */\n  reduced: boolean;",
+    "CharacterTabs": "/** Pestaña activa. Las etiquetas (01 / BASE STATS, 02 / SKILLS, 03 / EQUIPMENT) vienen fijas en el componente. */\n  active: 'stats' | 'skills' | 'equipment';\n  onChange: (tab: 'stats' | 'skills' | 'equipment') => void;\n  /** Movimiento reducido: el fondo activo salta sin muelle. */\n  reduced: boolean;",
+    "SwitchFX": "/** true durante el cambio de personaje: lanza el SELECT y el barrido de fragmentos (800 ms en total). */\n  active: boolean;\n  /** Nombre del personaje de destino (sale en el título del barrido). */\n  targetName: string;\n  /** Súbelo en cada cambio para reiniciar la animación. */\n  sequence: number;\n  /** Movimiento reducido: el SELECT queda quieto y no hay barrido. */\n  reduced: boolean;"
+  },
+  "overrides": {
+    "CharacterDetails": {
+      "cardMode": "column"
+    },
+    "CharacterStage": {
+      "cardMode": "column"
+    },
+    "CharacterTabs": {
+      "cardMode": "column"
+    },
+    "SwitchFX": {
+      "cardMode": "column"
+    },
+    "GameTabs": {
+      "cardMode": "column"
+    }
+  },
+  "readmeHeader": ".design-sync/conventions.md"
+}
