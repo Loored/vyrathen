@@ -59,6 +59,6 @@ Los nuevos recorridos comprueban HUD y acciones dentro de 1366×768, navegación
 
 Composición, contratos, estados, hallazgos y decisiones pendientes: [Personajes v1](design/CHARACTERS_V1_PROPOSAL.md).
 
-## Combat Experience v0.1 — candidato
+## Combat Experience — v0.1 aprobado, recursos v0.2 candidatos
 
-Combate reutiliza tokens, acciones y HeroSigil. Formaciones, evento, roles, reloj y selección de ronda son específicos de `features/combat/`; no se promueven como primitivas globales. Ver [arquitectura, límites y decisiones pendientes](design/COMBAT_EXPERIENCE_V01.md). La galería `output/playwright/combat.html` añade comparación base/head, estados pausados y vídeo; no crea baselines.
+Combate reutiliza tokens, acciones y HeroSigil. Formaciones, evento, roles, reloj y selección de ronda son específicos de `features/combat/`; no se promueven como primitivas globales. La [composición v0.1](design/COMBAT_EXPERIENCE_V01.md) y el intervalo de 2500 ms están aprobados. Las barras de recursos actuales, consumo por acción y K.O. persistente de [v0.2](design/COMBAT_EXPERIENCE_V02.md) también permanecen específicos de Combate y requieren revisión de sus adiciones visuales. La galería `output/playwright/combat.html` compara base/head en los mismos eventos, registra fallback antiguo y enlaza prueba de equivalencia; no crea baselines.
