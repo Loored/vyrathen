@@ -60,6 +60,12 @@ for(const [width,height] of [[1366,768],[1440,900],[1920,1080],[320,720]])test(`
 test('pilot vídeo normal: both actors, pause/resume, view switch, round and restart',async({page})=>{
   test.setTimeout(45000);await page.emulateMedia({reducedMotion:'no-preference'});
   const battle=pilotFixture();await openPilot(page,battle);await sceneView(page);
+  async function frameScene(){
+    await page.evaluate(()=>window.scrollTo({top:0,behavior:'instant'}));
+    await expect(page.getByLabel('Escena piloto 2D')).toBeInViewport({ratio:1});
+    for(const id of ['h4','e3'])await expect(page.locator(`[data-pilot-id="${id}"]`)).toBeInViewport({ratio:1});
+  }
+  await frameScene();
   await page.getByRole('button',{name:'Continuar reproducción'}).click();
   await expect(page.getByLabel('Reproducción del encuentro')).toHaveAttribute('data-cursor','0',{timeout:6000});
   await page.waitForTimeout(850);await page.getByRole('button',{name:'Pausar',exact:true}).click();await page.waitForTimeout(300);
@@ -67,9 +73,11 @@ test('pilot vídeo normal: both actors, pause/resume, view switch, round and res
   await page.getByRole('button',{name:'Vista táctica',exact:true}).click();await sceneView(page);
   const grim=battle.trace!.events.findIndex(r=>r.actorId==='e3'&&r.attempt);
   expect(grim).toBeGreaterThan(0);await seekPilot(page,battle,grim-1);
+  await frameScene();
   await page.getByRole('button',{name:'Continuar reproducción'}).click();
   await expect(page.getByLabel('Reproducción del encuentro')).toHaveAttribute('data-cursor',String(grim),{timeout:6000});
+  await expect(page.getByLabel('Escena piloto 2D')).toBeInViewport({ratio:1});
   await page.waitForTimeout(1100);await page.getByRole('button',{name:'Pausar',exact:true}).click();
-  await page.getByLabel('Inspeccionar ronda').selectOption('5');await page.waitForTimeout(400);
-  await page.getByRole('button',{name:'Reiniciar reproducción'}).click();await page.waitForTimeout(500);
+  await page.getByLabel('Inspeccionar ronda').selectOption('5');await frameScene();await page.waitForTimeout(400);
+  await page.getByRole('button',{name:'Reiniciar reproducción'}).click();await frameScene();await page.waitForTimeout(500);
 });
