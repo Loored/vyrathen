@@ -1,0 +1,68 @@
+{
+  "version": 1,
+  "type": "provisional-eight-pose-spritesheets",
+  "approval": "candidate-not-canonical",
+  "sheet": {
+    "width": 1536,
+    "height": 1024,
+    "columns": 4,
+    "rows": 2,
+    "cellWidth": 384,
+    "cellHeight": 512,
+    "frames": 8
+  },
+  "frames": {
+    "idle": 0,
+    "anticipation": 1,
+    "basic": 2,
+    "power": 3,
+    "hit": 4,
+    "block": 5,
+    "dodge": 6,
+    "ko": 7
+  },
+  "assets": [
+    {
+      "participant": "h4",
+      "name": "Nyra",
+      "side": "atacante",
+      "facing": "right",
+      "src": "/combat-pilot/nyra-poses.png",
+      "dimensions": {
+        "width": 1536,
+        "height": 1024
+      },
+      "sha256": "9260059fe968301090f686e906b2d8480c39da28110593492b895866051c5223"
+    },
+    {
+      "participant": "e3",
+      "name": "Grim",
+      "side": "defensor",
+      "facing": "left",
+      "src": "/combat-pilot/grim-poses.png",
+      "dimensions": {
+        "width": 1536,
+        "height": 1024
+      },
+      "sha256": "076c58dca3947f5375c624de7ac9f17ad8eb24e3437d5870750a3fe518ccf76f"
+    }
+  ],
+  "provenance": {
+    "tool": "OpenAI built-in ImageGen",
+    "inputs": "Original text descriptions; packing edit references only the first self-generated sheets. No third-party images or Character Lab art.",
+    "edits": "Reduced poses within the uniform cells to provide transparent margins.",
+    "limitations": "Eight generated held poses; per-pose manual support/contact/hand calibration is in pilotGeometry.ts. Grim dodge and KO have source-edge clipping and need later art cleanup; metadata cannot restore missing pixels."
+  },
+  "poseAnchors": {
+    "source": "src/features/combat/pilotGeometry.ts",
+    "coordinates": "Cell-local pixels in the 384x512 sprite sheet",
+    "fields": [
+      "support",
+      "contact",
+      "hand when drawn",
+      "visible bounds",
+      "sourceClipped when present"
+    ],
+    "scalePolicy": "one uniform scale per actor and framing; no pose bounding-box normalization"
+  }
+}
