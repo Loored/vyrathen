@@ -18,7 +18,7 @@ jobs:
   verify-and-capture:
     name: Linux Chromium review
     runs-on: ubuntu-22.04
-    timeout-minutes: 20
+    timeout-minutes: 25
     env:
       CI: true
       PLAYWRIGHT_BROWSERS_PATH: 0
@@ -47,34 +47,20 @@ jobs:
           EVIDENCE_PHASE: before
           EVIDENCE_SHA: ${{ github.event.pull_request.base.sha }}
         run: |
-          cp tests/e2e/frame-evidence.spec.ts tests/e2e/combat-evidence.spec.ts .cache/ui-base/tests/e2e/
+          cp tests/e2e/frame-evidence.spec.ts tests/e2e/combat-evidence.spec.ts tests/e2e/pilot-evidence.spec.ts tests/e2e/pilot-helpers.ts tests/e2e/sequence-evidence.spec.ts tests/e2e/sequence-helpers.ts .cache/ui-base/tests/e2e/
           mkdir -p .cache/ui-base/tests/fixtures
           cp tests/fixtures/combat-v01-1024.json .cache/ui-base/tests/fixtures/
           cd .cache/ui-base
           npm ci
           npx playwright install chromium
           npm run build
-          npm run test:ui:ci -- frame-evidence.spec.ts combat-evidence.spec.ts
-      - name: Checkout PR #9 previous candidate for a same-crossing comparison
-        if: github.event_name == 'pull_request'
-        uses: actions/checkout@v4
-        with:
-          ref: 3793ce2330aecd457e7f3f6d7a05f39b7ee29e24
-          path: .cache/pilot-before
-      - name: Capture previous 2D pilot with the same fixtures and four viewports
-        if: github.event_name == 'pull_request'
-        env:
-          EVIDENCE_SHA: 3793ce2330aecd457e7f3f6d7a05f39b7ee29e24
-        run: |
-          cd .cache/pilot-before
-          npm run build
-          npm run test:ui:ci -- pilot-evidence.spec.ts
-      - name: Preserve previous pilot evidence in the review artifact
+          npm run test:ui:ci -- frame-evidence.spec.ts combat-evidence.spec.ts pilot-evidence.spec.ts sequence-evidence.spec.ts
+      - name: Preserve same-base pilot and sequence evidence
         if: github.event_name == 'pull_request'
         run: |
-          mkdir -p output/playwright/pilot-before output/playwright/pilot-before-video
-          cp -R .cache/pilot-before/output/playwright/pilot-after/. output/playwright/pilot-before/
-          find .cache/pilot-before/output/playwright/test-results -name '*.webm' -exec cp {} output/playwright/pilot-before-video/ \;
+          mkdir -p output/playwright/pilot-before output/playwright/sequence-before-video
+          cp -R .cache/ui-base/output/playwright/pilot-after/. output/playwright/pilot-before/
+          cp -R .cache/ui-base/output/playwright/sequence-before output/playwright/
       - name: Preserve base candidate captures in the review artifact
         if: github.event_name == 'pull_request'
         run: |
@@ -101,6 +87,9 @@ jobs:
         run: npm run build
       - name: Review production preview in Chromium
         run: npm run test:ui:ci
+      - name: Extract review frames from the recorded normal-speed sequence
+        if: always()
+        run: node scripts/sequence-video-frames.mjs
       - name: Assemble candidate comparison gallery
         if: always()
         run: node scripts/ui-evidence-index.mjs

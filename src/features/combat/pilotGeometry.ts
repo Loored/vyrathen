@@ -1,3 +1,4 @@
+import { GRIM_REPAIRS, type PilotDrawing } from './pilotClip.ts';
 import { POSE_FRAMES, type PilotPose } from './pilotModel.ts';
 
 export type Point = readonly [number, number];
@@ -9,7 +10,7 @@ export interface PoseAnchors {
   bounds: readonly [number, number, number, number];
   sourceClipped?: 'right' | 'left';
 }
-/** Manual calibration of the existing art. No per-pose size normalization or new pixels. */
+/** Cell-local calibration of the selected art. No per-pose size normalization. */
 export const POSE_ANCHORS: Record<'h4' | 'e3', Record<PilotPose, PoseAnchors>> = {
   h4: {
     idle: { support:[195,494], contact:[206,229], hand:[130,299], bounds:[66,100,312,494] },
@@ -28,8 +29,8 @@ export const POSE_ANCHORS: Record<'h4' | 'e3', Record<PilotPose, PoseAnchors>> =
     power: { support:[209,506], contact:[217,265], hand:[73,217], bounds:[37,141,359,506] },
     hit: { support:[172,432], contact:[177,203], bounds:[30,66,351,432] },
     block: { support:[181,432], contact:[157,197], bounds:[20,81,350,432] },
-    dodge: { support:[159,432], contact:[215,224], bounds:[9,112,383,432], sourceClipped:'right' },
-    ko: { support:[175,437], contact:[167,372], bounds:[0,286,352,437], sourceClipped:'left' },
+    dodge: GRIM_REPAIRS.dodge.anchors,
+    ko: GRIM_REPAIRS.ko.anchors,
   },
 };
 export type PilotFraming = 'expanded' | 'compact';
@@ -38,12 +39,14 @@ export function pilotLayout(framing: PilotFraming) {
   return framing === 'expanded' ? { width:720, height:300, ground:270, scale:.60, feet:{h4:210,e3:510}, symbols:[36,684] as const }
     : { width:340, height:180, ground:150, scale:.31, feet:{h4:90,e3:250}, symbols:[20,320] as const };
 }
-export function projectPose(id: 'h4' | 'e3', pose: PilotPose, framing: PilotFraming) {
-  const layout=pilotLayout(framing), anchors=POSE_ANCHORS[id][pose];
+export function projectPose(id: 'h4' | 'e3', pose: PilotPose, framing: PilotFraming, drawing?: PilotDrawing) {
+  drawing ??= id==='e3' && (pose==='dodge'||pose==='ko') ? GRIM_REPAIRS[pose] : undefined;
+  const layout=pilotLayout(framing), anchors=drawing?.anchors??POSE_ANCHORS[id][pose];
   const project=(point:Point):Point=>[layout.feet[id]+(point[0]-anchors.support[0])*layout.scale,layout.ground+(point[1]-anchors.support[1])*layout.scale];
   const frame=POSE_FRAMES[pose];
   return { x:project([0,0])[0], y:project([0,0])[1], scale:layout.scale,
     support:project(anchors.support), contact:project(anchors.contact), hand:anchors.hand ? project(anchors.hand) : undefined,
     bounds:[project([anchors.bounds[0],anchors.bounds[1]]),project([anchors.bounds[2],anchors.bounds[3]])],
-    frameX:-(frame%4)*384, frameY:-Math.floor(frame/4)*512 };
+    frameX:drawing?-drawing.column*drawing.cellWidth:-(frame%4)*384, frameY:drawing?-drawing.row*drawing.cellHeight:-Math.floor(frame/4)*512,
+    src:drawing?.src, width:drawing?.width??1536, height:drawing?.height??1024, cellWidth:drawing?.cellWidth??384, cellHeight:drawing?.cellHeight??512 };
 }

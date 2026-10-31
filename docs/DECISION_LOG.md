@@ -34,3 +34,10 @@ ADR-013: tras la aprobación e integración de Combat Experience v0.1 (PR #7), v
 ## 2026-10-30 — Piloto raster 2D con autoridad temporal compartida
 
 ADR-014: tras integrar PR #8, la escena candidata de v0.3 reutiliza el cursor y timeout de v0.2. Un wrapper puro registra intención visual (tick, paso, salto, vista o inspección); CSS muestra ocho poses por hoja y nunca aplica recursos ni avanza eventos. Se eligieron dos spritesheets originales provisionales generados con ImageGen y recorte SVG, sin renderer adicional ni reutilización de arte del Lab. Cambio de vista cancela transitorios pero no reinicia el intervalo; pause/resume mantiene el serial visual. Sólo eventos validados con attempt pueden animar acciones, por lo que el K.O. posterior no repite el ataque. Arte, escala y ritmo son candidatos para revisión del propietario; no autorizan producción del elenco. Ver [v0.3](design/COMBAT_EXPERIENCE_V03.md).
+
+## 2026-10-31 — Combat Experience v0.4, candidato Nyra → Grim
+
+- Presentación limitada al poder registrado h4→e3 acertado con supervivencia; resultados restantes conservan el piloto. Motor/RNG/trace/guardados sin cambios.
+- Recursos adicionales pequeños con anclas propias; hojas originales intactas. Reparaciones de esquiva/K.O. de Grim sustituyen únicamente esos recortes en ejecución.
+- Secuencia visual de 2100 ms, reposo desde 2050 ms dentro del evento existente de 2500 ms; mismo serial y reloj compartido, sin callbacks de datos.
+- Evidencia base/head sobre el mismo cruce y encuadre con medición de píxeles, vídeo y frames decodificados. Arte provisional y timings pendientes de revisión del propietario; no autoriza resto del elenco ni merge. Detalle: `docs/design/COMBAT_EXPERIENCE_V04.md`.

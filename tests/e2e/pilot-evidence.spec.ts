@@ -3,6 +3,7 @@ import { copyFileSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { INITIAL_SAVE } from '../../src/data/demo';
 import { pilotFixture } from '../fixtures/pilot-scenarios';
+import { frameFullScene } from './sequence-helpers';
 import { inspectPose, openPilot, sceneView, seekPilot } from './pilot-helpers';
 
 test.use({ video:{ mode:'on',size:{width:1366,height:768} } });
@@ -64,9 +65,7 @@ test('pilot vídeo normal: both actors, pause/resume, view switch, round and res
   test.setTimeout(45000);await page.emulateMedia({reducedMotion:'no-preference'});
   const battle=pilotFixture();await openPilot(page,battle);await sceneView(page);
   async function frameScene(){
-    await page.getByLabel('Escena piloto 2D').scrollIntoViewIfNeeded();
-    await expect(page.getByLabel('Escena piloto 2D')).toBeInViewport();
-    for(const id of ['h4','e3'])await expect(page.locator(`[data-pilot-id="${id}"]`)).toBeInViewport();
+    await frameFullScene(page);
   }
   await frameScene();
   await page.getByRole('button',{name:'Continuar reproducción'}).click();

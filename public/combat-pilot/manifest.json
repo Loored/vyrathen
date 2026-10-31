@@ -51,11 +51,11 @@
     "tool": "OpenAI built-in ImageGen",
     "inputs": "Original text descriptions; packing edit references only the first self-generated sheets. No third-party images or Character Lab art.",
     "edits": "Reduced poses within the uniform cells to provide transparent margins.",
-    "limitations": "Eight generated held poses; per-pose manual support/contact/hand calibration is in pilotGeometry.ts. Grim dodge and KO have source-edge clipping and need later art cleanup; metadata cannot restore missing pixels."
+    "limitations": "Original eight held poses remain unchanged, including source-edge clipping in Grim dodge and KO. Runtime uses the supplemental repaired cutouts for those poses; see repairs and sequence. All art remains provisional."
   },
   "poseAnchors": {
     "source": "src/features/combat/pilotGeometry.ts",
-    "coordinates": "Cell-local pixels in the 384x512 sprite sheet",
+    "coordinates": "Cell-local pixels: original 384x512; supplemental and repair cutouts 512x512. Resource-specific dimensions, no global grid.",
     "fields": [
       "support",
       "contact",
@@ -64,5 +64,114 @@
       "sourceClipped when present"
     ],
     "scalePolicy": "one uniform scale per actor and framing; no pose bounding-box normalization"
+  },
+  "supplementalAssets": [
+    {
+      "src": "/combat-pilot/grim-repaired.png",
+      "dimensions": {
+        "width": 1024,
+        "height": 512
+      },
+      "cellWidth": 512,
+      "cellHeight": 512,
+      "sha256": "cd86ca086f31f47e93119133f9203bbbda909abf45f2961e7c54c4d6d437856a",
+      "reference": "/combat-pilot/grim-poses.png",
+      "tool": "OpenAI built-in ImageGen edit",
+      "approval": "candidate-not-canonical"
+    },
+    {
+      "src": "/combat-pilot/nyra-sequence.png",
+      "dimensions": {
+        "width": 1536,
+        "height": 1024
+      },
+      "cellWidth": 512,
+      "cellHeight": 512,
+      "sha256": "188a833110adbccd94b88111982a0994a26fee2ed844960cf6ffe25a8b7f3f22",
+      "reference": "/combat-pilot/nyra-poses.png",
+      "tool": "OpenAI built-in ImageGen edit",
+      "approval": "candidate-not-canonical"
+    },
+    {
+      "src": "/combat-pilot/grim-sequence.png",
+      "dimensions": {
+        "width": 1536,
+        "height": 1024
+      },
+      "cellWidth": 512,
+      "cellHeight": 512,
+      "sha256": "eb85538eee451b1699fd664c2e19fa8d0b985a1b1a49f851f3bdad377b393426",
+      "reference": "/combat-pilot/grim-poses.png",
+      "tool": "OpenAI built-in ImageGen edit",
+      "approval": "candidate-not-canonical"
+    }
+  ],
+  "sequence": {
+    "id": "nyra-grim-power-hit-v04",
+    "source": "src/features/combat/pilotClip.ts",
+    "durationMs": 2100,
+    "eventIntervalMs": 2500,
+    "restFromMs": 2050,
+    "anchors": "packed cell-local support/contact/hand/bounds; src/features/combat/pilotClip.ts",
+    "nyraOrder": [
+      "idle",
+      0,
+      1,
+      1,
+      2,
+      3,
+      3,
+      4,
+      4,
+      5,
+      5,
+      5,
+      "idle"
+    ],
+    "grimOrder": [
+      "idle",
+      "idle",
+      0,
+      0,
+      0,
+      1,
+      2,
+      2,
+      3,
+      4,
+      5,
+      5,
+      "idle"
+    ],
+    "startsMs": [
+      0,
+      150,
+      320,
+      480,
+      620,
+      760,
+      900,
+      1080,
+      1260,
+      1440,
+      1640,
+      1840,
+      2050
+    ],
+    "provenance": "Supplemental original edits reference only the corresponding original sheet. Uniform source calibration .84 per supplemental sheet; repair pair .48. Packed into transparent 512px cells. First Nyra candidate discarded for duplicated bracer. No third party inputs.",
+    "limitations": "Provisional held anatomical drawings, not final cleaned animation. Small volume/coat variations remain for owner review. Original source sheets unchanged; runtime Grim dodge/KO use complete repaired cutouts."
+  },
+  "repairs": {
+    "e3": {
+      "dodge": {
+        "src": "/combat-pilot/grim-repaired.png",
+        "column": 0
+      },
+      "ko": {
+        "src": "/combat-pilot/grim-repaired.png",
+        "column": 1
+      }
+    },
+    "visualReview": "Both repaired cutouts have complete hands, boots and armor and clear transparent margins. Original source-edge clipping remains in the archived eight-pose sheet, not used for those runtime poses."
   }
 }
