@@ -1,12 +1,18 @@
 import {test,expect} from '@playwright/test';
 import {readFileSync} from 'node:fs';
 import {CLIP_STARTS,CLIP_ID,NYRA_DRAWINGS,GRIM_DRAWINGS,GRIM_REPAIRS} from '../../src/features/combat/pilotClip';
-import {openPilot,sceneView} from './pilot-helpers';
+import {openPilot,sceneView,inspectPose} from './pilot-helpers';
 import {frameFullScene} from './sequence-helpers';
 
 test('all thirteen beats render once on the shared animation, pause/resume retains time and resources',async({page})=>{
  await page.emulateMedia({reducedMotion:'no-preference'});await openPilot(page);await sceneView(page);
  const save=await page.evaluate(()=>localStorage.getItem('vyrathen-v01'));
+ await page.getByRole('button',{name:'Avanzar un evento'}).click();
+ for(const phase of ['anticipation','action','contact','reaction','recovery','rest']){
+  await inspectPose(page,phase);
+  for(const id of ['h4','e3'])expect(await page.locator(`[data-pilot-id="${id}"]`).getAttribute('data-pose')).toBe(await page.locator(`[data-render-id="${id}"]`).getAttribute('data-render-pose'));
+ }
+ await page.getByRole('button',{name:'Reiniciar reproducción'}).click();
  await page.getByRole('button',{name:'Continuar reproducción'}).click();
  await expect(page.getByLabel('Reproducción del encuentro')).toHaveAttribute('data-cursor','0',{timeout:6000});
  await page.getByRole('button',{name:'Pausar',exact:true}).click();

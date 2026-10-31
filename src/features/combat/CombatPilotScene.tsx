@@ -63,7 +63,7 @@ export function CombatPilotScene({ battle, frame, player }: { battle:CombatResul
       {player.debugAnchors && <path className="vyr-pilot-ground-debug" d={`M0 ${layout.ground}H${layout.width}`}/>}
     </svg>
     {frame.actors.map(actor=>{
-      const id=actor.id as 'h4'|'e3',pose=inspectedPose(actor,player.animated?'event':player.phase),hero=heroes.find(h=>h.id===id)!;
+      const id=actor.id as 'h4'|'e3',pose=clip&&!player.animated?clipPose(id,clipStep(player.phase)):inspectedPose(actor,player.animated?'event':player.phase),hero=heroes.find(h=>h.id===id)!;
       return <div className="vyr-pilot-actor" key={id} style={{left:`${layout.feet[id]/layout.width*100}%`}} data-pilot-id={id} data-pose={pose} data-art={art[id]??'loading'} data-role={actor.role} data-ko={actor.knockedOut||undefined}>
         {!art[id] && <span className="vyr-pilot-loading">Cargando arte…</span>}
         {art[id]==='fallback' && <div className="vyr-pilot-art-fallback"><HeroSigil profile={toHeroProfile(hero)}/><span>Arte no disponible</span></div>}
