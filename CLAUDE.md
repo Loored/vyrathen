@@ -89,3 +89,5 @@ Los specs `*-evidence.spec.ts` sacan capturas para que el propietario las revise
 
 ## Decisiones
 Las decisiones técnicas y de producto se registran como ADR numerados en `docs/DECISION_LOG.md` (el último es ADR-014). Las decisiones visuales aprobadas están en `docs/design/DECISIONS_V05.md`. Para cambios de arte o identidad, la aprobación del propietario es explícita: una aprobación artística no aprueba mecánicas ni derechos.
+
+Catálogo de diseño y paso Claude Design → Codex CLI: [fuentes de verdad, ejecución y validación](docs/design/DESIGN_CATALOG.md).

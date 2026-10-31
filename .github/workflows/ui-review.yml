@@ -83,6 +83,8 @@ jobs:
         run: npm test
       - name: TypeScript
         run: npm run typecheck
+      - name: Catalog contracts and local validation build
+        run: npm run design:build
       - name: Production build
         run: npm run build
       - name: Review production preview in Chromium

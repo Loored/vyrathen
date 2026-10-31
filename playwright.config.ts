@@ -11,5 +11,5 @@ export default defineConfig({
     viewport: { width: 1366, height: 768 }, colorScheme: 'dark', reducedMotion: 'reduce',
   },
   projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'], viewport: { width: 1366, height: 768 } } }],
-  webServer: { command: 'npm run dev -- --host 127.0.0.1 --port 4173', url: 'http://127.0.0.1:4173', reuseExistingServer: false, timeout: 30_000 },
+  webServer: [{ command: 'npm run dev -- --host 127.0.0.1 --port 4173', url: 'http://127.0.0.1:4173', reuseExistingServer: false, timeout: 30_000 }, { command: 'npm run design:preview', url: 'http://127.0.0.1:4174/catalog.html', reuseExistingServer: false, timeout: 30_000 }],
 });

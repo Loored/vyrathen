@@ -1,0 +1,5 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": { "baseUrl": "..", "paths": { "vyrathen": [".design-sync/entry.tsx"] } },
+  "include": ["entry.tsx", "fixtures.ts", "previews/**/*.tsx", "catalog.tsx", ".cache/contracts.ts"]
+}

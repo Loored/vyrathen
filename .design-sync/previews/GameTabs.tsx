@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { GameTabs } from 'vyrathen';
+import { useId, useState } from 'react';
+import { LabScope, GameTabs } from 'vyrathen';
 
 // Las pestañas del Archivo de la alfa (src/App.tsx).
 const archive = [
@@ -13,7 +13,8 @@ const archiveText: Record<string, string> = {
   estructuras: 'Estructuras del laboratorio disponibles en esta versión alfa.',
 };
 
-function Archivo({ initial, panelId }: { initial: string; panelId: string }) {
+function Archivo({ initial, panelId: prefix }: { initial: string; panelId: string }) {
+  const panelId = `${prefix}-${useId()}`;
   const [active, setActive] = useState(initial);
   return (
     <div style={{ width: '100%', maxWidth: 560, padding: '18px 22px', background: 'var(--vyr-panel)', border: '1px solid var(--vyr-border)' }}>
@@ -29,7 +30,7 @@ function Archivo({ initial, panelId }: { initial: string; panelId: string }) {
 }
 
 /** Primera pestaña activa: subrayado y texto en el color de foco (blanco dentro del Lab). */
-export const Poderes = () => <Archivo initial="poderes" panelId="archivo-poderes" />;
+export const Poderes = () => <LabScope surface="game"><Archivo initial="poderes" panelId="archivo-poderes" /></LabScope>;
 
 /** Otra pestaña activa; ←/→, Inicio y Fin mueven la selección y el foco. */
-export const Pasivas = () => <Archivo initial="pasivas" panelId="archivo-pasivas" />;
+export const Pasivas = () => <LabScope surface="game"><Archivo initial="pasivas" panelId="archivo-pasivas" /></LabScope>;

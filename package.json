@@ -11,7 +11,12 @@
     "typecheck": "tsc --noEmit",
     "test:ui": "playwright test",
     "review:ui": "playwright test --project=chromium",
-    "test:ui:ci": "playwright test --config=playwright.ci.config.ts --project=chromium"
+    "test:ui:ci": "playwright test --config=playwright.ci.config.ts --project=chromium",
+    "design:dev": "vite --config .design-sync/vite.config.mjs --host 127.0.0.1 --port 4174",
+    "design:typecheck": "node scripts/design-sync-contracts.mjs",
+    "design:build": "npm run design:typecheck && vite build --config .design-sync/vite.config.mjs && node scripts/design-sync-build-check.mjs",
+    "design:preview": "vite preview --config .design-sync/vite.config.mjs --host 127.0.0.1 --port 4174",
+    "design:test": "playwright test --config=playwright.ci.config.ts --project=chromium design-sync.spec.ts"
   },
   "dependencies": {
     "lucide-react": "^0.468.0",

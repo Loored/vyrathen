@@ -1,12 +1,5 @@
 /* Main game only. Character Lab has a separate document and owns its choreography. */
 .vyr-frame {
-  --vyr-bg: #080b13; --vyr-panel: #0f1522; --vyr-surface: #182031;
-  --vyr-border: #354157; --vyr-text: #f0f3fc; --vyr-muted: #a5b2c8;
-  --vyr-font-ui: Inter, system-ui, sans-serif;
-  --vyr-font-display: 'Space Grotesk', Inter, system-ui, sans-serif;
-  --vyr-action-bg: #f0f3fc; --vyr-action-text: #0b1020; --vyr-action-radius: 2px;
-  --bg: var(--vyr-bg); --panel: var(--vyr-panel); --surface: var(--vyr-surface);
-  --border: var(--vyr-border); --text: var(--vyr-text); --muted: var(--vyr-muted);
   display: grid; grid-template-columns: 200px minmax(0, 1fr); min-height: 100vh;
   color: var(--vyr-text); background: var(--vyr-bg); font-family: var(--vyr-font-ui);
 }

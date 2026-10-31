@@ -12,6 +12,7 @@ import '../src/ui/game-ui.css';
 import '../src/features/character-lab/styles/character-lab.css';
 import '../src/features/heroes/characters.css';
 import './sync.css';
+import { useReducedMotionPreference } from '../src/features/character-lab/hooks/useReducedMotionPreference';
 
 export { GameTabs } from '../src/ui/GameTabs.tsx';
 export type { GameTab } from '../src/ui/GameTabs.tsx';
@@ -30,6 +31,8 @@ const InsideLabScope = createContext(false);
 
 export interface LabScopeProps {
   children?: ReactNode;
+  /** Shared game components use the existing production frame tokens. */
+  surface?: 'lab' | 'game';
   /** Acento del personaje, p. ej. `#BB84FF`. Por defecto, el violeta del Lab. */
   accent?: string;
   /** El mismo acento como `r,g,b` (lo usan los brillos `rgba(var(--accent-rgb), α)`). */
@@ -50,22 +53,24 @@ export interface LabScopeProps {
  * `data-reduced`, `data-ambient`) sin el layout de pantalla completa.
  * Anidado dentro de otro LabScope solo cambia el acento y los modos, sin repetir el id.
  */
-export function LabScope({ children, accent, accentRgb, scene, accentSoft, reduced = false, ambient = true }: LabScopeProps) {
+export function LabScope({ children, surface = 'lab', accent, accentRgb, scene, accentSoft, reduced: requestedReduced, ambient = true }: LabScopeProps) {
   const nested = useContext(InsideLabScope);
+  const systemReduced = useReducedMotionPreference();
+  const reduced = requestedReduced ?? systemReduced;
   const theme: Record<string, string> = {};
   if (accent) theme['--accent'] = accent;
   if (accentRgb) theme['--accent-rgb'] = accentRgb;
   if (scene) theme['--scene'] = scene;
   if (accentSoft) theme['--accent-soft'] = accentSoft;
   const app = (
-    <div className="app vyr-lab-scope-app" style={theme as CSSProperties} data-reduced={reduced} data-ambient={ambient}>
+    <div className={`app vyr-lab-scope-app ${surface === 'game' ? 'vyr-game-scope' : ''}`} style={theme as CSSProperties} data-reduced={reduced} data-ambient={ambient}>
       {children}
     </div>
   );
   if (nested) return app;
   return (
     <InsideLabScope.Provider value>
-      <div id="vyr-character-lab" className="vyr-lab-scope">{app}</div>
+      <div className="vyr-character-lab vyr-lab-scope">{app}</div>
     </InsideLabScope.Provider>
   );
 }

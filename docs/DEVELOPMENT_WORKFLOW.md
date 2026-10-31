@@ -7,3 +7,5 @@
 5. Iterar; abrir PR y fusionar sólo después de validar. No requiere abrir VS Code u otro editor.
 
 Para UI, las pruebas DOM no sustituyen la revisión del recorrido, contraste, tamaños ni movimiento en un navegador real.
+
+Para propuestas de Claude Design y validación del catálogo local, seguir [DESIGN_CATALOG.md](design/DESIGN_CATALOG.md). La conversión y sincronización externa se verifican por separado.

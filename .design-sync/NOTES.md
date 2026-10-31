@@ -1,67 +1,28 @@
-# Notas de /design-sync para Vyrathen
+# Estado del catálogo y sincronización
 
-Alcance acordado con el propietario (2026-10-31): **solo la identidad del Character Lab**. Ni el arte del Lab (`public/character-lab/art/*.webp`) ni las hojas del piloto 2D salen del repo. No hay Storybook (`shape: package`).
+El procedimiento vigente, fuentes de verdad, diferencias de contexto y paso Claude Design → Codex CLI están en [DESIGN_CATALOG.md](../docs/design/DESIGN_CATALOG.md). Leerlo antes de convertir o modificar previews.
 
-## Estado del primer intento (2026-10-31)
+## Validación local del slice de paridad
 
-- `DesignSync(create_project, "Vyrathen Design System")` falló con `HTTP 403 permission_denied: subscription required for this action`. El propietario eligió **solo local**: la build se verificó entera, pero **no se subió nada** y `config.json` **no tiene `projectId`**.
-- La próxima ejecución es, a efectos del skill, una primera sincronización:
-  1. crear el proyecto (o reutilizar uno vacío con ese nombre);
-  2. guardar el `projectId`;
-  3. ruta incremental.
-  Las vistas previas de `previews/` se reutilizan tal cual.
+- Ocho componentes; 25 previews. Entrada curada: `entry.tsx`; proveedor `LabScope`, con `surface="game"` para componentes compartidos de producción.
+- `npm run design:typecheck` comprueba realmente `.design-sync`, incluidos todos los previews. Los contratos manuales de `config.json.dtsPropsFor` se contrastan con los tipos reales, también en campos anidados. No se requiere mantener `.d.ts` publicados.
+- `npm run design:build` compila el **sitio local de revisión** con Vite y comprueba que no copie ilustraciones/sprites. No es la conversión del paquete de Claude Design.
+- `npm run design:test` comprueba la build en Chromium; `output/playwright/design-sync.html` reúne candidatos de catálogo/producción después de ejecutar `node scripts/ui-evidence-index.mjs`.
+- Los fixtures se derivan de `PLAYER_TEAM` y `toHeroProfile` en `fixtures.ts`. No importan persistencia ni conectan personajes conceptuales al motor.
+- Se elimina la carga exclusiva de Inter. El harness toma los enlaces de fuentes del `index.html` de la app; ambas superficies usan las mismas reglas y fallback. No se añade una fuente global.
+- `LabScope` usa clase, no repite el ID de la ruta; los selectores mantienen especificidad. `CharacterTabs` usa `panelId` por composición y `LayoutGroup` local. Movimiento reducido viene del hook de producción.
 
-## Particularidades del repo
+## Historial del servicio externo (2026-10-31)
 
-- **Sin `dist/` de librería ni `.d.ts`.**
-  - `vite build` produce la app, no un paquete.
-  - La entrada es `.design-sync/entry.tsx`, que hay que pasar siempre con `--entry ./.design-sync/entry.tsx` y `--node-modules ./node_modules`.
-  - No hay `buildCmd`: el convertidor empaqueta directamente desde `src/`.
-- **Las props están escritas a mano en `cfg.dtsPropsFor`.** El convertidor solo extrae tipos de un árbol `.d.ts` (`[DTS] parsed 0 .d.ts files`); sin él, cada `<Name>Props` sale como `[key: string]: unknown`. Si cambian las props de algún componente, hay que actualizarlas a mano (ver riesgos).
-- **`LabScope` vive en `entry.tsx`, no en `src/`.**
-  - Es el `cfg.provider`.
-  - Reproduce `#vyr-character-lab > .app` de `CharacterLabRoute`/`CharacterLabApp`.
-  - Anidado, solo cambia el acento y los modos, sin repetir el id.
-- **`.design-sync/sync.css`** (solo para la sincronización):
-  - carga Inter desde Google Fonts (`[FONT_REMOTE]`, esperado);
-  - quita el `min-height:100svh` y el layout centrado del contenedor;
-  - define `--vyr-font-display` = `--vyr-font-ui`, porque el Lab no tiene fuente display.
-- **`guidelinesGlob: []` a propósito.** El valor por defecto copiaría `docs/*.md` (DECISION_LOG, ORIGEN_REGLAS, PRIVATE_RESEARCH_USAGE…) a `guidelines/`, y eso queda fuera del alcance.
-- **El arte no está en el bundle.**
-  - `CharacterTabs` importa `data/characters.ts`, pero esbuild poda `characters`: ni siquiera quedan las cadenas `character-lab/art/*.webp`.
-  - Las vistas previas usan un marcador SVG geométrico original en línea.
-  - Antes de cada subida, comprueba con `find ds-bundle -iname '*.webp' -o -iname '*.png' | grep -v _screenshots` que la salida esté vacía.
-- **Posición en la rejilla.** Las piezas del Lab traen `grid-column`/`grid-row` para `.game-screen`.
-  - Dentro de un `display:grid` cualquiera crean columnas fantasma: el escenario a media celda, las pestañas desplazadas.
-  - En las vistas previas, el escenario va en `grid-template-columns: 0 minmax(0,1fr)` y las pestañas en un bloque normal.
-- **`CharacterTabs`:**
-  - tiene `aria-controls="character-panel"` fijo, así que el `.info-slot` que lo acompaña debe llevar ese id;
-  - usa `layoutId="selected-tab"` de motion. Con varias instancias en la misma página (la tarjeta en rejilla), el fondo activo puede animarse desde otra celda al montar; la captura por celda (`?story=`) no lo sufre.
-- **Instalación de las dependencias del convertidor.** Usa `npm i --prefix "$PWD/.ds-sync" esbuild ts-morph @types/react`. Sin `--prefix`, el primer intento las escribió en el `package.json` y el `package-lock.json` del repo, y hubo que restaurarlos.
-- **Playwright** se resuelve desde el `node_modules` del repo (1.64.1, con Chromium 1248 en `~/Library/Caches/ms-playwright`). No se instala nada aparte.
+En el primer intento, `DesignSync(create_project, "Vyrathen Design System")` devolvió `HTTP 403 permission_denied: subscription required for this action`. El propietario eligió continuar sólo local. No hubo subida y `config.json` no tiene `projectId`. **Este registro no demuestra el estado actual del servicio.** La sincronización remota está fuera del slice de paridad y no se ha reintentado.
 
-## Avisos conocidos del render check
+La conversión externa previa usó la herramienta de `bundled-skills/2.1.316`, Node 22.23.2 y React empaquetado por esbuild. No se declara compatible una nueva salida sin ejecutar de nuevo el convertidor y revisar su resultado. La entrada sigue siendo `--entry ./.design-sync/entry.tsx --node-modules ./node_modules`; no hay build de biblioteca ni `.d.ts` públicos y no se cambia `shape: package`.
 
-- `tokens: … (1 missing, below threshold)`: es `--hero-accent`. Lo fija en línea quien compone cada héroe (roster, ficha, vistas previas de `HeroSigil`/`HeroVitals`). Es lo esperado.
-- `[FONT_REMOTE] "Inter"`: es lo esperado (lo trae `sync.css`).
+## Límites de una futura conversión
 
-## Estados que no se pueden renderizar en estático
-
-- `SwitchFX` con `active` y sin `reduced`: el SELECT viaja y los fragmentos cruzan en 690–800 ms, y al acabar quedan en opacidad 0. Solo hay celdas en reposo.
-- La secuencia completa se ve en vivo en `CharacterStage › PantallaDeSeleccion`: hay que pulsar un retrato del rail.
-- Hover del retrato y de las pestañas (motion `whileHover`): sin celda.
-
-## Riesgos para la próxima sincronización
-
-- **`dtsPropsFor` duplica las props de los 8 componentes y la forma de `Character` y de `HeroProfileViewModel`.** Si cambian `src/features/character-lab/components/*.tsx`, `data/characters.ts`, `HeroPresentation.tsx` o `heroProfile.ts`, el contrato queda desfasado sin que nada avise. Compáralo a mano.
-- **Los datos de las vistas previas están copiados de `src/data/demo.ts`** (Vesper, Kael, Astra y Nyra). Si cambia la demo, las tarjetas no se enteran.
-- **La tríada de acentos del Lab se asigna a Vesper, Kael y Astra solo en las vistas previas.** No es una decisión de producto.
-- **Riesgos de `LabScope`:**
-  - si `CharacterLabApp` cambia su contenedor (clases, variables `--accent*`, `data-*`), `LabScope` deja de reproducirlo;
-  - repetir `#vyr-character-lab` en cada celda deja un HTML con ids duplicados. El CSS funciona, pero sería mejor que el Lab usara una clase.
-- **Textos en inglés fijos dentro de los componentes** (BASE STATS, SUBJECT INFORMATION, ABILITY 0N, VISUAL ENGINE…). Se subieron tal cual, y `conventions.md` los marca como provisionales.
-- **Inter llega por la red** (Google Fonts). La app real todavía no carga Inter, así que los diseños de Claude Design se verán distintos hasta que la app la cargue (queda como seguimiento para el propietario).
-- **Toolchain:**
-  - Node 22.23.2;
-  - convertidor de `bundled-skills/2.1.316`;
-  - React 19.3.1 empaquetado con esbuild porque no hay UMD.
+- Conservar `guidelinesGlob: []` y `readmeHeader: .design-sync/conventions.md`: el alcance documental no incluye copiar `docs/*.md` ni investigación.
+- No exportar `public/character-lab/art/` ni hojas del piloto. Los previews usan el marcador SVG geométrico original.
+- Instalar herramientas auxiliares bajo `.ds-sync/` con `--prefix`, sin modificar dependencias del juego. El convertidor externo no forma parte de las comprobaciones de CI.
+- Revisar archivos y referencias de recursos de la salida real antes de subir. La ausencia de arte en el sitio local Vite no acredita por sí sola el bundle externo.
+- SELECT activo y hover son estados temporales. La composición `CharacterStage.PantallaDeSeleccion` permite revisar la secuencia normal y su cancelación con movimiento reducido; las celdas de `SwitchFX` son estados en reposo.
+- Etiquetas inglesas, acentos asignados a la demo y toda exploración de nodos/ranuras siguen siendo provisionales.

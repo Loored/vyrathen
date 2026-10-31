@@ -41,3 +41,9 @@ ADR-014: tras integrar PR #8, la escena candidata de v0.3 reutiliza el cursor y 
 - Recursos adicionales pequeños con anclas propias; hojas originales intactas. Reparaciones de esquiva/K.O. de Grim sustituyen únicamente esos recortes en ejecución.
 - Secuencia visual de 2100 ms, reposo desde 2050 ms dentro del evento existente de 2500 ms; mismo serial y reloj compartido, sin callbacks de datos.
 - Evidencia base/head sobre el mismo cruce y encuadre con medición de píxeles, vídeo y frames decodificados. Arte provisional y timings pendientes de revisión del propietario; no autoriza resto del elenco ni merge. Detalle: `docs/design/COMBAT_EXPERIENCE_V04.md`.
+
+## ADR-015 — Paridad y comprobación del catálogo local (2026-10-31)
+
+`.design-sync` sigue siendo una representación curada de ocho componentes, sin migración visual. Se retira Inter exclusiva del catálogo y el harness reutiliza los enlaces de fuentes de producción. Los tokens del marco se comparten desde `game-ui.css`; la clase reutilizable del Lab conserva la especificidad de sus selectores. `CharacterTabs` acepta un panel por composición y aísla Motion por instancia. El nombre accesible no incluye ecos decorativos.
+
+Los fixtures se derivan de demo/adaptador y permanecen separados de guardados. TypeScript comprueba entry/previews y contratos manuales, incluido su contenido anidado. Vite/Playwright validan el catálogo compilado junto a producción; CI conserva los checks y artefactos existentes. No se añade framework ni dependencia. Conversión externa y subida no ejecutadas; el 403 previo no se toma como estado actual del servicio. Alcance y comandos en [DESIGN_CATALOG.md](design/DESIGN_CATALOG.md).
