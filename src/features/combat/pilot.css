@@ -89,3 +89,17 @@
  .vyr-combat[data-view="scene"][data-framing="expanded"] .vyr-combat-controls { margin-top:5px; padding-top:6px; }
  .vyr-combat[data-view="scene"][data-framing="expanded"] .vyr-combat-event>small { margin-top:5px; }
 }
+
+/* Same inherited beat clock and serial, a longer clip only for a surviving recorded h4→e3 power hit. */
+.vyr-pilot-scene[data-clip][data-animated="true"] .vyr-pilot-sequence { animation-name:vyr-nyra-grim; animation-duration:2100ms; }
+@keyframes vyr-nyra-grim {
+  0%{--pilot-beat:0}7.142857%{--pilot-beat:1}15.238095%{--pilot-beat:2}
+  22.857143%{--pilot-beat:3}29.523810%{--pilot-beat:4}36.190476%{--pilot-beat:5}
+  42.857143%{--pilot-beat:6}51.428571%{--pilot-beat:7}60%{--pilot-beat:8}
+  68.571429%{--pilot-beat:9}78.095238%{--pilot-beat:10}87.619048%{--pilot-beat:11}
+  97.619048%,100%{--pilot-beat:12}
+}
+@media(prefers-reduced-motion:reduce) {
+ .vyr-pilot-scene[data-clip][data-animated="true"] .vyr-pilot-beat { opacity:0; }
+ .vyr-pilot-scene[data-clip][data-animated="true"] .vyr-pilot-beat[data-clip-step="6"] { opacity:1; }
+}

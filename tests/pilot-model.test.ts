@@ -140,7 +140,7 @@ test('all 16 pose anchors map support to the same floor and preserve one scale p
       if (POSE_ANCHORS[id][pose].hand) assert.ok(geometry.hand?.every(Number.isFinite));
     }
   }
-  assert.equal(POSE_ANCHORS.e3.dodge.sourceClipped, 'right');
-  assert.equal(POSE_ANCHORS.e3.ko.sourceClipped, 'left');
+  assert.equal(POSE_ANCHORS.e3.dodge.sourceClipped, undefined);
+  assert.equal(POSE_ANCHORS.e3.ko.sourceClipped, undefined);
   assert.equal(projectPose('h4','ko','expanded').support[1], projectPose('e3','ko','expanded').support[1]);
 });

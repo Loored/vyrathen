@@ -3,7 +3,7 @@ import type { CombatEvent, CombatResult } from '../../engine/types.ts';
 import { initialPlayback, transition, type Playback, type PlaybackAction, type Timeline } from './playback.ts';
 import { resourcesAtCursor, type ResourcePlayback } from './resourcePlayback.ts';
 
-export type PilotPhase = 'event' | 'anticipation' | 'action' | 'reaction' | 'rest';
+export type PilotPhase = 'event' | 'anticipation' | 'action' | 'reaction' | 'contact' | 'recovery' | 'rest';
 export type PilotPose = 'idle' | 'anticipation' | 'basic' | 'power' | 'hit' | 'block' | 'dodge' | 'ko';
 export type PilotPlayer = Playback & { view: 'tactical' | 'scene'; phase: PilotPhase; animated: boolean; visualSerial: number; framing: PilotFraming; debugAnchors: boolean };
 export type PilotAction = PlaybackAction | { type: 'view'; view: PilotPlayer['view'] } | { type: 'inspect'; phase: PilotPhase } | { type:'framing'; framing:PilotFraming } | { type:'anchors'; enabled:boolean };
@@ -59,10 +59,10 @@ export function pilotFrame(battle: CombatResult, recording: ResourcePlayback, ti
 }
 export function inspectedPose(actor: PilotActorState, phase: PilotPhase): PilotPose {
   if (actor.knockedOut) return 'ko';
-  if (phase === 'rest') return 'idle';
+  if (phase === 'rest' || phase === 'recovery') return 'idle';
   if (phase === 'anticipation') return actor.role === 'actor' ? 'anticipation' : 'idle';
   if (phase === 'action') return actor.role === 'actor' ? actor.pose : 'idle';
-  if (phase === 'reaction') return actor.role === 'target' ? actor.pose : 'idle';
+  if (phase === 'reaction' || phase === 'contact') return actor.role === 'target' ? actor.pose : 'idle';
   return actor.pose;
 }
 export const POSE_FRAMES: Record<PilotPose, number> = { idle: 0, anticipation: 1, basic: 2, power: 3, hit: 4, block: 5, dodge: 6, ko: 7 };
