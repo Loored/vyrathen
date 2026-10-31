@@ -58,3 +58,7 @@ Los nuevos recorridos comprueban HUD y acciones dentro de 1366×768, navegación
 - Evidencia extendida en el workflow actual: roster inicial, ficha Vesper y retorno resaltado en cuatro tamaños; comparación base/head, vídeo normal y metadatos por SHA. Interacción rápida con mouse/teclado reales, registro de eventos confiables durante animación, sin dispatchEvent ni force. `node scripts/ui-evidence-index.mjs` genera la galería; `npx playwright show-report output/playwright/report` sirve los recorridos sin editor.
 
 Composición, contratos, estados, hallazgos y decisiones pendientes: [Personajes v1](design/CHARACTERS_V1_PROPOSAL.md).
+
+## Combat Experience v0.1 — candidato
+
+Combate reutiliza tokens, acciones y HeroSigil. Formaciones, evento, roles, reloj y selección de ronda son específicos de `features/combat/`; no se promueven como primitivas globales. Ver [arquitectura, límites y decisiones pendientes](design/COMBAT_EXPERIENCE_V01.md). La galería `output/playwright/combat.html` añade comparación base/head, estados pausados y vídeo; no crea baselines.

@@ -1,0 +1,57 @@
+.vyr-combat{border:1px solid var(--vyr-border);background:var(--vyr-panel);padding:24px;margin-bottom:24px;scroll-margin-top:24px}
+.vyr-combat-header{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:20px}.vyr-combat h2{font-size:28px;margin:6px 0}.vyr-combat h3{margin:0 0 12px}.vyr-combat small{display:block;color:var(--vyr-muted)}
+.vyr-combat-stage{display:grid;grid-template-columns:1fr 1.15fr 1fr;gap:20px;align-items:center;background:linear-gradient(125deg,transparent 48%,#ffffff06 48%,#ffffff06 52%,transparent 52%)}
+.vyr-combat-team{min-width:0}.vyr-combat-team h3{font-size:13px;text-transform:uppercase;letter-spacing:.1em}.vyr-combat-team ol{list-style:none;padding:0;margin:0}.vyr-combat-team li{display:grid;grid-template-columns:42px 1fr;gap:4px 10px;position:relative;min-height:67px;padding:8px;border-bottom:1px solid var(--vyr-border);border-left:3px solid transparent}.vyr-combat-team li[data-role="Actor"]{border-left-color:var(--vyr-text);background:#ffffff12}.vyr-combat-team li[data-role^="Objetivo"]{border:1px dashed var(--vyr-focus);border-left-width:3px}.vyr-combat-team li[data-role*="K.O."]{border-style:double;border-width:3px}.vyr-combat-team strong{overflow-wrap:anywhere}.vyr-combat-role{grid-column:2;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--vyr-muted)}
+.vyr-combat-team .vyr-hero-sigil{grid-row:span 2;height:42px;min-height:0;width:42px;overflow:hidden;display:grid;place-items:center}.vyr-combat-team .vyr-hero-glyph{font-size:29px}.vyr-combat-team .vyr-hero-ambient,.vyr-combat-team .vyr-hero-registration{display:none}.vyr-combat-team.defensor{grid-column:3}.vyr-combat-event{grid-column:2;grid-row:1;text-align:center;min-width:0;overflow-wrap:anywhere}.vyr-combat-event h3{font-size:30px;margin-top:16px}.vyr-combat-event p{line-height:1.6}.vyr-combat-chain{font-weight:700}.vyr-combat-event small{margin-top:24px;font-size:11px}.vyr-combat-controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;border-top:1px solid var(--vyr-border);padding-top:20px;margin-top:24px}.vyr-combat-controls [role=status]{min-width:145px;font-size:13px}.vyr-combat .game-action{font-size:12px;min-height:40px}.vyr-combat-round{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:20px 0}.vyr-combat-round select{background:var(--vyr-surface);color:var(--vyr-text);border:1px solid var(--vyr-border);padding:10px}.vyr-combat-round span{font-size:12px;color:var(--vyr-muted)}.vyr-combat summary{cursor:pointer;padding:12px 0}.vyr-combat-log{border-top:1px solid var(--vyr-border)}.vyr-combat-log li{padding:8px;line-height:1.5}.vyr-combat-log [aria-current]{border-left:3px solid var(--vyr-focus)}.vyr-combat-final{margin-top:18px;border-top:2px solid var(--vyr-border);padding-top:22px;scroll-margin-top:30px}.vyr-combat-final h3{margin-top:12px}.vyr-combat-final p,.vyr-combat-final li{font-size:13px;line-height:1.6}.combat-experience-setup{margin-top:20px}.combat-experience-setup>.battle-grid{grid-template-columns:minmax(0,1fr)}
+@media(max-width:1050px){.vyr-combat{padding:16px}.vyr-combat-stage{gap:12px;grid-template-columns:1fr 1fr}.vyr-combat-team.defensor{grid-column:2}.vyr-combat-event{grid-column:1/-1;grid-row:2;margin-top:12px}.vyr-combat-event small{margin-top:10px}}
+@media(max-width:480px){.vyr-combat-header{display:block}.vyr-combat-header a{display:inline-flex;margin-top:10px}.vyr-combat{padding:12px}.vyr-combat-stage{gap:10px}.vyr-combat-team li{grid-template-columns:1fr;padding:6px;min-height:115px}.vyr-combat-team .vyr-hero-sigil{display:none}.vyr-combat-role{grid-column:1}.vyr-combat-team h3{font-size:10px;letter-spacing:0}.vyr-combat-team strong{font-size:13px}.vyr-combat-team small{font-size:11px}.vyr-combat-controls>*{width:100%}.vyr-combat-final ul{padding-left:18px}}
+@media(min-width:1051px){.vyr-combat-page .page-head{margin-bottom:18px}.vyr-combat-page .page-head h1{font-size:32px;margin:8px 0}.vyr-combat-page .page-head p{margin:0}.vyr-combat{padding:18px 24px}.vyr-combat-header{margin-bottom:12px}.vyr-combat h2{font-size:24px}.vyr-combat-team li{min-height:54px;padding:4px 8px}.vyr-combat-controls{margin-top:14px;padding-top:14px}.vyr-combat-header .game-action{text-decoration:none}}
+
+/* Event feedback uses recorded kinds only; motion never advances the cursor. */
+.vyr-combat-stage { --combat-accent:var(--vyr-text); }
+.vyr-combat-stage[data-kind="normal"],.vyr-combat-stage[data-kind="power"] { --combat-accent:var(--vyr-type-energia); }
+.vyr-combat-stage[data-kind="blocked"],.vyr-combat-stage[data-kind="dodged"] { --combat-accent:var(--vyr-type-defensa); }
+.vyr-combat-stage[data-kind="ko"] { --combat-accent:var(--vyr-type-psico); }
+.vyr-combat-team li { transition:background-color var(--vyr-standard),border-color var(--vyr-standard); }
+.vyr-combat-team .vyr-hero-sigil { transition:transform var(--vyr-standard) var(--vyr-ease); }
+.vyr-combat-team li[data-role="Actor"] { box-shadow:inset 3px 0 var(--combat-accent); }
+.vyr-combat-team li[data-role^="Objetivo"] { background:color-mix(in srgb,var(--combat-accent) 7%,transparent); border-color:var(--combat-accent); }
+.vyr-combat-team li[data-role="Actor"] .vyr-combat-role,.vyr-combat-team li[data-role^="Objetivo"] .vyr-combat-role { color:var(--combat-accent); font-weight:800; }
+.vyr-combat-event { border-inline:1px solid var(--vyr-border); padding:0 14px; }
+.vyr-combat-event-content { min-height:240px; animation:vyr-combat-event-enter 280ms var(--vyr-ease) both; }
+.vyr-combat-action-heading { display:grid; grid-template-columns:48px minmax(0,1fr); gap:4px 12px; align-items:center; text-align:left; margin:12px 0; }
+.vyr-combat-action-icon { display:grid; grid-row:1/3; place-items:center; width:48px; height:48px; color:var(--combat-accent); background:color-mix(in srgb,var(--combat-accent) 9%,transparent); clip-path:polygon(15% 0,100% 0,100% 85%,85% 100%,0 100%,0 15%); }
+.vyr-combat-action-category { display:block; color:var(--combat-accent); font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:.1em; }
+.vyr-combat-event h3 { font-size:28px; margin:0; }
+.vyr-combat-action-heading h3 { grid-column:2; }
+.vyr-combat-chain { display:grid; grid-template-columns:minmax(0,1fr) auto minmax(0,1fr); align-items:center; gap:8px; font-size:13px; }
+.vyr-combat-chain small { margin:0 0 4px; font-size:10px; font-weight:500; }
+.vyr-combat-event p { font-size:13px; line-height:1.5; margin:12px 0; }
+.vyr-combat-event>small { margin-top:10px; }
+.vyr-combat-damage { display:flex; justify-content:center; align-items:center; gap:10px; color:var(--combat-accent); animation:vyr-combat-damage-enter 420ms var(--vyr-ease) both; }
+.vyr-combat-damage strong { font-size:42px; line-height:1; font-variant-numeric:tabular-nums; }
+.vyr-combat-damage>span { text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:.05em; }
+.vyr-combat-damage small { font-size:10px; margin:4px 0 0; text-transform:none; letter-spacing:0; }
+.vyr-combat-position { display:flex; align-items:center; gap:14px; margin-top:16px; }
+.vyr-combat-position progress { display:block; appearance:none; flex:1; min-width:0; height:3px; border:0; background:var(--vyr-border); accent-color:var(--vyr-focus); }
+.vyr-combat-position progress::-webkit-progress-bar { background:var(--vyr-border); }
+.vyr-combat-position progress::-webkit-progress-value { background:var(--vyr-focus); }
+.vyr-combat-position progress::-moz-progress-bar { background:var(--vyr-focus); }
+.vyr-combat-position>span { font-size:11px; color:var(--vyr-muted); }
+.vyr-combat-controls { border-top:0; padding-top:0; }
+.vyr-combat :is(button,a,select,summary):focus-visible { outline:2px solid var(--vyr-focus); outline-offset:4px; }
+.vyr-combat :is(summary,select) { transition:color var(--vyr-fast),background-color var(--vyr-fast); }
+.vyr-combat :is(summary,select):hover { color:var(--vyr-focus); background-color:#ffffff06; }
+@media(hover:hover) {
+  .vyr-combat-team li:hover { background-color:#ffffff0c; }
+  .vyr-combat-team li:hover .vyr-hero-sigil { transform:scale(1.08); }
+  .vyr-combat .game-action:hover:not(:disabled) { box-shadow:0 3px 14px #0004; }
+}
+@keyframes vyr-combat-event-enter { from { opacity:.3; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+@keyframes vyr-combat-damage-enter { from { opacity:0; transform:translateY(8px) scale(.95); } to { opacity:1; transform:translateY(0) scale(1); } }
+@media(max-width:1050px) { .vyr-combat-event { border-inline:0; border-top:1px solid var(--vyr-border); padding:14px 0 0; }.vyr-combat-event-content { min-height:290px; } }
+@media(min-width:1051px) { .vyr-combat-header { margin-bottom:4px; }.vyr-combat-position { margin-top:10px; }.vyr-combat-controls { margin-top:8px; } }
+@media(prefers-reduced-motion:reduce) {
+  .vyr-combat * { animation:none!important; transition:none!important; }
+  .vyr-combat .game-action:hover:not(:disabled),.vyr-combat-team li:hover .vyr-hero-sigil { transform:none; }
+}
