@@ -6,7 +6,7 @@ Base: main 2739e4f (PR #6 fusionado). Composición pendiente de aprobación art�
 
 `simulateCombat` calcula una sola vez por acción Iniciar/Nueva simulación en App. Conserva RNG, orden, fórmulas, poderes y desempate. `CombatResult` registra semilla, diez RoundSnapshot, eventos ordenados, equipos finales y resultado. SaveData v1 y `lastBattle` conservan su forma. Seleccionar rival ya no elimina el informe: configuración futura y encuentro almacenado son independientes. Nueva simulación incrementa battles como antes; reproducción no recibe setter de SaveData ni escribe almacenamiento.
 
-`features/combat/playback.ts` adapta cada evento en orden sin ordenar ni analizar message. Una ronda vacía ocupa un punto de navegación sin fabricar CombatEvent. `transition` es una función pura; el único cursor empieza en -1. React usa un reducer y un timeout de 1100 ms, hipótesis de lectura revisable. Cada cambio de estado cancela el timeout anterior; desmontar cancela el pendiente. El componente se monta sólo en Combate y su key cambia con el contador de simulaciones. No hay reproducción invisible al salir; al regresar vuelve al inicio, sin autoplay. Los controles no mueven el foco.
+`features/combat/playback.ts` adapta cada evento en orden sin ordenar ni analizar message. Una ronda vacía ocupa un punto de navegación sin fabricar CombatEvent. `transition` es una función pura; el único cursor empieza en -1. React usa un reducer y un timeout de 2500 ms, intervalo solicitado por el propietario. Cada cambio de estado cancela el timeout anterior; desmontar cancela el pendiente. El componente se monta sólo en Combate y su key cambia con el contador de simulaciones. No hay reproducción invisible al salir; al regresar vuelve al inicio, sin autoplay. Los controles no mueven el foco.
 
 | Estado | Entrada / salida |
 |---|---|
@@ -54,6 +54,14 @@ Pruebas puras cubren orden, inmutabilidad, límites, rondas vacías y participan
 Decisiones artísticas del propietario (máximo tres):
 1. Formación vertical enfrentada con acción central y símbolos actuales.
 2. Tratamiento de actor/objetivo/K.O. mediante bordes y etiquetas, sin VFX.
-3. Ritmo de lectura de 1100 ms y configuración plegada después de simular.
+3. Configuración plegada después de simular. Intervalo de 2500 ms solicitado por el propietario en la iteración siguiente.
 
 Contenido: se reutilizan exclusivamente datos demo y recursos de código existentes. El catálogo alfa conserva la revisión de nombres/contenido pendiente antes de distribución comercial; no se añaden recursos de terceros.
+
+## Iteración de feedback — 2026-10-30
+
+El propietario solicita más fluidez, énfasis en acción/daño/defensa y 2500 ms por evento. Se mantiene un único timeout de UI: los 280 ms de entrada y 420 ms de aparición del daño son animaciones CSS de presentación, sin callbacks ni cambios del cursor. No se animan HP/MP. El foco y los controles permanecen fuera de la entrada animada. Movimiento reducido elimina transiciones y animaciones sin ocultar datos.
+
+Cada kind lleva un icono de código, categoría textual y acento: ataque/poder, defensa (bloqueo parcial/esquiva), fallo, K.O., sin acción y sistema. Las etiquetas del actor y objetivo reflejan el evento, no el nombre del bando: un defensor puede atacar. Bloqueo no identifica la habilidad intentada; K.O. no atribuye daño adicional. El daño numérico se muestra sólo cuando existe en el evento. Hover refuerza filas/símbolos y controles; la información sigue visible sin hover. La posición se expone con progress semántico, sin animación continua ni anuncios por evento. Estas mejoras de presentación siguen pendientes de revisión artística.
+
+Verificación local de esta iteración (macOS/Chromium, build de producción): 17 pruebas Node/DOM y 27 pruebas Playwright aprobadas; typecheck y build aprobados. Evidencia en cuatro resoluciones sin overflow global, con controles visibles a 1366×768; inspección de capturas de escritorio/móvil. Las pruebas cubren espera mayor al intervalo anterior, cancelación a 2500 ms, entrada rápida real y señales de ataque desde el bando defensor, bloqueo, esquiva, poder, fallo y K.O. La ejecución local no sustituye la verificación Linux del SHA publicado.

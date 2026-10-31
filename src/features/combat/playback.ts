@@ -1,5 +1,17 @@
 import type { CombatEvent, CombatResult, Side } from '../../engine/types.ts';
 
+export const PLAYBACK_INTERVAL_MS = 2500;
+// Only event.kind determines these cues; message is never parsed for ability details.
+export const actionCues: Record<CombatEvent['kind'], { category: string; actor: string; target: string }> = {
+  normal: { category: 'Ataque', actor: 'Ataca', target: 'Recibe el golpe' },
+  power: { category: 'Poder', actor: 'Usa poder', target: 'Recibe el poder' },
+  blocked: { category: 'Defensa · bloqueo parcial', actor: 'Ataca', target: 'Bloquea parcialmente' },
+  dodged: { category: 'Defensa · esquiva', actor: 'Ataca', target: 'Esquiva' },
+  miss: { category: 'Ataque fallido', actor: 'Falla', target: 'Objetivo del fallo' },
+  ko: { category: 'K.O. registrado', actor: 'Actor', target: 'K.O.' },
+  skip: { category: 'Sin acción', actor: 'No actúa', target: 'Objetivo' },
+  info: { category: 'Sistema', actor: 'Actor', target: 'Objetivo' },
+};
 export const actionLabels: Record<CombatEvent['kind'], string> = {
   normal: 'Golpe', power: 'Poder', blocked: 'Bloqueo parcial', dodged: 'Esquiva',
   miss: 'Fallo', ko: 'K.O.', skip: 'Sin acción', info: 'Sistema',

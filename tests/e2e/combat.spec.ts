@@ -16,7 +16,7 @@ test('legacy result: trusted rapid input, timers, navigation and persistence', a
     const schedule = window.setTimeout.bind(window);
     const cancel = window.clearTimeout.bind(window);
     window.setTimeout = ((handler: TimerHandler, delay?: number, ...args: unknown[]) => {
-      if (delay !== 1100) return schedule(handler, delay, ...args);
+      if (delay !== 2500) return schedule(handler, delay, ...args);
       const id = schedule(() => {
         tracked.delete(id);
         if (typeof handler === 'function') handler(...args);
@@ -33,6 +33,8 @@ test('legacy result: trusted rapid input, timers, navigation and persistence', a
   const status = page.getByRole('status').filter({ hasText: /Listo|Reproduciendo|Pausado|Finalizado/ });
   await expect(status).toHaveText('Listo para reproducir');
   await page.getByRole('button', { name: 'Continuar reproducción' }).click();
+  await page.waitForTimeout(1400);
+  await expect(page.getByLabel('Evento actual')).toContainText('A la espera de tu señal');
   await expect(page.getByLabel('Evento actual')).toContainText('EVENTO 1 DE');
   await page.getByRole('button', { name: 'Pausar', exact: true }).click();
   const step = page.getByRole('button', { name: 'Avanzar un evento' });
@@ -45,7 +47,7 @@ test('legacy result: trusted rapid input, timers, navigation and persistence', a
   await page.getByLabel('Inspeccionar ronda').selectOption('4');
   await expect(status).toHaveText('Pausado');
   const paused = await page.getByLabel('Evento actual').textContent();
-  await page.waitForTimeout(1300);
+  await page.waitForTimeout(2800);
   await expect(page.getByLabel('Evento actual')).toHaveText(paused!);
   await page.getByRole('button', { name: 'Ir al final' }).click();
   await expect(status).toHaveText('Finalizado');
@@ -55,7 +57,7 @@ test('legacy result: trusted rapid input, timers, navigation and persistence', a
   await expect.poll(() => page.evaluate(() => (window as Window & { combatTimeouts: Set<number> }).combatTimeouts.size)).toBe(1);
   await page.getByRole('navigation').getByRole('button', { name: 'Centro de control', exact: true }).click();
   expect(await page.evaluate(() => (window as Window & { combatTimeouts: Set<number> }).combatTimeouts.size)).toBe(0);
-  await page.waitForTimeout(1300);
+  await page.waitForTimeout(2800);
   await page.getByRole('navigation').getByRole('button', { name: 'Simulador de combate', exact: true }).click();
   await expect(status).toHaveText('Listo para reproducir');
   expect(await readSave()).toBe(before);
@@ -71,6 +73,40 @@ test('legacy result: trusted rapid input, timers, navigation and persistence', a
   expect(saved.funds).toBe(fixture.funds);
   expect(saved.turns).toBe(fixture.turns);
   expect(saved.lastBattle).toEqual(simulateCombat(PLAYER_TEAM, ENEMIES.guardianes.heroes, 42));
+});
+test('structured action cues distinguish an attacking defender, partial block, dodge and recorded damage', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  const base = storedBattle.rounds[0].events[0];
+  const kinds = ['normal', 'blocked', 'dodged', 'power', 'miss', 'ko'] as const;
+  const battle = { ...storedBattle, rounds: kinds.map((kind, index) => ({
+    round: index + 1, attackerAlive: 5, defenderAlive: 5,
+    events: [{ ...base, id: `cue-${index}`, round: index + 1, kind, side: 'defensor' as const,
+      actor: storedBattle.defenders[0].name, target: storedBattle.attackers[0].name,
+      damage: ['normal', 'blocked', 'power'].includes(kind) ? 37 : undefined,
+      message: 'Descripción registrada sin detalles adicionales.' }],
+  })) };
+  await page.addInitScript(save => localStorage.setItem('vyrathen-v01', JSON.stringify(save)), { ...fixture, lastBattle: battle });
+  await enter(page);
+  const step = page.getByRole('button', { name: 'Avanzar un evento' });
+  await step.click();
+  await expect(page.locator('.vyr-combat-team.defensor [data-role="Actor"]')).toContainText('Ataca');
+  await expect(page.locator('.vyr-combat-damage')).toContainText('37');
+  await step.click();
+  await expect(page.locator('.vyr-combat-team.atacante [data-role="Objetivo"]')).toContainText('Bloquea parcialmente');
+  await expect(page.locator('.vyr-combat-damage')).toContainText('Tras bloqueo parcial');
+  await step.click();
+  await expect(page.locator('.vyr-combat-team.atacante [data-role="Objetivo"]')).toContainText('Esquiva');
+  await expect(page.locator('.vyr-combat-damage')).toHaveCount(0);
+  await step.click();
+  await expect(page.locator('.vyr-combat-action-category')).toHaveText('Poder');
+  await expect(page.locator('.vyr-combat-damage')).toContainText('37');
+  await step.click();
+  await expect(page.locator('.vyr-combat-action-category')).toHaveText('Ataque fallido');
+  await expect(page.locator('.vyr-combat-damage')).toHaveCount(0);
+  await step.click();
+  await expect(page.locator('.vyr-combat-team.atacante [data-role="Objetivo · K.O."]')).toHaveCount(1);
+  await expect(page.locator('.vyr-combat-team.defensor [data-role="Actor"]')).toHaveCount(1);
+  await expect(page.locator('.vyr-combat-damage')).toHaveCount(0);
 });
 test('reduced motion, textual inspection and accessibility', async ({ page }) => {
   await page.addInitScript(save => localStorage.setItem('vyrathen-v01', JSON.stringify(save)), fixture);

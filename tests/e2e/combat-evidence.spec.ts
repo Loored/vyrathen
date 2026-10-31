@@ -52,7 +52,7 @@ test('combat vídeo normal: play pause step round restart', async ({ page }) => 
   await page.goto('/');
   await page.getByRole('navigation').getByRole('button', { name: 'Simulador de combate', exact: true }).click();
   await page.getByRole('button', { name: 'Continuar reproducción' }).click();
-  await expect(page.getByLabel('Evento actual')).toContainText('EVENTO 2 DE');
+  await expect(page.getByLabel('Evento actual')).toContainText('EVENTO 2 DE', { timeout: 8000 });
   await page.getByRole('button', { name: 'Pausar', exact: true }).click();
   await page.getByRole('button', { name: 'Avanzar un evento' }).click();
   await page.getByLabel('Inspeccionar ronda').selectOption('5');
