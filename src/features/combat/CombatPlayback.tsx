@@ -61,7 +61,7 @@ export function CombatPlayback({ battle }: { battle: CombatResult }) {
           {event?.damage !== undefined && <div className="vyr-combat-damage"><strong>{event.damage}</strong><span>Daño registrado{event.kind === 'blocked' && <small>Tras bloqueo parcial</small>}</span></div>}
           {record?.attempt && <p className="vyr-combat-cost">{record.attempt.kind === 'power' ? `Poder intentado · ${record.attempt.power}` : 'Ataque básico'}<span>MP consumido: <b>{record.attempt.mpSpent}</b></span></p>}
         </div>
-        <small>{recording.mode === 'recorded' ? state.cursor < 0 ? 'Recursos iniciales · registro v1' : 'Recursos tras el evento · registro v1' : 'Modo clásico · sin registro de HP/MP intermedios'}</small>
+        <small>{recording.mode === 'recorded' ? state.cursor < 0 ? 'Recursos iniciales del encuentro' : 'Recursos tras este evento' : 'Modo clásico · sin registro de HP/MP intermedios'}</small>
       </div>
     </div>
     <div className="vyr-combat-position"><progress aria-label="Posición de reproducción" max={Math.max(1, timeline.length)} value={state.cursor + 1}/><span>2,5 s por evento</span></div>
