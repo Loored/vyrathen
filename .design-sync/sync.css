@@ -1,0 +1,19 @@
+/*
+ * Solo para la sincronización con Claude Design. No se importa desde src/.
+ * - Carga Inter (OFL) porque el Lab la declara y la app no la carga.
+ * - Quita el layout de pantalla completa del contenedor del Lab para que
+ *   LabScope pueda envolver piezas sueltas.
+ */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
+#vyr-character-lab.vyr-lab-scope {
+  min-height: 0;
+  overflow-x: visible;
+  /* El Lab no tiene fuente display: el nombre gigante usa la sans de interfaz. */
+  --vyr-font-display: var(--vyr-font-ui);
+}
+#vyr-character-lab .app.vyr-lab-scope-app {
+  min-height: 0;
+  display: block;
+  padding: 0;
+}
