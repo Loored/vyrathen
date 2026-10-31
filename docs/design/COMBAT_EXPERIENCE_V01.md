@@ -39,9 +39,11 @@ Dos formaciones verticales de cinco participantes flanquean una acción central.
 
 Game UI System aporta tokens, game-action, foco y HeroSigil compartido con roster/ficha. La escena, reloj, roles, registro y select de rondas son específicos de Combate; CSS acotado a `vyr-combat`. No se extraen abstracciones sin consumidores reales. Configuración se pliega con resultado presente y queda disponible para una nueva simulación.
 
-## Contrato aditivo futuro (no implementado)
+## Contrato aditivo futuro (no implementado en v0.1)
 
 La aprobación de v0.1 no abarca estas ampliaciones. Combat Experience v0.2 requiere una rama y un PR separados; sprites, VFX y nueva telemetría quedan fuera del cierre actual.
+
+El incremento posterior de estado por acción y recursos se documenta por separado en [Combat Experience v0.2](COMBAT_EXPERIENCE_V02.md); no modifica el alcance aprobado de esta versión.
 
 Añadir versión opcional de telemetría al resultado, snapshot inicial por ID, event sequence estable y actorId/targetId opcionales; acción con actionId y powerId explícitos, resultado discriminado y recursos antes/después (HP/MP), coste realmente consumido y efectos/estados aplicados por participante. Emitir estos campos desde el motor en el punto de resolución, no desde la UI. Para acciones bloqueadas/fallidas/esquivadas registrar igualmente habilidad intentada y consumo efectivo. Para K.O. registrar defeatedId independiente del actor. Sprites/VFX consumirían esta telemetría sin gobernar la simulación.
 

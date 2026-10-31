@@ -48,6 +48,8 @@ jobs:
           EVIDENCE_SHA: ${{ github.event.pull_request.base.sha }}
         run: |
           cp tests/e2e/frame-evidence.spec.ts tests/e2e/combat-evidence.spec.ts .cache/ui-base/tests/e2e/
+          mkdir -p .cache/ui-base/tests/fixtures
+          cp tests/fixtures/combat-v01-1024.json .cache/ui-base/tests/fixtures/
           cd .cache/ui-base
           npm ci
           npx playwright install chromium

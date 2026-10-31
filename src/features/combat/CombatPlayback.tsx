@@ -4,12 +4,14 @@ import type { CombatResult } from '../../engine/types';
 import { toHeroProfile } from '../heroes/heroProfile';
 import { HeroSigil } from '../heroes/HeroPresentation';
 import { actionCues, actionLabels, adaptBattle, eventParticipants, initialPlayback, PLAYBACK_INTERVAL_MS, transition } from './playback';
+import { adaptResources, resourcesAtCursor } from './resourcePlayback';
 import './combat.css';
 
 const statusLabels = { empty: 'Sin eventos', ready: 'Listo para reproducir', playing: 'Reproduciendo', paused: 'Pausado', finished: 'Finalizado' };
 const actionIcons = { normal: Swords, power: Zap, blocked: ShieldHalf, dodged: Wind, miss: Crosshair, ko: Skull, skip: Minus, info: Radio };
 export function CombatPlayback({ battle }: { battle: CombatResult }) {
   const timeline = useMemo(() => adaptBattle(battle), [battle]);
+  const recording = useMemo(() => adaptResources(battle), [battle]);
   const [state, dispatch] = useReducer((s: ReturnType<typeof initialPlayback>, a: Parameters<typeof transition>[1]) => transition(s, a, timeline), timeline, initialPlayback);
   useEffect(() => {
     if (state.status !== 'playing') return;
@@ -18,19 +20,33 @@ export function CombatPlayback({ battle }: { battle: CombatResult }) {
   }, [state]);
   const item = timeline[state.cursor];
   const event = item?.event;
-  const participants = eventParticipants(battle, event);
+  const record = event && recording.mode === 'recorded' ? recording.events[item.ordinal - 1] : undefined;
+  const participants = record ? { actor: record.actorId, target: record.targetId } : eventParticipants(battle, event);
+  const currentResources = resourcesAtCursor(recording, timeline, state.cursor);
   const round = battle.rounds.find(r => r.round === item?.round);
   const total = battle.rounds.reduce((sum, r) => sum + r.events.length, 0);
   const cue = event ? actionCues[event.kind] : undefined;
   const ActionIcon = event ? actionIcons[event.kind] : Radio;
-  return <section className="vyr-combat" aria-label="Reproducción del encuentro">
+  return <section className="vyr-combat" aria-label="Reproducción del encuentro" data-cursor={state.cursor} data-recording={recording.mode === 'recorded' ? recording.version : 'legacy'}>
     <header className="vyr-combat-header"><div><span className="eyebrow">ENCUENTRO REGISTRADO / #{battle.seed}</span><h2>Frente a frente</h2></div><a className="game-action secondary" href="#combat-final">Consultar resultado final</a></header>
     <div className="vyr-combat-stage" data-kind={event?.kind}>
       {([['atacante', battle.attackers], ['defensor', battle.defenders]] as const).map(([side, heroes]) => <section className={`vyr-combat-team ${side}`} key={side} aria-label={`Bando ${side}`}><h3>{side === 'atacante' ? '01 / Atacantes' : '02 / Defensores'}</h3><ol>{heroes.map(hero => {
         const profile = toHeroProfile(hero);
-        const role = participants.target === hero.id ? event?.kind === 'ko' ? 'Objetivo · K.O.' : 'Objetivo' : participants.actor === hero.id ? 'Actor' : 'En espera';
+        const resource = currentResources?.get(hero.id);
+        const knockedOut = resource?.hp === 0;
+        const role = participants.target === hero.id ? event?.kind === 'ko' ? 'Objetivo · K.O.' : 'Objetivo' : participants.actor === hero.id ? 'Actor' : knockedOut ? 'K.O.' : 'En espera';
         const activity = participants.target === hero.id ? cue?.target : participants.actor === hero.id ? cue?.actor : undefined;
-        return <li key={hero.id} data-role={role} style={{ '--hero-accent': profile.presentation.accent } as CSSProperties}><HeroSigil profile={profile}/><div><strong>{hero.name}</strong><small>{hero.type} · Nv. {hero.level}</small></div><span className="vyr-combat-role">{role}{activity && activity !== 'Actor' && activity !== 'K.O.' ? ` · ${activity}` : ''}</span></li>;
+        return <li key={hero.id} data-fighter-id={hero.id} data-role={role} data-knocked-out={knockedOut || undefined} style={{ '--hero-accent': profile.presentation.accent } as CSSProperties}>
+          <HeroSigil profile={profile}/>
+          <div className="vyr-combat-identity"><strong>{hero.name}</strong><small>{hero.type} · Nv. {hero.level}</small></div>
+          {resource && <div className="vyr-combat-resources" role="group" aria-label={`${hero.name} · recursos actuales`}>
+            {([['HP', resource.hp, hero.maxHp], ['MP', resource.mp, hero.maxMp]] as const).map(([label, value, max]) => <div key={label} data-resource={label}>
+              <span>{label} <b>{value}/{max}</b></span>
+              <div className="vyr-combat-resource-track" aria-hidden="true"><span style={{ transform: `scaleX(${max > 0 ? value / max : 0})` }}/></div>
+            </div>)}
+          </div>}
+          <span className="vyr-combat-role">{knockedOut && !role.includes('K.O.') && <b className="vyr-combat-ko">K.O. · </b>}{role}{activity && activity !== 'Actor' && activity !== 'K.O.' ? ` · ${activity}` : ''}</span>
+        </li>;
       })}</ol></section>)}
       <div className="vyr-combat-event" aria-label="Evento actual">
         <span className="eyebrow">{item ? `RONDA ${item.round} / EVENTO ${item.ordinal} DE ${total}` : `SECUENCIA / ${total} EVENTOS`}</span>
@@ -43,8 +59,9 @@ export function CombatPlayback({ battle }: { battle: CombatResult }) {
           {event && <div className="vyr-combat-chain"><span><small>{cue?.actor}</small>{event.actor || 'Actor no indicado'}</span><span aria-hidden="true">→</span><span><small>{cue?.target}</small>{event.target || 'Sin objetivo registrado'}</span></div>}
           <p>{event?.message ?? (item ? 'Esta ronda no contiene acciones registradas.' : 'El resultado ya está calculado. Reproduce o inspecciona cualquier ronda.')}</p>
           {event?.damage !== undefined && <div className="vyr-combat-damage"><strong>{event.damage}</strong><span>Daño registrado{event.kind === 'blocked' && <small>Tras bloqueo parcial</small>}</span></div>}
+          {record?.attempt && <p className="vyr-combat-cost">{record.attempt.kind === 'power' ? `Poder intentado · ${record.attempt.power}` : 'Ataque básico'}<span>MP consumido: <b>{record.attempt.mpSpent}</b></span></p>}
         </div>
-        <small>Representación simbólica · sin HP/MP intermedios</small>
+        <small>{recording.mode === 'recorded' ? state.cursor < 0 ? 'Recursos iniciales del encuentro' : 'Recursos tras este evento' : 'Modo clásico · sin registro de HP/MP intermedios'}</small>
       </div>
     </div>
     <div className="vyr-combat-position"><progress aria-label="Posición de reproducción" max={Math.max(1, timeline.length)} value={state.cursor + 1}/><span>2,5 s por evento</span></div>

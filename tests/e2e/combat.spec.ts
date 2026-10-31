@@ -2,8 +2,10 @@ import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import { INITIAL_SAVE, PLAYER_TEAM, ENEMIES } from '../../src/data/demo';
 import { simulateCombat } from '../../src/engine/simulator';
+import { readFileSync } from 'node:fs';
+const legacyBattle = JSON.parse(readFileSync(new URL('../fixtures/combat-v01-1024.json', import.meta.url), 'utf8'));
 const storedBattle = simulateCombat(PLAYER_TEAM, ENEMIES.patrulla.heroes, 1024);
-const fixture = { ...INITIAL_SAVE, battles: 7, lastBattle: storedBattle };
+const fixture = { ...INITIAL_SAVE, battles: 7, lastBattle: legacyBattle };
 async function enter(page: import('@playwright/test').Page) {
   await page.goto('/');
   await page.getByRole('navigation').getByRole('button', { name: 'Simulador de combate', exact: true }).click();
@@ -28,6 +30,8 @@ test('legacy result: trusted rapid input, timers, navigation and persistence', a
   });
   await page.addInitScript(save => localStorage.setItem('vyrathen-v01', JSON.stringify(save)), fixture);
   await enter(page);
+  await expect(page.getByLabel('Reproducción del encuentro')).toHaveAttribute('data-recording', 'legacy');
+  await expect(page.locator('.vyr-combat-resources')).toHaveCount(0);
   const readSave = () => page.evaluate(() => localStorage.getItem('vyrathen-v01'));
   const before = await readSave();
   const status = page.getByRole('status').filter({ hasText: /Listo|Reproduciendo|Pausado|Finalizado/ });

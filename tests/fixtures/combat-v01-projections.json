@@ -1,0 +1,366 @@
+{
+  "base": "c03c8b5702f947196b86ffa7bb30f7f256f66da2",
+  "format": "sha256(JSON.stringify(CombatResult before instrumentation))",
+  "cases": [
+    {
+      "enemy": "patrulla",
+      "variant": "demo",
+      "seed": 0,
+      "sha256": "5a53d737d66c495f80e46ef29836299460babf00175e702a6edff9c584af356d"
+    },
+    {
+      "enemy": "patrulla",
+      "variant": "demo",
+      "seed": 1,
+      "sha256": "8f3cfe4d31762b10d29ac50f274ff445c28bf7ebf1d1e128f9638de8f9b248c0"
+    },
+    {
+      "enemy": "patrulla",
+      "variant": "demo",
+      "seed": 2,
+      "sha256": "bb365d801b187572f519c65833b9789468851e8ca6c76c11d37e9046553df25b"
+    },
+    {
+      "enemy": "patrulla",
+      "variant": "demo",
+      "seed": 7,
+      "sha256": "eaba133919ad2efeca1482e7bfd42dc4cc0ba893b85c3965a04bee453a6044e5"
+    },
+    {
+      "enemy": "patrulla",
+      "variant": "demo",
+      "seed": 42,
+      "sha256": "24ae030000b21896435e1d75675b65b539a8e9f42daa6ac4789169d2944a5b8a"
+    },
+    {
+      "enemy": "patrulla",
+      "variant": "demo",
+      "seed": 1024,
+      "sha256": "2e5d2b3532459ea2a9171a09c9462ff1c7345c85db48aa7a1a27629f9ce098f7"
+    },
+    {
+      "enemy": "patrulla",
+      "variant": "demo",
+      "seed": 2026,
+      "sha256": "28703548f26079c06006fde91f37469b7c719909581f0855f9e32a4ca927c308"
+    },
+    {
+      "enemy": "patrulla",
+      "variant": "demo",
+      "seed": -1,
+      "sha256": "1bfbb45b095234e0e51bfd0f94f0b25e3f7a36588bf8a4fb29266a1a564d38ba"
+    },
+    {
+      "enemy": "patrulla",
+      "variant": "demo",
+      "seed": 2147483647,
+      "sha256": "b91e2742369afb7d43dccd74f6dc082371bb0bd7927bd05c821ab0dbf98f2a1c"
+    },
+    {
+      "enemy": "patrulla",
+      "variant": "demo",
+      "seed": 4294967295,
+      "sha256": "784f7d27152ada3892666b7da4032259e5724b4c953144116f7958c38cd63a6d"
+    },
+    {
+      "enemy": "patrulla",
+      "variant": "no-mp",
+      "seed": 0,
+      "sha256": "c8019812092b227b858d6e9f49199e7f88cdd6870022809fe129d7e7b70b6e2d"
+    },
+    {
+      "enemy": "patrulla",
+      "variant": "no-mp",
+      "seed": 1,
+      "sha256": "64348e371b7e37e151efc4774e24ad2c71c6a865bca850e1ab035909fd1aae30"
+    },
+    {
+      "enemy": "patrulla",
+      "variant": "no-mp",
+      "seed": 2,
+      "sha256": "718f887a626c1c1eb2104be419009a5734633cadd72a152cced12e4e13510369"
+    },
+    {
+      "enemy": "patrulla",
+      "variant": "no-mp",
+      "seed": 7,
+      "sha256": "258e7a2af9ef195ee7f986aad02955ca13b2ced783ce83fbf631dfb97f2e866d"
+    },
+    {
+      "enemy": "patrulla",
+      "variant": "no-mp",
+      "seed": 42,
+      "sha256": "8a9ae95918cf8c4f15a4bbee2dd7dca3ffb853b5f9a5c2372ab755bae525276b"
+    },
+    {
+      "enemy": "patrulla",
+      "variant": "no-mp",
+      "seed": 1024,
+      "sha256": "e593c62a9efac1047b4144b1e20fbdc1f15b2029e47583ca1b9585cfa7e833c4"
+    },
+    {
+      "enemy": "patrulla",
+      "variant": "no-mp",
+      "seed": 2026,
+      "sha256": "36ec0a574e7c59972000330f7cace58bfc0ace501a28500abcfa5d83c46b9025"
+    },
+    {
+      "enemy": "patrulla",
+      "variant": "no-mp",
+      "seed": -1,
+      "sha256": "0298432133becd0ef8a0a172301314660eae30c30ad9c1c4f29acc3bf05333d2"
+    },
+    {
+      "enemy": "patrulla",
+      "variant": "no-mp",
+      "seed": 2147483647,
+      "sha256": "b38c3bfe1279b47d43da3f20479da750e5f506633b242b4ee795f0b473bbeee2"
+    },
+    {
+      "enemy": "patrulla",
+      "variant": "no-mp",
+      "seed": 4294967295,
+      "sha256": "d96aa9816ffafadbff20a5d26da6cafe9c6d3a0a5e062c21ddcfd1e3bde2ed96"
+    },
+    {
+      "enemy": "patrulla",
+      "variant": "fragile-duplicates",
+      "seed": 0,
+      "sha256": "8c6c58ebf68e8abfe950e3d2c358f3a968a76059d7a878d5daa41111ca0693c4"
+    },
+    {
+      "enemy": "patrulla",
+      "variant": "fragile-duplicates",
+      "seed": 1,
+      "sha256": "cb427779d7956cd09395e5815998ac4ede6da22442cc4c6c96409b5cc5769f91"
+    },
+    {
+      "enemy": "patrulla",
+      "variant": "fragile-duplicates",
+      "seed": 2,
+      "sha256": "7dd637212ccb4593ad5986894213ba3ae84edc9887093353c3eb14f5bd17c3b4"
+    },
+    {
+      "enemy": "patrulla",
+      "variant": "fragile-duplicates",
+      "seed": 7,
+      "sha256": "e956a482b26e7e180b5494138f9c7a43d905726c63853a7e91426099b3ac0f8a"
+    },
+    {
+      "enemy": "patrulla",
+      "variant": "fragile-duplicates",
+      "seed": 42,
+      "sha256": "4e60afa70c0f1a43556cab7f511df14fc8ed261d96908c9e9ec9234c80baacca"
+    },
+    {
+      "enemy": "patrulla",
+      "variant": "fragile-duplicates",
+      "seed": 1024,
+      "sha256": "be4ea4030224c4eb149475a9b8a5f114abf9aca2d7ff26db155d49b2cec7c2a5"
+    },
+    {
+      "enemy": "patrulla",
+      "variant": "fragile-duplicates",
+      "seed": 2026,
+      "sha256": "d6bf0f151182424c824efead676c2da7ae71f4047f54306ed8ae728c3a8d04cc"
+    },
+    {
+      "enemy": "patrulla",
+      "variant": "fragile-duplicates",
+      "seed": -1,
+      "sha256": "fa7217d0e006579ed709158abf2e7caa92444821ce9c899d7b70e521753bf17e"
+    },
+    {
+      "enemy": "patrulla",
+      "variant": "fragile-duplicates",
+      "seed": 2147483647,
+      "sha256": "772c9016031ebab734f9f5d4cb259e4f2ecb26f694f9a3bfbeb25ee5cd470480"
+    },
+    {
+      "enemy": "patrulla",
+      "variant": "fragile-duplicates",
+      "seed": 4294967295,
+      "sha256": "e6c24b72c80539360583a2ae0e7bb239d30649f026773df5b6a5d58fcb97fb99"
+    },
+    {
+      "enemy": "guardianes",
+      "variant": "demo",
+      "seed": 0,
+      "sha256": "75d934c1f3a0fae74a27cabc95d420fd3c500b0cb11922574eaa33d72bf628ed"
+    },
+    {
+      "enemy": "guardianes",
+      "variant": "demo",
+      "seed": 1,
+      "sha256": "6693c155743b676814fdbc401fdff12a50c0d2e319262ca1d254f578850fcc82"
+    },
+    {
+      "enemy": "guardianes",
+      "variant": "demo",
+      "seed": 2,
+      "sha256": "821b6e55865f7e11172b25e1a27809a471c8e5f004f459206bafe88bfd13d186"
+    },
+    {
+      "enemy": "guardianes",
+      "variant": "demo",
+      "seed": 7,
+      "sha256": "ea29b4665fece89db0629b77d25a09b86e37c47b457feb19b8a5d0f3c88e11c8"
+    },
+    {
+      "enemy": "guardianes",
+      "variant": "demo",
+      "seed": 42,
+      "sha256": "efdc3c57dfecef1f12a375daa81136f36d03fac63b8c72d98520dc993397cace"
+    },
+    {
+      "enemy": "guardianes",
+      "variant": "demo",
+      "seed": 1024,
+      "sha256": "0928456448bf8b4acdcca39adea9893bc276d90771982b0c0febcdb3aba72fba"
+    },
+    {
+      "enemy": "guardianes",
+      "variant": "demo",
+      "seed": 2026,
+      "sha256": "c5005f29e0b1ae2c7ce666a3bc0e36473ef7022397d2eb4a514536c6133da2ca"
+    },
+    {
+      "enemy": "guardianes",
+      "variant": "demo",
+      "seed": -1,
+      "sha256": "1da73e8c5ea97427796d954c3574480e97dec871fa34ca3de8fc9f090ecf25b4"
+    },
+    {
+      "enemy": "guardianes",
+      "variant": "demo",
+      "seed": 2147483647,
+      "sha256": "0d5803bac197596bc622681f99e081a307944c8e72b041a505abaef5191ee151"
+    },
+    {
+      "enemy": "guardianes",
+      "variant": "demo",
+      "seed": 4294967295,
+      "sha256": "9dcfc6b0c0b8f90e4323da8d33da6ce23016f9e4ad5fdca422507fcd0165efb6"
+    },
+    {
+      "enemy": "guardianes",
+      "variant": "no-mp",
+      "seed": 0,
+      "sha256": "d94139a9e0799a1f2adb827866bfd3d116c2e6a0918c2320ab3bc513f57a8f04"
+    },
+    {
+      "enemy": "guardianes",
+      "variant": "no-mp",
+      "seed": 1,
+      "sha256": "3531e9d129653a714ab9f31ee74049a96ecd625fd7fb991e1dc768dac81c82df"
+    },
+    {
+      "enemy": "guardianes",
+      "variant": "no-mp",
+      "seed": 2,
+      "sha256": "c90d7190745896d50fb1b402c6f2ff094cc4cfdebae99f4d9f271f4368080a92"
+    },
+    {
+      "enemy": "guardianes",
+      "variant": "no-mp",
+      "seed": 7,
+      "sha256": "3950ac7e0eb044b9c7dbd24f4c85a7401854dd40da85d3672e3c344ddec211f3"
+    },
+    {
+      "enemy": "guardianes",
+      "variant": "no-mp",
+      "seed": 42,
+      "sha256": "12a837006026546f0be0170c7a4d24e6c75c30d14ef9afc01086da2cbc02a36c"
+    },
+    {
+      "enemy": "guardianes",
+      "variant": "no-mp",
+      "seed": 1024,
+      "sha256": "0caf42bc3b0f65f6cd6a51c8094242cf0448eec5c1135107377b6c107cdbd6da"
+    },
+    {
+      "enemy": "guardianes",
+      "variant": "no-mp",
+      "seed": 2026,
+      "sha256": "1d9e9a05983b223ffef9c80e6faac1631b26c4e15251c73cbeaed7e098cac891"
+    },
+    {
+      "enemy": "guardianes",
+      "variant": "no-mp",
+      "seed": -1,
+      "sha256": "6dadb855ca614eb1d6fc82f65dcbe943d057a7cb54ad32a9de343d0ae189fe34"
+    },
+    {
+      "enemy": "guardianes",
+      "variant": "no-mp",
+      "seed": 2147483647,
+      "sha256": "41aa0ef7d9676dce85c43161263c608d74523790f8e2c7c61fd88888aa0b2ccc"
+    },
+    {
+      "enemy": "guardianes",
+      "variant": "no-mp",
+      "seed": 4294967295,
+      "sha256": "6f4e3665b57870b7c5bea00e621c0271f092a839f76b573d771ed0ca9fe0117b"
+    },
+    {
+      "enemy": "guardianes",
+      "variant": "fragile-duplicates",
+      "seed": 0,
+      "sha256": "3db53e0b64513a03a4a14d4b0667be6dd5417030a5d96748125cd719b6f2b806"
+    },
+    {
+      "enemy": "guardianes",
+      "variant": "fragile-duplicates",
+      "seed": 1,
+      "sha256": "1aafc1eff08f18163984dbaabf684ed2e71c5f82314d2526b0a20bb8cfd1a621"
+    },
+    {
+      "enemy": "guardianes",
+      "variant": "fragile-duplicates",
+      "seed": 2,
+      "sha256": "ac6975b1116a3eeb0dd95e15bceeb068e30d4b5b2fb418f5b19325e75156d2d4"
+    },
+    {
+      "enemy": "guardianes",
+      "variant": "fragile-duplicates",
+      "seed": 7,
+      "sha256": "c2ece04ef8350e16b8ac37ce4c6f1902e086222456de831a80e9c3ad01159b36"
+    },
+    {
+      "enemy": "guardianes",
+      "variant": "fragile-duplicates",
+      "seed": 42,
+      "sha256": "b65cc1e6ae0a0efa82010a9ae62e174c227cf05a00292f9d7813ee13812899be"
+    },
+    {
+      "enemy": "guardianes",
+      "variant": "fragile-duplicates",
+      "seed": 1024,
+      "sha256": "7fc0b0d586a8c3ecddd16f78f4ce945f2bbc870dfccbb26eea743460373ca852"
+    },
+    {
+      "enemy": "guardianes",
+      "variant": "fragile-duplicates",
+      "seed": 2026,
+      "sha256": "34e292f3e2d68cacdc33907bfe28bd993ddec9ed0ab0d62762f37ef819d936fa"
+    },
+    {
+      "enemy": "guardianes",
+      "variant": "fragile-duplicates",
+      "seed": -1,
+      "sha256": "7137f96e660c9298add0f58297b450df6b8d399d608c7cf4d01e5817db1c6633"
+    },
+    {
+      "enemy": "guardianes",
+      "variant": "fragile-duplicates",
+      "seed": 2147483647,
+      "sha256": "0c0de5095c98533b11e3021d9cefce2e7a293aa9250c6396af7e0ca1de44d9f8"
+    },
+    {
+      "enemy": "guardianes",
+      "variant": "fragile-duplicates",
+      "seed": 4294967295,
+      "sha256": "349dda553d0c8331729600d67ed6aa7dac0d2d7aea7a6bb641a90703022eec43"
+    }
+  ]
+}

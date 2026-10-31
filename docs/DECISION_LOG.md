@@ -26,3 +26,7 @@ ADR-011: tokens y primitivas pequeñas se comparten desde `src/ui/`, con CSS apt
 ## 2026-10-21 — Reproducción de combate independiente
 
 ADR-012: Combat Experience v0.1 presenta CombatResult con adaptador y transiciones puras, cursor único y reloj de UI. No cambia motor ni SaveData v1. Configuración futura conserva lastBattle; replay no escribe guardado. Salir desmonta y cancela el reloj; regresar empieza listo desde el inicio. Datos finales se separan de los eventos sin snapshots intermedios. Composición y ritmo son candidatos pendientes del propietario; contrato futuro aditivo y límites en [propuesta](design/COMBAT_EXPERIENCE_V01.md).
+
+## 2026-10-30 — Registro aditivo y recursos de reproducción
+
+ADR-013: tras la aprobación e integración de Combat Experience v0.1 (PR #7), v0.2 añade `CombatResult.trace?` con versión propia, estado inicial por ID y una entrada por evento. La resolución registra intento y recursos before/after; K.O. sólo enlaza la acción y al derrotado. Se conserva SaveData v1 y la proyección anterior del motor. Alternativa descartada: reconstruir estados desde mensajes, fórmulas o equipos finales. Un adaptador puro valida el registro completo antes de ofrecer frames por cursor; si falta o es incompatible, vuelve íntegramente a v0.1. Nuevas barras y coste explícito pendientes de revisión visual; contrato, equivalencia y límites en [v0.2](design/COMBAT_EXPERIENCE_V02.md).
