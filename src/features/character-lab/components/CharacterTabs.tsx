@@ -1,23 +1,25 @@
-import { motion } from 'motion/react';
-import { useRef } from 'react';
+import { LayoutGroup, motion } from 'motion/react';
+import { useId, useRef } from 'react';
 import { nextTabIndex } from '../../../ui/GameTabs.tsx';
 import { tabs, type CharacterTab } from '../data/characters';
-interface Props { active: CharacterTab; onChange: (v: CharacterTab) => void; reduced: boolean }
+interface Props { active: CharacterTab; onChange: (v: CharacterTab) => void; reduced: boolean; panelId?: string }
 
-export function CharacterTabs({ active, onChange, reduced }: Props) {
+export function CharacterTabs({ active, onChange, reduced, panelId = 'character-panel' }: Props) {
+  const groupId = useId();
+  const prefix = panelId === 'character-panel' ? 'character' : panelId;
   const buttons = useRef<(HTMLButtonElement | null)[]>([]);
-  return <nav className="tabs-bar" role="tablist" aria-label="Secciones del personaje">
+  return <LayoutGroup id={groupId}><nav className="tabs-bar" role="tablist" aria-label="Secciones del personaje">
     {tabs.map(({ id, label, index }, position) => (
       <motion.button
         className="tab-button"
         key={id}
         role="tab"
-        id={`character-tab-${id}`}
+        id={`${prefix}-tab-${id}`}
         ref={node => { buttons.current[position] = node; }}
         type="button"
         tabIndex={active === id ? 0 : -1}
         aria-selected={active === id}
-        aria-controls="character-panel"
+        aria-controls={panelId}
         onClick={() => onChange(id)}
         onKeyDown={event => {
           const next = nextTabIndex(event.key, position, tabs.length);
@@ -36,5 +38,5 @@ export function CharacterTabs({ active, onChange, reduced }: Props) {
         <span className="tab-button-text"><small>{index}</small> / {label}</span>
       </motion.button>
     ))}
-  </nav>;
+  </nav></LayoutGroup>;
 }

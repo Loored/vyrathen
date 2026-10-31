@@ -1,5 +1,5 @@
 /* Shared Game UI System v1: route-safe tokens and small reusable primitives. */
-:root, #vyr-character-lab {
+:root, :is(#vyr-character-lab, .vyr-character-lab) {
   --vyr-bg: #090e18; --vyr-panel: #111927; --vyr-surface: #182234;
   --vyr-border: #29364b; --vyr-text: #e8ecf5; --vyr-muted: #8997ad;
   --vyr-focus: #6ff0ce; --vyr-space-1: 4px; --vyr-space-2: 8px;
@@ -12,7 +12,7 @@
   --vyr-type-defensa: #79b6fa; --vyr-type-control: #6ff0ce;
 }
 /* The Lab intentionally keeps its approved palette while consuming the same structural contract. */
-#vyr-character-lab {
+:is(#vyr-character-lab, .vyr-character-lab) {
   --vyr-bg: #070a14; --vyr-panel: #080d1b; --vyr-surface: #101b30;
   --vyr-border: #344260; --vyr-text: #edf2ff; --vyr-muted: #7b91b4;
   --vyr-focus: #fff; --vyr-font-ui: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -26,10 +26,23 @@
 .game-action--secondary { border-color:var(--vyr-control-border); background:var(--vyr-control-bg); color:var(--vyr-control-text); }
 .game-panel { background:var(--vyr-panel-bg,linear-gradient(160deg,#131e2c,#101826)); border:1px solid var(--vyr-border); border-radius:var(--vyr-panel-radius,14px); padding:var(--vyr-space-6); min-width:0; }
 .game-section-kicker { color:var(--vyr-focus); font-size:10px; font-weight:800; letter-spacing:.18em; }
-.game-tabs { display:flex; gap:var(--vyr-space-2); border-bottom:1px solid var(--vyr-border); }
-.game-tabs button { border:0; border-bottom:2px solid transparent; background:transparent; color:var(--vyr-muted); padding:12px 16px; font-size:12px; font-weight:800; }
-.game-tabs button[aria-selected=true] { border-bottom-color:var(--vyr-focus); color:var(--vyr-focus); }
+.game-tabs, :is(#vyr-character-lab, .vyr-character-lab) .vyr-game-scope .game-tabs { display:flex; gap:var(--vyr-space-2); border-bottom:1px solid var(--vyr-border); }
+.game-tabs button, :is(#vyr-character-lab, .vyr-character-lab) .vyr-game-scope .game-tabs button { border:0; border-bottom:2px solid transparent; background:transparent; color:var(--vyr-muted); padding:12px 16px; font-size:12px; font-weight:800; }
+.game-tabs button[aria-selected=true], :is(#vyr-character-lab, .vyr-character-lab) .vyr-game-scope .game-tabs button[aria-selected=true] { border-bottom-color:var(--vyr-focus); color:var(--vyr-focus); }
 .game-stat-list { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px 18px; }
 .game-stat { display:flex; justify-content:space-between; gap:8px; padding:9px 0; border-bottom:1px solid color-mix(in srgb,var(--vyr-border),transparent 25%); color:var(--vyr-muted); font-size:12px; }
 .game-stat strong { color:var(--vyr-text); font-variant-numeric:tabular-nums; }
-@media (max-width: 520px) { .game-panel { padding:16px; } .game-stat-list { grid-template-columns:1fr; } .game-tabs { overflow:auto; } .game-tabs button { white-space:nowrap; } }
+@media (max-width: 520px) { .game-panel { padding:16px; } .game-stat-list { grid-template-columns:1fr; } .game-tabs, :is(#vyr-character-lab, .vyr-character-lab) .vyr-game-scope .game-tabs { overflow:auto; } .game-tabs button, :is(#vyr-character-lab, .vyr-character-lab) .vyr-game-scope .game-tabs button { white-space:nowrap; } }
+
+/* Production frame tokens, reused by isolated shared-component previews. */
+.vyr-frame, .vyr-game-scope {
+  --vyr-focus: #6ff0ce;
+  --vyr-bg: #080b13; --vyr-panel: #0f1522; --vyr-surface: #182031;
+  --vyr-border: #354157; --vyr-text: #f0f3fc; --vyr-muted: #a5b2c8;
+  --vyr-font-ui: Inter, system-ui, sans-serif;
+  --vyr-font-display: 'Space Grotesk', Inter, system-ui, sans-serif;
+  --vyr-action-bg: #f0f3fc; --vyr-action-text: #0b1020; --vyr-action-radius: 2px;
+  --bg: var(--vyr-bg); --panel: var(--vyr-panel); --surface: var(--vyr-surface);
+  --border: var(--vyr-border); --text: var(--vyr-text); --muted: var(--vyr-muted);
+  font-family: var(--vyr-font-ui); color: var(--vyr-text);
+}

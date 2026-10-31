@@ -88,7 +88,7 @@ export function CharacterDetails({ character, tab, reduced }: Props) {
           initial={reduced ? false : { opacity: .6 }} animate={{ opacity: 1 }}
           exit={reduced ? undefined : { opacity: 0 }} transition={{ duration: reduced ? 0 : .1 }}
         >
-          <h1 className={`character-name ${reduced ? '' : 'glitch-reveal'}`} data-text={character.name}>
+          <h1 className={`character-name ${reduced ? '' : 'glitch-reveal'}`} data-text={character.name} aria-label={character.name}>
             <span className="character-name-fill">{character.name}</span>
           </h1>
           <motion.div className="character-title"

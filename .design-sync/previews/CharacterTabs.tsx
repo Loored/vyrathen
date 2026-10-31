@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useReducedMotionPreference } from '../../src/features/character-lab/hooks/useReducedMotionPreference';
+import { useId, useState } from 'react';
 import { CharacterTabs, LabScope } from 'vyrathen';
 import type { CharacterTab } from 'vyrathen';
 
@@ -6,10 +7,12 @@ import type { CharacterTab } from 'vyrathen';
 // Su CSS la coloca en las columnas 2–3 de `.game-screen`. Fuera de esa rejilla, envuélvela
 // en un bloque normal (no en un `grid`, que crearía una columna 1 vacía a la izquierda).
 function Barra({ initial }: { initial: CharacterTab }) {
+  const panelId = useId();
   const [tab, setTab] = useState<CharacterTab>(initial);
   return (
     <div style={{ width: '100%', maxWidth: 860 }}>
-      <CharacterTabs active={tab} onChange={setTab} reduced={false} />
+      <CharacterTabs panelId={panelId} active={tab} onChange={setTab} reduced={useReducedMotionPreference()} />
+      <div id={panelId} role="tabpanel" aria-labelledby={`${panelId}-tab-${tab}`} tabIndex={0}>Exploración visual: {tab}. Sin mecánicas ni ranuras aprobadas.</div>
     </div>
   );
 }
