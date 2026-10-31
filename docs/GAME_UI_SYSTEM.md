@@ -66,3 +66,7 @@ Combate reutiliza tokens, acciones y HeroSigil. Formaciones, evento, roles, relo
 ## Combat Experience v0.3 — piloto 2D candidato
 
 La integración de v0.2 no aprueba arte nuevo. El [piloto v0.3](design/COMBAT_EXPERIENCE_V03.md) alterna táctica y escena usando el mismo cursor, reloj y controles. Añade sólo dos hojas originales de ocho poses para h4/e3, recorte SVG, presentación CSS y control de inspección. Los diez participantes y recursos se conservan; los otros ocho mantienen HeroSigil. Renderer, metadatos, efectos mínimos y cancelación permanecen específicos de Combate, sin nuevas primitivas globales ni dependencias. `pilot.html` añade comparación entre vistas, poses fijas, vídeo y procedencia; requiere revisión del propietario y no genera baselines.
+
+## Combat Experience v0.4 — secuencia de referencia candidata
+
+[Nyra → Grim](design/COMBAT_EXPERIENCE_V04.md) añade un clip local elegible por IDs, intento y acierto con supervivencia, seis dibujos por actor y dos recortes reparados de Grim. Conserva el reloj de 2500 ms, recursos posteriores al evento y fallback del piloto. `sequence.html` extiende la galería con mismo cruce base/head, vídeo normal, frames decodificados y bounds de píxeles reales. Sin aprobación de arte final, ampliación del elenco ni baselines.
