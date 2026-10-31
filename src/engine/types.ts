@@ -34,6 +34,32 @@ export interface RoundSnapshot {
   attackerAlive: number;
   defenderAlive: number;
 }
+export interface CombatResources { hp: number; mp: number }
+export interface ResourceChange {
+  id: string;
+  before: CombatResources;
+  after: CombatResources;
+}
+export type CombatAttempt =
+  | { kind: 'basic'; mpSpent: 0 }
+  | { kind: 'power'; power: string; mpSpent: number };
+export interface CombatEventTrace {
+  eventId: string;
+  /** One-based position in the existing flattened event stream. */
+  sequence: number;
+  actorId?: string;
+  targetId?: string;
+  actionId?: string;
+  /** Present only on the action's resolution, never repeated on its K.O. consequence. */
+  attempt?: CombatAttempt;
+  changes: ResourceChange[];
+  defeatedId?: string;
+}
+export interface CombatTrace {
+  version: 1;
+  initial: (CombatResources & { id: string })[];
+  events: CombatEventTrace[];
+}
 export interface CombatResult {
   seed: number;
   rounds: RoundSnapshot[];
@@ -44,6 +70,8 @@ export interface CombatResult {
   defenderKOs: number;
   victor: Side;
   summary: string;
+  /** Optional additive telemetry; absent in results saved before Combat Experience v0.2. */
+  trace?: CombatTrace;
 }
 export interface SaveData {
   version: 1;

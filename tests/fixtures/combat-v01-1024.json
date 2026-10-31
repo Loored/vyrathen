@@ -1,0 +1,1250 @@
+{
+  "seed": 1024,
+  "rounds": [
+    {
+      "round": 1,
+      "events": [
+        {
+          "id": "r1-1",
+          "round": 1,
+          "side": "atacante",
+          "actor": "Nyra",
+          "kind": "power",
+          "message": "Nyra usa Telequinesis a Grim · 88 de daño.",
+          "ruleOrigin": "remake_assumption",
+          "target": "Grim",
+          "damage": 88
+        },
+        {
+          "id": "r1-2",
+          "round": 1,
+          "side": "defensor",
+          "actor": "Sable",
+          "kind": "blocked",
+          "message": "Sable golpea a Kael · 18 de daño (bloqueo parcial).",
+          "ruleOrigin": "remake_assumption",
+          "target": "Kael",
+          "damage": 18
+        },
+        {
+          "id": "r1-3",
+          "round": 1,
+          "side": "defensor",
+          "actor": "Rune",
+          "kind": "normal",
+          "message": "Rune golpea a Kael · 50 de daño.",
+          "ruleOrigin": "remake_assumption",
+          "target": "Kael",
+          "damage": 50
+        },
+        {
+          "id": "r1-4",
+          "round": 1,
+          "side": "atacante",
+          "actor": "Volt",
+          "kind": "power",
+          "message": "Volt usa Electricidad a Ion · 91 de daño.",
+          "ruleOrigin": "remake_assumption",
+          "target": "Ion",
+          "damage": 91
+        },
+        {
+          "id": "r1-5",
+          "round": 1,
+          "side": "defensor",
+          "actor": "Ion",
+          "kind": "skip",
+          "message": "Ion no actúa en esta ronda.",
+          "ruleOrigin": "remake_assumption"
+        },
+        {
+          "id": "r1-6",
+          "round": 1,
+          "side": "defensor",
+          "actor": "Shard",
+          "kind": "dodged",
+          "message": "Astra esquiva el ataque de Shard.",
+          "ruleOrigin": "remake_assumption",
+          "target": "Astra"
+        },
+        {
+          "id": "r1-7",
+          "round": 1,
+          "side": "atacante",
+          "actor": "Kael",
+          "kind": "skip",
+          "message": "Kael no actúa en esta ronda.",
+          "ruleOrigin": "remake_assumption"
+        },
+        {
+          "id": "r1-8",
+          "round": 1,
+          "side": "atacante",
+          "actor": "Vesper",
+          "kind": "skip",
+          "message": "Vesper no actúa en esta ronda.",
+          "ruleOrigin": "remake_assumption"
+        },
+        {
+          "id": "r1-9",
+          "round": 1,
+          "side": "atacante",
+          "actor": "Astra",
+          "kind": "miss",
+          "message": "Astra falla su ataque contra Rune.",
+          "ruleOrigin": "remake_assumption",
+          "target": "Rune"
+        },
+        {
+          "id": "r1-10",
+          "round": 1,
+          "side": "defensor",
+          "actor": "Grim",
+          "kind": "skip",
+          "message": "Grim no actúa en esta ronda.",
+          "ruleOrigin": "remake_assumption"
+        }
+      ],
+      "attackerAlive": 5,
+      "defenderAlive": 5
+    },
+    {
+      "round": 2,
+      "events": [
+        {
+          "id": "r2-11",
+          "round": 2,
+          "side": "atacante",
+          "actor": "Nyra",
+          "kind": "power",
+          "message": "Nyra usa Telequinesis a Rune · 98 de daño.",
+          "ruleOrigin": "remake_assumption",
+          "target": "Rune",
+          "damage": 98
+        },
+        {
+          "id": "r2-12",
+          "round": 2,
+          "side": "defensor",
+          "actor": "Rune",
+          "kind": "skip",
+          "message": "Rune no actúa en esta ronda.",
+          "ruleOrigin": "remake_assumption"
+        },
+        {
+          "id": "r2-13",
+          "round": 2,
+          "side": "atacante",
+          "actor": "Volt",
+          "kind": "miss",
+          "message": "Volt falla su ataque contra Rune.",
+          "ruleOrigin": "remake_assumption",
+          "target": "Rune"
+        },
+        {
+          "id": "r2-14",
+          "round": 2,
+          "side": "atacante",
+          "actor": "Vesper",
+          "kind": "skip",
+          "message": "Vesper no actúa en esta ronda.",
+          "ruleOrigin": "remake_assumption"
+        },
+        {
+          "id": "r2-15",
+          "round": 2,
+          "side": "defensor",
+          "actor": "Sable",
+          "kind": "normal",
+          "message": "Sable golpea a Astra · 49 de daño.",
+          "ruleOrigin": "remake_assumption",
+          "target": "Astra",
+          "damage": 49
+        },
+        {
+          "id": "r2-16",
+          "round": 2,
+          "side": "atacante",
+          "actor": "Kael",
+          "kind": "power",
+          "message": "Kael usa Fuego a Rune · 87 de daño.",
+          "ruleOrigin": "remake_assumption",
+          "target": "Rune",
+          "damage": 87
+        },
+        {
+          "id": "r2-17",
+          "round": 2,
+          "side": "defensor",
+          "actor": "Ion",
+          "kind": "normal",
+          "message": "Ion golpea a Vesper · 56 de daño.",
+          "ruleOrigin": "remake_assumption",
+          "target": "Vesper",
+          "damage": 56
+        },
+        {
+          "id": "r2-18",
+          "round": 2,
+          "side": "atacante",
+          "actor": "Astra",
+          "kind": "dodged",
+          "message": "Grim esquiva el ataque de Astra.",
+          "ruleOrigin": "remake_assumption",
+          "target": "Grim"
+        },
+        {
+          "id": "r2-19",
+          "round": 2,
+          "side": "defensor",
+          "actor": "Shard",
+          "kind": "power",
+          "message": "Shard usa Telequinesis a Kael · 76 de daño.",
+          "ruleOrigin": "remake_assumption",
+          "target": "Kael",
+          "damage": 76
+        },
+        {
+          "id": "r2-20",
+          "round": 2,
+          "side": "defensor",
+          "actor": "Grim",
+          "kind": "miss",
+          "message": "Grim falla su ataque contra Nyra.",
+          "ruleOrigin": "remake_assumption",
+          "target": "Nyra"
+        }
+      ],
+      "attackerAlive": 5,
+      "defenderAlive": 5
+    },
+    {
+      "round": 3,
+      "events": [
+        {
+          "id": "r3-21",
+          "round": 3,
+          "side": "defensor",
+          "actor": "Ion",
+          "kind": "skip",
+          "message": "Ion no actúa en esta ronda.",
+          "ruleOrigin": "remake_assumption"
+        },
+        {
+          "id": "r3-22",
+          "round": 3,
+          "side": "atacante",
+          "actor": "Nyra",
+          "kind": "skip",
+          "message": "Nyra no actúa en esta ronda.",
+          "ruleOrigin": "remake_assumption"
+        },
+        {
+          "id": "r3-23",
+          "round": 3,
+          "side": "atacante",
+          "actor": "Volt",
+          "kind": "skip",
+          "message": "Volt no actúa en esta ronda.",
+          "ruleOrigin": "remake_assumption"
+        },
+        {
+          "id": "r3-24",
+          "round": 3,
+          "side": "defensor",
+          "actor": "Rune",
+          "kind": "skip",
+          "message": "Rune no actúa en esta ronda.",
+          "ruleOrigin": "remake_assumption"
+        },
+        {
+          "id": "r3-25",
+          "round": 3,
+          "side": "defensor",
+          "actor": "Sable",
+          "kind": "dodged",
+          "message": "Nyra esquiva el ataque de Sable.",
+          "ruleOrigin": "remake_assumption",
+          "target": "Nyra"
+        },
+        {
+          "id": "r3-26",
+          "round": 3,
+          "side": "defensor",
+          "actor": "Shard",
+          "kind": "normal",
+          "message": "Shard golpea a Kael · 55 de daño.",
+          "ruleOrigin": "remake_assumption",
+          "target": "Kael",
+          "damage": 55
+        },
+        {
+          "id": "r3-27",
+          "round": 3,
+          "side": "atacante",
+          "actor": "Kael",
+          "kind": "power",
+          "message": "Kael usa Fuego a Grim · 103 de daño.",
+          "ruleOrigin": "remake_assumption",
+          "target": "Grim",
+          "damage": 103
+        },
+        {
+          "id": "r3-28",
+          "round": 3,
+          "side": "atacante",
+          "actor": "Vesper",
+          "kind": "skip",
+          "message": "Vesper no actúa en esta ronda.",
+          "ruleOrigin": "remake_assumption"
+        },
+        {
+          "id": "r3-29",
+          "round": 3,
+          "side": "defensor",
+          "actor": "Grim",
+          "kind": "normal",
+          "message": "Grim golpea a Astra · 50 de daño.",
+          "ruleOrigin": "remake_assumption",
+          "target": "Astra",
+          "damage": 50
+        },
+        {
+          "id": "r3-30",
+          "round": 3,
+          "side": "atacante",
+          "actor": "Astra",
+          "kind": "blocked",
+          "message": "Astra golpea a Rune · 23 de daño (bloqueo parcial).",
+          "ruleOrigin": "remake_assumption",
+          "target": "Rune",
+          "damage": 23
+        }
+      ],
+      "attackerAlive": 5,
+      "defenderAlive": 5
+    },
+    {
+      "round": 4,
+      "events": [
+        {
+          "id": "r4-31",
+          "round": 4,
+          "side": "defensor",
+          "actor": "Ion",
+          "kind": "skip",
+          "message": "Ion no actúa en esta ronda.",
+          "ruleOrigin": "remake_assumption"
+        },
+        {
+          "id": "r4-32",
+          "round": 4,
+          "side": "defensor",
+          "actor": "Sable",
+          "kind": "skip",
+          "message": "Sable no actúa en esta ronda.",
+          "ruleOrigin": "remake_assumption"
+        },
+        {
+          "id": "r4-33",
+          "round": 4,
+          "side": "atacante",
+          "actor": "Vesper",
+          "kind": "skip",
+          "message": "Vesper no actúa en esta ronda.",
+          "ruleOrigin": "remake_assumption"
+        },
+        {
+          "id": "r4-34",
+          "round": 4,
+          "side": "defensor",
+          "actor": "Shard",
+          "kind": "miss",
+          "message": "Shard falla su ataque contra Astra.",
+          "ruleOrigin": "remake_assumption",
+          "target": "Astra"
+        },
+        {
+          "id": "r4-35",
+          "round": 4,
+          "side": "atacante",
+          "actor": "Volt",
+          "kind": "dodged",
+          "message": "Ion esquiva el ataque de Volt.",
+          "ruleOrigin": "remake_assumption",
+          "target": "Ion"
+        },
+        {
+          "id": "r4-36",
+          "round": 4,
+          "side": "atacante",
+          "actor": "Nyra",
+          "kind": "skip",
+          "message": "Nyra no actúa en esta ronda.",
+          "ruleOrigin": "remake_assumption"
+        },
+        {
+          "id": "r4-37",
+          "round": 4,
+          "side": "defensor",
+          "actor": "Rune",
+          "kind": "skip",
+          "message": "Rune no actúa en esta ronda.",
+          "ruleOrigin": "remake_assumption"
+        },
+        {
+          "id": "r4-38",
+          "round": 4,
+          "side": "atacante",
+          "actor": "Astra",
+          "kind": "skip",
+          "message": "Astra no actúa en esta ronda.",
+          "ruleOrigin": "remake_assumption"
+        },
+        {
+          "id": "r4-39",
+          "round": 4,
+          "side": "atacante",
+          "actor": "Kael",
+          "kind": "power",
+          "message": "Kael usa Fuego a Ion · 85 de daño.",
+          "ruleOrigin": "remake_assumption",
+          "target": "Ion",
+          "damage": 85
+        },
+        {
+          "id": "r4-40",
+          "round": 4,
+          "side": "defensor",
+          "actor": "Grim",
+          "kind": "skip",
+          "message": "Grim no actúa en esta ronda.",
+          "ruleOrigin": "remake_assumption"
+        }
+      ],
+      "attackerAlive": 5,
+      "defenderAlive": 5
+    },
+    {
+      "round": 5,
+      "events": [
+        {
+          "id": "r5-41",
+          "round": 5,
+          "side": "defensor",
+          "actor": "Rune",
+          "kind": "skip",
+          "message": "Rune no actúa en esta ronda.",
+          "ruleOrigin": "remake_assumption"
+        },
+        {
+          "id": "r5-42",
+          "round": 5,
+          "side": "defensor",
+          "actor": "Ion",
+          "kind": "skip",
+          "message": "Ion no actúa en esta ronda.",
+          "ruleOrigin": "remake_assumption"
+        },
+        {
+          "id": "r5-43",
+          "round": 5,
+          "side": "atacante",
+          "actor": "Nyra",
+          "kind": "skip",
+          "message": "Nyra no actúa en esta ronda.",
+          "ruleOrigin": "remake_assumption"
+        },
+        {
+          "id": "r5-44",
+          "round": 5,
+          "side": "atacante",
+          "actor": "Kael",
+          "kind": "normal",
+          "message": "Kael golpea a Rune · 53 de daño.",
+          "ruleOrigin": "remake_assumption",
+          "target": "Rune",
+          "damage": 53
+        },
+        {
+          "id": "r5-45",
+          "round": 5,
+          "side": "atacante",
+          "actor": "Vesper",
+          "kind": "miss",
+          "message": "Vesper falla su ataque contra Shard.",
+          "ruleOrigin": "remake_assumption",
+          "target": "Shard"
+        },
+        {
+          "id": "r5-46",
+          "round": 5,
+          "side": "defensor",
+          "actor": "Shard",
+          "kind": "skip",
+          "message": "Shard no actúa en esta ronda.",
+          "ruleOrigin": "remake_assumption"
+        },
+        {
+          "id": "r5-47",
+          "round": 5,
+          "side": "defensor",
+          "actor": "Sable",
+          "kind": "normal",
+          "message": "Sable golpea a Kael · 47 de daño.",
+          "ruleOrigin": "remake_assumption",
+          "target": "Kael",
+          "damage": 47
+        },
+        {
+          "id": "r5-48",
+          "round": 5,
+          "side": "atacante",
+          "actor": "Volt",
+          "kind": "skip",
+          "message": "Volt no actúa en esta ronda.",
+          "ruleOrigin": "remake_assumption"
+        },
+        {
+          "id": "r5-49",
+          "round": 5,
+          "side": "atacante",
+          "actor": "Astra",
+          "kind": "dodged",
+          "message": "Grim esquiva el ataque de Astra.",
+          "ruleOrigin": "remake_assumption",
+          "target": "Grim"
+        },
+        {
+          "id": "r5-50",
+          "round": 5,
+          "side": "defensor",
+          "actor": "Grim",
+          "kind": "normal",
+          "message": "Grim golpea a Nyra · 51 de daño.",
+          "ruleOrigin": "remake_assumption",
+          "target": "Nyra",
+          "damage": 51
+        }
+      ],
+      "attackerAlive": 5,
+      "defenderAlive": 5
+    },
+    {
+      "round": 6,
+      "events": [
+        {
+          "id": "r6-51",
+          "round": 6,
+          "side": "defensor",
+          "actor": "Rune",
+          "kind": "normal",
+          "message": "Rune golpea a Nyra · 46 de daño.",
+          "ruleOrigin": "remake_assumption",
+          "target": "Nyra",
+          "damage": 46
+        },
+        {
+          "id": "r6-52",
+          "round": 6,
+          "side": "atacante",
+          "actor": "Kael",
+          "kind": "skip",
+          "message": "Kael no actúa en esta ronda.",
+          "ruleOrigin": "remake_assumption"
+        },
+        {
+          "id": "r6-53",
+          "round": 6,
+          "side": "defensor",
+          "actor": "Ion",
+          "kind": "normal",
+          "message": "Ion golpea a Nyra · 55 de daño.",
+          "ruleOrigin": "remake_assumption",
+          "target": "Nyra",
+          "damage": 55
+        },
+        {
+          "id": "r6-54",
+          "round": 6,
+          "side": "atacante",
+          "actor": "Volt",
+          "kind": "power",
+          "message": "Volt usa Electricidad a Ion · 85 de daño.",
+          "ruleOrigin": "remake_assumption",
+          "target": "Ion",
+          "damage": 85
+        },
+        {
+          "id": "r6-55",
+          "round": 6,
+          "side": "defensor",
+          "actor": "Shard",
+          "kind": "normal",
+          "message": "Shard golpea a Kael · 51 de daño.",
+          "ruleOrigin": "remake_assumption",
+          "target": "Kael",
+          "damage": 51
+        },
+        {
+          "id": "r6-56",
+          "round": 6,
+          "side": "defensor",
+          "actor": "Sable",
+          "kind": "skip",
+          "message": "Sable no actúa en esta ronda.",
+          "ruleOrigin": "remake_assumption"
+        },
+        {
+          "id": "r6-57",
+          "round": 6,
+          "side": "atacante",
+          "actor": "Vesper",
+          "kind": "skip",
+          "message": "Vesper no actúa en esta ronda.",
+          "ruleOrigin": "remake_assumption"
+        },
+        {
+          "id": "r6-58",
+          "round": 6,
+          "side": "atacante",
+          "actor": "Nyra",
+          "kind": "miss",
+          "message": "Nyra falla Telequinesis contra Ion.",
+          "ruleOrigin": "remake_assumption",
+          "target": "Ion"
+        },
+        {
+          "id": "r6-59",
+          "round": 6,
+          "side": "defensor",
+          "actor": "Grim",
+          "kind": "skip",
+          "message": "Grim no actúa en esta ronda.",
+          "ruleOrigin": "remake_assumption"
+        },
+        {
+          "id": "r6-60",
+          "round": 6,
+          "side": "atacante",
+          "actor": "Astra",
+          "kind": "skip",
+          "message": "Astra no actúa en esta ronda.",
+          "ruleOrigin": "remake_assumption"
+        }
+      ],
+      "attackerAlive": 5,
+      "defenderAlive": 5
+    },
+    {
+      "round": 7,
+      "events": [
+        {
+          "id": "r7-61",
+          "round": 7,
+          "side": "atacante",
+          "actor": "Nyra",
+          "kind": "power",
+          "message": "Nyra usa Telequinesis a Shard · 96 de daño.",
+          "ruleOrigin": "remake_assumption",
+          "target": "Shard",
+          "damage": 96
+        },
+        {
+          "id": "r7-62",
+          "round": 7,
+          "side": "atacante",
+          "actor": "Volt",
+          "kind": "normal",
+          "message": "Volt golpea a Shard · 55 de daño.",
+          "ruleOrigin": "remake_assumption",
+          "target": "Shard",
+          "damage": 55
+        },
+        {
+          "id": "r7-63",
+          "round": 7,
+          "side": "defensor",
+          "actor": "Rune",
+          "kind": "miss",
+          "message": "Rune falla su ataque contra Kael.",
+          "ruleOrigin": "remake_assumption",
+          "target": "Kael"
+        },
+        {
+          "id": "r7-64",
+          "round": 7,
+          "side": "defensor",
+          "actor": "Sable",
+          "kind": "blocked",
+          "message": "Sable golpea a Volt · 18 de daño (bloqueo parcial).",
+          "ruleOrigin": "remake_assumption",
+          "target": "Volt",
+          "damage": 18
+        },
+        {
+          "id": "r7-65",
+          "round": 7,
+          "side": "atacante",
+          "actor": "Vesper",
+          "kind": "skip",
+          "message": "Vesper no actúa en esta ronda.",
+          "ruleOrigin": "remake_assumption"
+        },
+        {
+          "id": "r7-66",
+          "round": 7,
+          "side": "atacante",
+          "actor": "Kael",
+          "kind": "skip",
+          "message": "Kael no actúa en esta ronda.",
+          "ruleOrigin": "remake_assumption"
+        },
+        {
+          "id": "r7-67",
+          "round": 7,
+          "side": "defensor",
+          "actor": "Shard",
+          "kind": "skip",
+          "message": "Shard no actúa en esta ronda.",
+          "ruleOrigin": "remake_assumption"
+        },
+        {
+          "id": "r7-68",
+          "round": 7,
+          "side": "defensor",
+          "actor": "Ion",
+          "kind": "normal",
+          "message": "Ion golpea a Vesper · 61 de daño.",
+          "ruleOrigin": "remake_assumption",
+          "target": "Vesper",
+          "damage": 61
+        },
+        {
+          "id": "r7-69",
+          "round": 7,
+          "side": "atacante",
+          "actor": "Astra",
+          "kind": "miss",
+          "message": "Astra falla su ataque contra Sable.",
+          "ruleOrigin": "remake_assumption",
+          "target": "Sable"
+        },
+        {
+          "id": "r7-70",
+          "round": 7,
+          "side": "defensor",
+          "actor": "Grim",
+          "kind": "miss",
+          "message": "Grim falla su ataque contra Astra.",
+          "ruleOrigin": "remake_assumption",
+          "target": "Astra"
+        }
+      ],
+      "attackerAlive": 5,
+      "defenderAlive": 5
+    },
+    {
+      "round": 8,
+      "events": [
+        {
+          "id": "r8-71",
+          "round": 8,
+          "side": "atacante",
+          "actor": "Kael",
+          "kind": "normal",
+          "message": "Kael golpea a Ion · 57 de daño.",
+          "ruleOrigin": "remake_assumption",
+          "target": "Ion",
+          "damage": 57
+        },
+        {
+          "id": "r8-72",
+          "round": 8,
+          "side": "atacante",
+          "actor": "Nyra",
+          "kind": "blocked",
+          "message": "Nyra golpea a Sable · 20 de daño (bloqueo parcial).",
+          "ruleOrigin": "remake_assumption",
+          "target": "Sable",
+          "damage": 20
+        },
+        {
+          "id": "r8-73",
+          "round": 8,
+          "side": "defensor",
+          "actor": "Rune",
+          "kind": "normal",
+          "message": "Rune golpea a Volt · 47 de daño.",
+          "ruleOrigin": "remake_assumption",
+          "target": "Volt",
+          "damage": 47
+        },
+        {
+          "id": "r8-74",
+          "round": 8,
+          "side": "atacante",
+          "actor": "Volt",
+          "kind": "power",
+          "message": "Volt usa Electricidad a Sable · 90 de daño.",
+          "ruleOrigin": "remake_assumption",
+          "target": "Sable",
+          "damage": 90
+        },
+        {
+          "id": "r8-75",
+          "round": 8,
+          "side": "defensor",
+          "actor": "Ion",
+          "kind": "power",
+          "message": "Ion usa Desatomizar a Kael · 63 de daño.",
+          "ruleOrigin": "remake_assumption",
+          "target": "Kael",
+          "damage": 63
+        },
+        {
+          "id": "r8-76",
+          "round": 8,
+          "side": "defensor",
+          "actor": "Ion",
+          "kind": "ko",
+          "message": "Kael ha quedado K.O.",
+          "ruleOrigin": "historical_document",
+          "target": "Kael"
+        },
+        {
+          "id": "r8-77",
+          "round": 8,
+          "side": "defensor",
+          "actor": "Grim",
+          "kind": "skip",
+          "message": "Grim no actúa en esta ronda.",
+          "ruleOrigin": "remake_assumption"
+        },
+        {
+          "id": "r8-78",
+          "round": 8,
+          "side": "atacante",
+          "actor": "Vesper",
+          "kind": "normal",
+          "message": "Vesper golpea a Grim · 53 de daño.",
+          "ruleOrigin": "remake_assumption",
+          "target": "Grim",
+          "damage": 53
+        },
+        {
+          "id": "r8-79",
+          "round": 8,
+          "side": "defensor",
+          "actor": "Shard",
+          "kind": "miss",
+          "message": "Shard falla Telequinesis contra Astra.",
+          "ruleOrigin": "remake_assumption",
+          "target": "Astra"
+        },
+        {
+          "id": "r8-80",
+          "round": 8,
+          "side": "defensor",
+          "actor": "Sable",
+          "kind": "skip",
+          "message": "Sable no actúa en esta ronda.",
+          "ruleOrigin": "remake_assumption"
+        },
+        {
+          "id": "r8-81",
+          "round": 8,
+          "side": "atacante",
+          "actor": "Astra",
+          "kind": "skip",
+          "message": "Astra no actúa en esta ronda.",
+          "ruleOrigin": "remake_assumption"
+        }
+      ],
+      "attackerAlive": 4,
+      "defenderAlive": 5
+    },
+    {
+      "round": 9,
+      "events": [
+        {
+          "id": "r9-82",
+          "round": 9,
+          "side": "atacante",
+          "actor": "Nyra",
+          "kind": "skip",
+          "message": "Nyra no actúa en esta ronda.",
+          "ruleOrigin": "remake_assumption"
+        },
+        {
+          "id": "r9-83",
+          "round": 9,
+          "side": "defensor",
+          "actor": "Ion",
+          "kind": "skip",
+          "message": "Ion no actúa en esta ronda.",
+          "ruleOrigin": "remake_assumption"
+        },
+        {
+          "id": "r9-84",
+          "round": 9,
+          "side": "defensor",
+          "actor": "Sable",
+          "kind": "normal",
+          "message": "Sable golpea a Volt · 48 de daño.",
+          "ruleOrigin": "remake_assumption",
+          "target": "Volt",
+          "damage": 48
+        },
+        {
+          "id": "r9-85",
+          "round": 9,
+          "side": "defensor",
+          "actor": "Rune",
+          "kind": "skip",
+          "message": "Rune no actúa en esta ronda.",
+          "ruleOrigin": "remake_assumption"
+        },
+        {
+          "id": "r9-86",
+          "round": 9,
+          "side": "atacante",
+          "actor": "Volt",
+          "kind": "normal",
+          "message": "Volt golpea a Shard · 56 de daño.",
+          "ruleOrigin": "remake_assumption",
+          "target": "Shard",
+          "damage": 56
+        },
+        {
+          "id": "r9-87",
+          "round": 9,
+          "side": "atacante",
+          "actor": "Vesper",
+          "kind": "normal",
+          "message": "Vesper golpea a Sable · 50 de daño.",
+          "ruleOrigin": "remake_assumption",
+          "target": "Sable",
+          "damage": 50
+        },
+        {
+          "id": "r9-88",
+          "round": 9,
+          "side": "defensor",
+          "actor": "Grim",
+          "kind": "skip",
+          "message": "Grim no actúa en esta ronda.",
+          "ruleOrigin": "remake_assumption"
+        },
+        {
+          "id": "r9-89",
+          "round": 9,
+          "side": "atacante",
+          "actor": "Astra",
+          "kind": "skip",
+          "message": "Astra no actúa en esta ronda.",
+          "ruleOrigin": "remake_assumption"
+        },
+        {
+          "id": "r9-90",
+          "round": 9,
+          "side": "defensor",
+          "actor": "Shard",
+          "kind": "normal",
+          "message": "Shard golpea a Volt · 57 de daño.",
+          "ruleOrigin": "remake_assumption",
+          "target": "Volt",
+          "damage": 57
+        }
+      ],
+      "attackerAlive": 4,
+      "defenderAlive": 5
+    },
+    {
+      "round": 10,
+      "events": [
+        {
+          "id": "r10-91",
+          "round": 10,
+          "side": "defensor",
+          "actor": "Rune",
+          "kind": "normal",
+          "message": "Rune golpea a Vesper · 47 de daño.",
+          "ruleOrigin": "remake_assumption",
+          "target": "Vesper",
+          "damage": 47
+        },
+        {
+          "id": "r10-92",
+          "round": 10,
+          "side": "atacante",
+          "actor": "Nyra",
+          "kind": "blocked",
+          "message": "Nyra usa Telequinesis a Ion · 32 de daño (bloqueo parcial).",
+          "ruleOrigin": "remake_assumption",
+          "target": "Ion",
+          "damage": 32
+        },
+        {
+          "id": "r10-93",
+          "round": 10,
+          "side": "atacante",
+          "actor": "Nyra",
+          "kind": "ko",
+          "message": "Ion ha quedado K.O.",
+          "ruleOrigin": "historical_document",
+          "target": "Ion"
+        },
+        {
+          "id": "r10-94",
+          "round": 10,
+          "side": "defensor",
+          "actor": "Shard",
+          "kind": "power",
+          "message": "Shard usa Telequinesis a Volt · 66 de daño.",
+          "ruleOrigin": "remake_assumption",
+          "target": "Volt",
+          "damage": 66
+        },
+        {
+          "id": "r10-95",
+          "round": 10,
+          "side": "defensor",
+          "actor": "Sable",
+          "kind": "dodged",
+          "message": "Vesper esquiva el ataque de Sable.",
+          "ruleOrigin": "remake_assumption",
+          "target": "Vesper"
+        },
+        {
+          "id": "r10-96",
+          "round": 10,
+          "side": "atacante",
+          "actor": "Astra",
+          "kind": "normal",
+          "message": "Astra golpea a Shard · 53 de daño.",
+          "ruleOrigin": "remake_assumption",
+          "target": "Shard",
+          "damage": 53
+        },
+        {
+          "id": "r10-97",
+          "round": 10,
+          "side": "atacante",
+          "actor": "Volt",
+          "kind": "normal",
+          "message": "Volt golpea a Rune · 48 de daño.",
+          "ruleOrigin": "remake_assumption",
+          "target": "Rune",
+          "damage": 48
+        },
+        {
+          "id": "r10-98",
+          "round": 10,
+          "side": "atacante",
+          "actor": "Vesper",
+          "kind": "normal",
+          "message": "Vesper golpea a Sable · 44 de daño.",
+          "ruleOrigin": "remake_assumption",
+          "target": "Sable",
+          "damage": 44
+        },
+        {
+          "id": "r10-99",
+          "round": 10,
+          "side": "defensor",
+          "actor": "Grim",
+          "kind": "normal",
+          "message": "Grim golpea a Astra · 51 de daño.",
+          "ruleOrigin": "remake_assumption",
+          "target": "Astra",
+          "damage": 51
+        }
+      ],
+      "attackerAlive": 4,
+      "defenderAlive": 4
+    }
+  ],
+  "attackers": [
+    {
+      "id": "h1",
+      "name": "Kael",
+      "type": "Energía",
+      "level": 8,
+      "maxHp": 360,
+      "maxMp": 130,
+      "hit": 75,
+      "block": 55,
+      "dodge": 52,
+      "mental": 48,
+      "speed": 72,
+      "power": "Fuego",
+      "powerLevel": 5,
+      "hp": 0,
+      "mp": 55
+    },
+    {
+      "id": "h2",
+      "name": "Vesper",
+      "type": "Psico",
+      "level": 7,
+      "maxHp": 330,
+      "maxMp": 155,
+      "hit": 64,
+      "block": 53,
+      "dodge": 69,
+      "mental": 82,
+      "speed": 69,
+      "power": "Dar ordenes",
+      "powerLevel": 4,
+      "hp": 166,
+      "mp": 155
+    },
+    {
+      "id": "h3",
+      "name": "Astra",
+      "type": "Defensa",
+      "level": 9,
+      "maxHp": 425,
+      "maxMp": 115,
+      "hit": 70,
+      "block": 85,
+      "dodge": 40,
+      "mental": 65,
+      "speed": 45,
+      "power": "Regeneracion",
+      "powerLevel": 5,
+      "hp": 275,
+      "mp": 115
+    },
+    {
+      "id": "h4",
+      "name": "Nyra",
+      "type": "Control",
+      "level": 8,
+      "maxHp": 335,
+      "maxMp": 140,
+      "hit": 73,
+      "block": 46,
+      "dodge": 77,
+      "mental": 68,
+      "speed": 83,
+      "power": "Telequinesis",
+      "powerLevel": 5,
+      "hp": 183,
+      "mp": 15
+    },
+    {
+      "id": "h5",
+      "name": "Volt",
+      "type": "Energía",
+      "level": 7,
+      "maxHp": 345,
+      "maxMp": 145,
+      "hit": 81,
+      "block": 40,
+      "dodge": 64,
+      "mental": 51,
+      "speed": 79,
+      "power": "Electricidad",
+      "powerLevel": 4,
+      "hp": 109,
+      "mp": 65
+    }
+  ],
+  "defenders": [
+    {
+      "id": "e1",
+      "name": "Shard",
+      "type": "Control",
+      "level": 8,
+      "maxHp": 330,
+      "maxMp": 130,
+      "hit": 67,
+      "block": 45,
+      "dodge": 68,
+      "mental": 66,
+      "speed": 74,
+      "power": "Telequinesis",
+      "powerLevel": 4,
+      "hp": 70,
+      "mp": 70
+    },
+    {
+      "id": "e2",
+      "name": "Sable",
+      "type": "Psico",
+      "level": 7,
+      "maxHp": 305,
+      "maxMp": 160,
+      "hit": 63,
+      "block": 48,
+      "dodge": 62,
+      "mental": 79,
+      "speed": 71,
+      "power": "Pesadilla",
+      "powerLevel": 3,
+      "hp": 101,
+      "mp": 160
+    },
+    {
+      "id": "e3",
+      "name": "Grim",
+      "type": "Defensa",
+      "level": 8,
+      "maxHp": 405,
+      "maxMp": 108,
+      "hit": 72,
+      "block": 77,
+      "dodge": 47,
+      "mental": 60,
+      "speed": 49,
+      "power": "Invisibilidad",
+      "powerLevel": 3,
+      "hp": 161,
+      "mp": 108
+    },
+    {
+      "id": "e4",
+      "name": "Ion",
+      "type": "Energía",
+      "level": 9,
+      "maxHp": 350,
+      "maxMp": 155,
+      "hit": 78,
+      "block": 41,
+      "dodge": 58,
+      "mental": 57,
+      "speed": 80,
+      "power": "Desatomizar",
+      "powerLevel": 5,
+      "hp": 0,
+      "mp": 130
+    },
+    {
+      "id": "e5",
+      "name": "Rune",
+      "type": "Control",
+      "level": 7,
+      "maxHp": 320,
+      "maxMp": 135,
+      "hit": 71,
+      "block": 48,
+      "dodge": 68,
+      "mental": 70,
+      "speed": 75,
+      "power": "Parar el tiempo",
+      "powerLevel": 4,
+      "hp": 11,
+      "mp": 135
+    }
+  ],
+  "typePoints": {
+    "attacker": 7,
+    "defender": 6
+  },
+  "attackerKOs": 1,
+  "defenderKOs": 1,
+  "victor": "defensor",
+  "summary": "Empate en K.O.: gana el defensor."
+}
